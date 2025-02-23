@@ -147,11 +147,21 @@ use kafka for inter-microservices communication?
 https://www.youtube.com/watch?v=Vz2DHAHn7OU
 
 Was told this is a good tutorial to understand async await (in rust at least, but maybe in general!): https://tokio.rs/tokio/tutorial
+https://stackoverflow.blog/2020/03/02/best-practices-for-rest-api-design/
+https://stackoverflow.com/questions/60457740/rest-endpoint-for-complex-actions
+https://stackoverflow.com/a/60463179
+
 ```
 
 == II. Managing the authentication system with OIDC
 
 Lier les méthodes d'authentification aux comptes
+
+https://developers.google.com/identity/protocols/oauth2
+
+Oauth2: https://www.youtube.com/watch?v=ZV5yTm4pT8g
+OIDC (surcouche ?): https://www.youtube.com/watch?v=t18YB3xDfXI
+
 
 == III. Inter-service communication
 
@@ -245,6 +255,10 @@ Sinon Loki
 
 https://opentelemetry.io/docs/specs/otlp/
 
+https://cloud.google.com/iam/docs/roles-overview
+
+https://medium.com/@sadoksmine8/understanding-identity-and-access-management-iam-in-gcp-a-detailed-exploration-57030ec37609
+
 == V. Tracing logs and queries
 
 handling traces in the new distributed architecture
@@ -258,6 +272,14 @@ cia triad
 principle of privilege (including in service mesh)
 
 Migrate infrastructure to a (or 3???) proxmox cluster. With a high-availability Kube on top. Separate etcd or not? Postgres as etcd or not?
+
+Apache Mesos: Program against your datacenter like it’s a single pool of resources. Kubernetes pour l'infra ou qq chose comme ça.
+
+"Mesos propose deux modèles de fédération. Une première approche place toute l'infrastructure sous une couche de contrôle et crée une abstraction des ressources du datacenter, d'un cloud public, d'un déploiement de VM par exemple. Cette couche de contrôle forme une abstraction uniforme pour l'hébergement. Avec le deuxième modèle, la technologie rassemble des déploiements Mesos distincts de manière à ce qu'aucun ne soit relié à un autre, mais coopèrent tous de manière totalement distribuée et tolérante aux pannes."
+
+https://www.baeldung.com/apache-mesos
+https://mesos.apache.org/documentation/latest/
+https://agenda.infn.it/event/29701/sessions/21750/attachments/88134/117909/Apache%20Mesos.pdf
 
 == VII. Infrastructure security
 design, implementation, automation and handling
