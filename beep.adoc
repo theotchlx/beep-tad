@@ -1,0 +1,271 @@
+= AsciiDoc Article Title
+Théo Tchilinguirian <theo.tchilinguirian@etu.umontpellier.fr>
+14.02.2025
+:toc:
+
+Under every question:
+- Add a glossary of terms at the start of the question
+- Use What Why How to distribute the text ideas & knowledge, if and when it makes sense. You may need to break it down further.
+- Visuals (schema, graphs) (at least one)
+- Make a PoC where asked, and when relevant. It must provide a real example of the implementation, and useful results such as performance metrics, usability, etc.
+- Use real data / estimations to support choices and motives. This is real design, using real cost metrics of time, capacity, resources etc.
+- Cite your sources at the end of the question
+
+We are looking to migrate BEEP to a microservices architecture.
+The specifications are the same as described during all previous iterations of beep.
+
+You will need to answer 10 questions:
+
+- Via the redaction of the TAD (components architecture, sequences diagram, deployment architecture, etc.)
+- Via the production of POCs (when mentioned)
+- For your schema, use draw.io
+- Redact your report using asciidoc
+
+You are forbidden to propose or consider the following technologies: 
+
+- Messages queue
+- CQRS
+- Event Sourcing
+
+pocs en rust ? :3
+En rust et en go et en elixir!! :3
+Non. Que en rust ;3. heh. C'est calculé tikoti :)
+
+== Glossary
+
+In alphabetical order.
+
+== 0. The What and Why of Beep and the microservices architecture
+
+In this section, I will provide a brief overview of Beep's current architecture, what a microservices architecture is, and why Beep should consider migrating to a microservices architecture.
+
+=== Current state of Beep
+
+(what) Beep is
+(why) Beep solves the issue.s/problem.s of
+
+Beep has a complex monolithic architecture. The following is an overview of its main components.
+
+DrawIO
+
+- Monolithic frontend
+- Monolithic backend
+- Monitoring/observability services/stack
+- Surrounding Kubernetes
+- Surrounding VM/promox cluster? (the VM?) and cite a plan to migrate the ifnrastructure to a proxmox cluster, talk about later in Q.6 (one cluster, not three... ??? Think about later)
+
+Explications
+
+=== Microservices architecture explained
+
+A microservices architecture is an architectural style that structures an application as a collection of services that
+
+=== Why Beep should consider migrating to a microservices architecture
+
+In this section, I will explain why the Beep team should consider migrating to a microservices architecture.
+
+Avantages et inconvénients. Rester objectif. Donner des nombres. Dev experience. Etc. Trucs de management. Penser au futur. Etc. Exemple concret : Kubernetes plus grand nb de contributions DE LOIN de tous les projets CNCF. Easy car tout plugginisé et découpé et customisable etc.
+
+
+== I. Separating Beep into functional neighborhoods and microservices
+
+The following concerns my proposal to separate the Beep application into functional neighborhoods and microservices.
+
+=== 1. Separating Beep into functional neighborhoods and microservices
+
+In this subsection, I will give my proposal to separate the Beep application into functional neighborhoods and microservices.
+
+=== 2. How Beep can migrate to a microservices architecture: Breaking down the Monoliths
+
+Earlier, we saw an overview of Beep's current architecture, of the microservices architecture, and why Beep should consider migrating to a microservices architecture. +
+In the last section, we went over my proposal to separate Beep into functional neighborhoods and microservices. +
+In this section, I will give my answers to how the Beep team can break down the application into microservices.
+
+```
+
+Redefine all functionalities in the form:
+
+- “As [guest user / server admin / ...], I want to [create a channel / ...] so that [the user can self-assess his channel / ...]”
+- Organize these proposals into coherent functional neighborhoods
+- Propose an architecture diagram for the breakdown of your application into (functional) microservices.
+
+Help resources: 
+
+- https://microservices.io/articles/glossary#dora-metrics
+- https://martinfowler.com/bliki/BoundedContext.html
+- https://martinfowler.com/articles/break-monolith-into-microservices.html
+- https://leofvo.me/articles/microservices-for-the-win
+
+
+
+List / table to divide Beep into functional neighborhoods, then into services.
+See online: "how to break up a monolith". Citer les sources à chaque question.
+
+Schémas draw.io
+
+> Business capability is the expression or articulation of the capacity, materials, and expertise an organization needs to perform core functions.
+
+https://martinfowler.com/articles/break-monolith-into-microservices.html
+commencer avec 1 service simple, puis on conçoit/dessine des services en fonction des "capacités verticales", qui sont importantes au "business", et sujettes à des changements fréquents.
+> "These services should be large at first and preferably not dependent upon the remaining monolith. We should ensure that each step of migration represents an atomic improvement to the overall architecture."
+
+What?
+
+> "Before embarking, it is critical that everyone has a common understanding of a microservices ecosystem."
+
+> "Microservices ecosystem is a platform of services each encapsulating a business capability. A business capability represents what a business does in a particular domain to fulfill its objectives and responsibilities."
+
+> "The microservices ecosystem enforces an organizational structure of autonomous long standing teams, each responsible for one or multiple services. Contrary to general perception and ‘micro’ in microservices, the size of each service matters least and may vary depending on the operational maturity of the organization." (microservices = label, not a description)
+
+Why?
+
+> "The ones who embark on this journey have aspirations such as increasing the scale of operation, accelerating the pace of change and escaping the high cost of change. They want to grow their number of teams while enabling them to deliver value in parallel and independently of each other. They want to rapidly experiment with their business's core capabilities and deliver value faster. They also want to escape the high cost associated with making changes to their existing monolithic systems."
+
+> "Microservices have independent lifecycle. Developers can build, test and release each microservice independently."
+
+How?
+
+> "Deciding what capability to decouple when and how to migrate incrementally are some of the architectural challenges of decomposing a monolith to an ecosystem of microservices."
+
+https://microservices.io/refactoring/
+https://microservices.io/patterns/
+https://microservices.io/patterns/microservices.html
+https://microservices.io/patterns/decomposition/decompose-by-business-capability.html
+https://microservices.io/patterns/data/saga.html
+https://microservices.io/post/refactoring/2019/10/09/refactoring-to-microservices.html
+https://microservices.io/post/architecture/2024/08/27/architecting-microservices-for-fast-flow.html
+
+Gérer les migrations de bdd, les insertions de bdd dans une architecture microservices ? -> Trino !! (? Piste à explorer).
+https://trino.io/blog/2020/06/16/presto-summit-zuora.html PS: Trino s'appelait PrestoSQL avant.
+https://moduscreate.com/blog/microservices-databases-migrations/
+Paraît que marche encore mieux avec les trucs datalake, Hive, Iceberg...
+
+use kafka for inter-microservices communication?
+https://www.youtube.com/watch?v=Vz2DHAHn7OU
+
+Was told this is a good tutorial to understand async await (in rust at least, but maybe in general!): https://tokio.rs/tokio/tutorial
+```
+
+== II. Managing the authentication system with OIDC
+
+Lier les méthodes d'authentification aux comptes
+
+== III. Inter-service communication
+
+gRPC, etc, other binary protocols formats stuffs...
+
+In rust, with grpc? Contribute to Tonic's doc cuz it's shit, on build.rs setup?
+grpc cuz kube, google etc? Real motives. Why other are not better choices. USE REAL NUMBERS like estimations to say why they're not better!!! See kafka cours .md obsidian
+
+Quelle architecutre ? Saga pattern ? Kube avec apiserver et etcd centralisé ? Juste etcd centralisé ? Ou tout state et api distribué ? Ou juste API centralisé et state distribué ??
+Comment dissocier le storage ?
+Rajouter des questions sur le TAD ? Lel
+
+
+Poc : 2 services Rust. Chacun une BDD : postgres et l'autre mysql ou autre. Pour montrer que peut séparer ainsi les systèmes (mongodb, sqlite auraient pû être choisis aussi !)
+Serveur / user ? Ou un truc du genre. Ou channel / message.
+et un docker compose. deux dockerfile.
+
+Et même poc mais avec autre chose que grpc.
+
+3 dossiers, 1 .git. 1 dossier common / interfaces / whatever avec les .protos ou autre, 1 pr le premier service (cargo new) et un autre pr le second service (cargo new). Ou le faire en Go. Dépend de ce que veut poccer.
+
+Pourquoi Rust? Car <avantages du Rust> + désavantages du rust : plus gros binaires. Mais pas important dans le use case de beep, car (etc C +petit mais on fait pas de l'IOT et etc etc). Voir même bénéfique car bien plus petit que environnement typescript anyways car (etc. nodemodules frameworks node deno pnpm npm etc)
+Y-a-t-l un site qui recense les avantages et désavantages comparés du Rust? ptet! Ou un blog post idk. Le citer, dater sa lecture, et sortir la citation datée !
+
+Faire un joli schéma du poc.
+
+Schémas : UML ? Séquence, composants, useCase (avec le bonhomme) + des plus classiques, architecturaux à la mano non-standards compréhensibles sans app des règles ? Ou c'est kaka ? :X Je crois que c kk..
+
+
+== IV. Authorization system design and implementation
+
+permissions ultra atomiques
+regroupables
+héritables
+attachables à n'importe quelle ressource
+
+équipe contient gens
+équipe à des droits
+les gens ont des droits aussi
+les gens héritent les droits de l'équipe, mais sous forme d'un groupe de permissions qui porte le nom de cette équipe (comme ça paf on retire le gars de l'équipe -> ça màj les droits automatiquement - ou on ajoute un gars à l'équipe et paf il a ses droits màj)
+les gens peuvent override les droits (comment gérer ça ?) -> un "yes" par défaut override ? Un "no" par défaut override ? Ou si la perm / ensemble de perms est placé avant, elles override ? (= rôles discord)
+Ces groupes/ensembles de perms (=rôles beep) seraient donc attachés à une ressource, et héritables, et overridables.
+
+what does google cloud handle authorization, permissions and policies? Not only via IAM, but in itself, in organizations/projects/...
+IAM : __IDENTITY__!!!! and __access/authorization__!!! management!!!
+
+principle of least privilege
+
+Gérer les permissions par groupe de permissions
+
+Les permissions sont le truc le plus atomique, qu'on verra toujours partout ! Il sera handle partout : service(s) pour le gérer ! (et pas ds chaque service sinon kk hihih)
+
+
+Si jamais j'applique une modif des droits/perms alors que je peux pas, ou à l'inverse une modif ne s'applique pas (fait à la main en call api manuel, ou un service qui a foiré) du coup y'a un état transitoire à régler. Donc avoir un controller qui monitor ces états transitoires - ou plutôt monitor un etcd pour savoir si un truc est fait ou pas et s'il y a un truc à faire ? centralisé (comme dans kube), pas distribué. Mal ou bien ?
+Quelle architecture ? Les comparer sur le TAD!!
+
+
+> Note: The deny-all-ingress and allow-all-egress rules are also displayed, but you cannot check or uncheck them as they are implied. These two rules have a lower Priority (higher integers indicate lower priorities) so that the allow ICMP, custom, RDP and SSH rules are considered first.
+"PRIORITY"
+
+Service mesh
+
+https://en.wikipedia.org/wiki/Attribute-based_access_control#API_and_microservices_security
+
+
+Authorization / permissions services must be external from all other services, and they all need to use it. So... Why not integrate it directly inside of K8s ?
+Kubernetes service meshes have proxies. Service mesh proxies that stand in front of services and handle the filtering, other stuff, etc. A lot. And OPA (Open Policy Agent) stands with the proxy, and handles the authorization policies.
+https://www.openpolicyagent.org/docs/latest/
+https://kubernetes.io/docs/reference/access-authn-authz/admission-controllers/
+https://sysdig.com/blog/kubernetes-admission-controllers/
+
+Is this how it can be done? Can OPA be configured to handle Beep's authorization service, or do we have to write it ourselves, or is there a protocol or standard to implement, or a config to set and then something (OPA maybe) handles the authorization for us?
+
+FAIRE DU BENCHMARK GRPC (http/2 ?) VS HTTP REST ETC!!!!
+
+https://istio.io/
+
+Istio + OPA
+
+OpenTelemetry
+https://opentelemetry.io/docs/what-is-opentelemetry/
+Jaeger, OTLP (otel line protocol), Prometheus -> OpenTelemetry collector
+OTEL : très bien pour les traces. Attention Beta pour Rust. Metrics pas mal, logs bof. "Profiles" : juste annoncé.
+"Zero code instrumentations" pour Go, Python, JS, Java ! Signifie + facile pr récup les logs (quasi pas de modifs à faire, se branche au runtime etc. Je peux aussi récupérer des données spécifiques à mon application)
+
+https://prometheus.io/docs/introduction/overview/
+
+Elasticsearch pr données à bcp de cardinalité
+Sinon Loki
+(entendu à conf cncf grafana sur OTEL)
+
+https://opentelemetry.io/docs/specs/otlp/
+
+== V. Tracing logs and queries
+
+handling traces in the new distributed architecture
+traces, logs, queries, metrics, observability, monitoring
+
+snowflake to sort chronologically and etc
+
+== VI. Setting up a production ready system
+
+cia triad
+principle of privilege (including in service mesh)
+
+Migrate infrastructure to a (or 3???) proxmox cluster. With a high-availability Kube on top. Separate etcd or not? Postgres as etcd or not?
+
+== VII. Infrastructure security
+design, implementation, automation and handling
+
+cia triad
+principle of privilege (including in service mesh)
+
+== VIII. Search engine design and implementation
+
+== IX. Managing platform security issues
+
+== X. Integrating UI applications
+
+microfrontends
