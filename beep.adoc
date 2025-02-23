@@ -4,7 +4,6 @@ Théo Tchilinguirian <theo.tchilinguirian@etu.umontpellier.fr>
 :toc:
 
 Under every question:
-- Add a glossary of terms at the start of the question
 - Use What Why How to distribute the text ideas & knowledge, if and when it makes sense. You may need to break it down further.
 - Visuals (schema, graphs) (at least one)
 - Make a PoC where asked, and when relevant. It must provide a real example of the implementation, and useful results such as performance metrics, usability, etc.
@@ -35,7 +34,9 @@ Non. Que en rust ;3. heh. C'est calculé tikoti :)
 
 In alphabetical order.
 
-== 0. The What and Why of Beep and the microservices architecture
+"The purpose of a glossary is to provide definitions for words or phrases that may be unfamiliar to the reader, or that have a specialized or technical meaning within the context of the document."
+
+== The What and Why of Beep and the microservices architecture
 
 In this section, I will provide a brief overview of Beep's current architecture, what a microservices architecture is, and why Beep should consider migrating to a microservices architecture.
 
@@ -46,13 +47,15 @@ In this section, I will provide a brief overview of Beep's current architecture,
 
 Beep has a complex monolithic architecture. The following is an overview of its main components.
 
-DrawIO
+DrawIO. Represented in the schema:
 
 - Monolithic frontend
 - Monolithic backend
+- Database
 - Monitoring/observability services/stack
 - Surrounding Kubernetes
 - Surrounding VM/promox cluster? (the VM?) and cite a plan to migrate the ifnrastructure to a proxmox cluster, talk about later in Q.6 (one cluster, not three... ??? Think about later)
+- Namespaces (they'd help to separate the services into business stuff/neighbourhoods/whatever these namespaces were made for)
 
 Explications
 
