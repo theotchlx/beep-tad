@@ -26,9 +26,7 @@ You are forbidden to propose or consider the following technologies:
 - CQRS
 - Event Sourcing
 
-pocs en rust ? :3
-En rust et en go et en elixir!! :3
-Non. Que en rust ;3. heh. C'est calculé tikoti :)
+pocs, QUE en Rust.
 
 == Glossary
 
@@ -61,7 +59,44 @@ Explications
 
 === Microservices architecture explained
 
+In this section, we will focus on a short explanation of what a microservices architecture is. In later section, we will go through why Beep should consider migrating to a microservices architecture, followed by how to do it.
+
 A microservices architecture is an architectural style that structures an application as a collection of services that
+
+"service" = unité atomique qui représente littéralement un *service*. Une fonction. Un service rendu de logique ou quoi. Une unité fonctionnelle. Implémente une logique business/fonctionnelle. Équipe dédie, de plus petite taille. Opérable de manière indépendant. Critères de définition d'un microservice, pas la taille mais le service rendu : taille = subjective. Utilité (faire *une* chose) : objectif. Leur cycle de vie est différent aussi. Chacun vie indépendemment.
+Genre c'est pas micro en taille, c'est micro en service rendu.
+
+Pas toujours le bon pattern !! (Quand ? Linux ? ...)
+-> When to use ? Scalability, fine grained control on blablabla (but more complex to manage, etc)
+
+-> Advantages, disadvantages, objective stuff, etc.
+
+
+Monitorer monolithe : ez.
+Monitorer microservices : monitorer chacun d'entre eux ET les comms entre eux, etc !!
+
+à GCP, pour la comm entre CHAQUE service, y'a un système d'AUTHENT puis d'authorization !!! Pas juste authorization (0 trust approach). Est-ce que ça suffit d'avoir du chiffrement entre les services, ou faut-il un système d'auth complet ?
+
+Faut des trucs en plus pour les microservices :
+Circuit breaking pattern. Important pour les microservices pour pas que ça call en continue avec les retry réseau. Retry exponentiel (1s, 10s, 1mn... et que ça bloque tout le service) -> on arrête d'appeler le service (on ouvre le circuit) et pas mécanisme de fallback (réponse préfaite en cas de pb, genre "ah dsl jpp afficher ça en fait" alors que ça chargeait) -> En gros gestion d'erreur réseau en fait. Pour éviter surcharge réseau + jamais de réponse.
+Aussi circuit breaking, fault tolerance, latency... Problématiques de microservices entre eux.
+-> Quota (peut faire 1M d'appels à service X sur un mois, etc) + Rate limiting (même chose mais sur une période très courte, genre secondes ou 1mn).
+
+Et logging, metrics (métriques techniques, CPU, etc. Ou plus fonctionnelles rédigées par le développeur genre nb de requêtes, etc.), distributed tracings (suivre l'appel de son entrée et toutes ses transitations de svc en svc. Permet d'identifier dans quel svc y'a des pbs quand y'a un pb sur la requete, genre latence ou erreurs) et topology.
+
+Security, observability, network resilience (genre trucs de circuit breaking etc), policies. En sidecar containers (envoy??) en PLUS du service logique !! dans le pod. Donc un container app et un container proxy qui a les 4 trucs secu, obs, netw resi et poli. Qui intercepte en premier tous les calls puis retransmet.
+
+Inscrire les services et leurs endpoints dans une bibliothèque de services, un "service discovery". Pour gérer leur scalabilité et des trucs.
+
+Dans un service mesh : Il y a un control plane : api/interface pour donner des instructions pour configurer le control plane, ses proxy qui vont appliquer les configs (d'auth, de traffic management, de sécu réseau type ntls?mtls? c'était mTLS etc. Certaines traitées en inbound ou outbound du proxy), etc;
+Pour les microservices, le service mesh permet de gérer facilement le traffic entrant, sortant et intérieur aux services (traffic splitting, canary, blue-green, mirroring...), sécuriser l'accès et comms (mTLS etc.), et visibilité complète sur etc.
+
+mTLS avec Istio ou HCP Consul
+
+Tout ça est implémenté dans Istio !!!!
+
+https://istio.io/latest/docs/tasks/
+Exemples de comment mettre en oeuvre ces fonctionnalités !!!!!!!!!!
 
 === Why Beep should consider migrating to a microservices architecture
 
@@ -74,11 +109,163 @@ Avantages et inconvénients. Rester objectif. Donner des nombres. Dev experience
 
 The following concerns my proposal to separate the Beep application into functional neighborhoods and microservices.
 
-=== 1. Separating Beep into functional neighborhoods and microservices
+=== 1. Identifying user stories
+
+A user story is an informal, natural language description of feature from the perspective of the end user.It typically follows the format: "As a [type of user], I want [some goal] so that [some reason]".
+
+==== User management 
+
+In this section, I will identify user stories related to user management in Beep.p ,efrp,erg
+
+[cols="1,1,1"]
+|===
+|As a |I want to |So that
+
+|Guest
+|Create an account
+|I can use the features of Beep.
+
+|User
+|Get information about my account
+|I can review my account information.
+
+|User
+|Update my account information
+|I can update my ways to recover my account, my authentication mechanisms, language and other information relative to my account.
+
+|User
+|Delete my account
+|I can remove my account information from the apps and servers.
+
+|User
+|Create a server 
+|I can grow a community around it.
+
+|User
+|Join existing servers
+|I can become part of public and private communities.
+
+|Authorized user
+|Configure my server
+|I can manage the server settings, appearance and user roles.
+
+|Authorized user
+|Create channels in my server
+|users that are members of my server can interact with each other.
+
+|User
+|Send messages
+|I can interact with other users in channels inside servers or in private messages.
+
+|User
+|Mention other users in messages
+|I can notify other users.
+
+|User
+|Share files
+|I can share files with other users.
+
+|User
+|Share my voice, video and screen with other users
+|I can communicate with other users with real-time voice, video and screen sharing.
+
+
+
+|User
+|See markdown styled messages, interact with links that generate embeds, get information on connected users
+|Know the user
+
+|Admin
+|Promote a user to Content Creator
+|Give the right to create content to a user
+
+|Admin
+|Promote a user to Assessment Creator
+|Give the right to create test to a user
+
+|Admin
+|Promote a user to Admin
+|Give the right to manage the app to a user
+
+|Admin
+|Create a new user
+|Add a user to the app
+
+|Admin
+|Get all the information about a user
+|Facilitate moderation
+
+|Admin
+|Update the information of a user
+|Facilitate moderation
+
+|Admin
+|Delete a user
+|Facilitate moderation
+
+|===
+
+**POUR LE DIAGRAMME DES MICROSERVICES!!!!!!!!!:** https://stackoverflow.com/a/60084889
+Et avant, pour le diagramme des usages, celui avec les bonhommes
+Et un activity diagram pour chaque user story/=le service rendu par chaque microservice (=authentication, etc.). Ou un sequence diagram? J'ai encore du mal à voir la différence entre les deux.
+
+Decompose services by business capabilities : reflect organization behavior. -> component diagram.
+En partant du domaine (communications temps réel), on va créer les différents services. Attention aux services qui communiquent beaucoup entre eux : **combiner les services**.
+
+Pattern de DDDevelopment : Bounded Contexts. = Separate by subdomains. I thnik.
+https://martinfowler.com/bliki/BoundedContext.html
+
+Obstacles à la décomposition : network latency, data inconsistency/interfaces, god classes (fait tout, dure à décomposer, big) and reduced availability. Énormément de contextes sont impactés.
+
+Thématiques 12 factors !!!
+"The philosophy of Twelve-Factor turned out to be surprisingly timeless. More than a decade later, people still find its insights valuable, and it's often cited as a solid set of best practices for application development. But while the concepts remain relevant, many of the details have started to show their age."
+Domain-Driven Development. Application est construite sous forme d'abstractions au dessus de notre modèle.
+
+https://leofvo.me/articles/microservices-for-the-win
+
+Architecture bien définie avec le DDD, bounded contexts. Architecture (enables org & proc), organization (enables proc) et process de développement => rapid, frequent & reliable delivery of software.
+
+**1 service = 1 responsabilité. Un service rendu. N'est responsable que d'une chose à faire.**
+
+Guidelines :
+Dur à faire mais génial : signifie une bonne séparation des services : c'est le **Common Closure Pattern**.
+En gros, une règle business n'affecte que 1 microservice, pas deux ou plus (si cette règle évolue il faudrait modifier plusieurs services...)
+Disons que j'ai à modifier le mode de livraison : que ça ne soit fait que dans un seul service !!!
+
+**Open Closed Princple** : on veut pouvoir intégrer facilement d'autres contrats d'API sans avoir à changer le coeur de fonctionnalités !!! -> Réelle abstraction. Logique non liée aux contrats d'APIs. => Des interfaces/contrats d'API génériques (comme un filesystem : create, read, update, delete, open d'un objet générique (fichier) ET NON PAS un type de fichier spécifique. C'est toujours que des fichiers ultra génériques avec leurs mêmes attributs communs : nom, taille, permissions, etc.)
+
+Event-driven architecture, aggregates.
+Si tu veux récup touuut l'historique d'un truc pour calculer le produit final (ensemble de transactions pour la balance de mon compte en banque) -> un aggrégat, recalculé de temps en temps (pas à chaque transaction car serait lourd sur le systèmes, triggers bdd) stocke le total pour éviter d'avoir à le recalculer tlt.
+
+Data access / database transactions in microservices. Saga pattern ? Another service that knows which services to go to to answer this query to give it back to the asking service?
+
+repository : expose un contrat pour la bdd. Appelé par les autres composants du service. Reprend l'open closed principle. Classe qui permet d'accéder à tes données.
+
+http://butunclebob.com/ArticleS.UncleBob.PrinciplesOfOod
+
+Functional requirements: US, functions.
+Quality of a service: scalable, reliable, secure, maintainable, testable, etc.
+=> Implementable functionnalities are dependent on the quality of the architecture design. Future-proof design, stays easy to update with features, good abstractions (see how good filesystems are :3)
+
+Liskov principle, ouvert en extension fermé en modification (en gros les bonnes abstractions type filesystem)
+
+Je veux utiliser une autre bdd. Ou en utiliser plusieurs.
+Hexagonal architecture. Des adaptateurs (que l'on branche sur un port) qui permettent de réaliser des opérations qui soient indépendantes de ce qu'il y a derrière (mongodb, postgres, filesystem...!! C'est dans l'adaptateur qu'on définit ça)
+
+Communication. Message-driven architecture.
+Comm synchrone : http de l'un à l'autre, si l'autre tombe, la comm passe pas.
+Comm asynchrone : Envoie de mail. On l'envoie. il sera stocké et reçu à un moment dès que possible quand le service de réception/envoi sera good.
+
+**API composition pattern for microservices :** un service a la connaissance des autres services, connaît les contrats API qui permettent de les faire parler entre eux : fait de la composition.
+Tu as Cours et Etudiant : le machin map les deux. Et en plus peut enrichir la donnée ! Avec dans quel service elle est passée, etc. I thnik.
+
+=== 2. Proposal of separations into functional neighborhoods
+
+via business capabilities of services to separate into.
 
 In this subsection, I will give my proposal to separate the Beep application into functional neighborhoods and microservices.
 
-=== 2. How Beep can migrate to a microservices architecture: Breaking down the Monoliths
+=== 3. How Beep can migrate to a microservices architecture: Breaking down the Monoliths
 
 Earlier, we saw an overview of Beep's current architecture, of the microservices architecture, and why Beep should consider migrating to a microservices architecture. +
 In the last section, we went over my proposal to separate Beep into functional neighborhoods and microservices. +
@@ -165,6 +352,8 @@ OIDC (surcouche ?): https://www.youtube.com/watch?v=t18YB3xDfXI
 
 == III. Inter-service communication
 
+The following concerns my proposal of design and implementations for the communication between the microservices of Beep.
+
 gRPC, etc, other binary protocols formats stuffs...
 
 In rust, with grpc? Contribute to Tonic's doc cuz it's shit, on build.rs setup?
@@ -175,7 +364,7 @@ Comment dissocier le storage ?
 Rajouter des questions sur le TAD ? Lel
 
 
-Poc : 2 services Rust. Chacun une BDD : postgres et l'autre mysql ou autre. Pour montrer que peut séparer ainsi les systèmes (mongodb, sqlite auraient pû être choisis aussi !)
+Poc : 2 services Rust. Chacun une BDD : postgres et l'autre mysql ou autre. Pour montrer que peut séparer ainsi les systèmes (mongodb, sqlite auraient pû être choisis aussi !) scylladb, etc.
 Serveur / user ? Ou un truc du genre. Ou channel / message.
 et un docker compose. deux dockerfile.
 
@@ -190,6 +379,33 @@ Faire un joli schéma du poc.
 
 Schémas : UML ? Séquence, composants, useCase (avec le bonhomme) + des plus classiques, architecturaux à la mano non-standards compréhensibles sans app des règles ? Ou c'est kaka ? :X Je crois que c kk..
 
+gRPC/Protobuf / Avro / Apache thrift (RPC), ultra modulaire. Par contre prise en main pas facile... Configs, etc. Mais fine-tunable.
+Avro plus utilisé avec Kafka. Décodable du binaire au json! Tu as deux fichiers envoyés : metadonnées (défini le type, le champ que ça remplit etc). Et l'autre c'est de la donnée pure.
+gRPC l'ordre des champs compte. gRPC envoie aussi le schéma supposément vu que gRPCurl peut curl comme ça. Il me semble.
+gRPC plein de styles d'intéraction, stream bidirectionnel, etc.
+
+Service registries pour qu'ils sachent qu'il y a eu une modif d'api ou quoi.
+
+Sozu vs nginx, vs sozu? benchmarking!! (Dockerfiles)
+
+=== Communication framework proposal
+
+In this section, I will propose a communication framework for Beep's microservices.
+
+In this proof of concept, I implement a communication framework between mock services. I used gRPC as the communication framework.
+
+gRPC is... (what)
+
+I chose gRPC because...
+Some numbers... (why)
+Compared to....
+
+I implemented using Tonic... (how)
+
+https://github.com/hyperium/tonic/blob/master/examples/helloworld-tutorial.md
+https://github.com/theotchlx/inter-services-communication
+
+on vm in proxmox.
 
 == IV. Authorization system design and implementation
 
@@ -241,6 +457,10 @@ https://istio.io/
 
 Istio + OPA
 
+Istio vs linkerd
+
+Keycloak (and why not authentik)
+
 OpenTelemetry
 https://opentelemetry.io/docs/what-is-opentelemetry/
 Jaeger, OTLP (otel line protocol), Prometheus -> OpenTelemetry collector
@@ -259,6 +479,15 @@ https://cloud.google.com/iam/docs/roles-overview
 
 https://medium.com/@sadoksmine8/understanding-identity-and-access-management-iam-in-gcp-a-detailed-exploration-57030ec37609
 
+Permify : authorization for microservices. + patterns !!
+https://play.permify.com
+Ory / Krong microservices
+OPA
+Google Zanzibar
+https://www.youtube.com/watch?v=5GG-VUvruzE
+
+Chaos mesh
+
 == V. Tracing logs and queries
 
 handling traces in the new distributed architecture
@@ -272,6 +501,7 @@ cia triad
 principle of privilege (including in service mesh)
 
 Migrate infrastructure to a (or 3???) proxmox cluster. With a high-availability Kube on top. Separate etcd or not? Postgres as etcd or not?
+Proxmox vs apache cloudstack vs openstack.
 
 Apache Mesos: Program against your datacenter like it’s a single pool of resources. Kubernetes pour l'infra ou qq chose comme ça.
 
