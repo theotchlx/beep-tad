@@ -119,55 +119,67 @@ In this section, I will identify user stories related to user management in Beep
 
 [cols="1,1,1"]
 |===
-|As a |I want to |So that
+|As a |I want to |So that I can
 
 |Guest
 |Create an account
-|I can use the features of Beep.
+|Use the features of Beep.
 
 |User
 |Get information about my account
-|I can review my account information.
+|Review my account information.
 
 |User
 |Update my account information
-|I can update my ways to recover my account, my authentication mechanisms, language and other information relative to my account.
+|Modify my personal information, recovery mechanisms, my authentication mechanisms, language and other information relative to my account.
 
 |User
 |Delete my account
-|I can remove my account information from the apps and servers.
+|Remove my account information from the apps and servers.
 
 |User
 |Create a server 
-|I can grow a community around it.
+|Grow a community around it.
 
 |User
 |Join existing servers
-|I can become part of public and private communities.
+|Become a member of public and private communities.
 
-|Authorized user
+|User
+|Explore public servers
+|Become a member of the public communities of my choosing.
+
+|User
+|Join private servers on invitation
+|Become a member of private communities I'm allowed to join.
+
+|User
+|Have quick access to the servers I'm a part of
+|Easily switch between communities and user groups to interact with.
+
+|Authorized member
 |Configure my server
-|I can manage the server settings, appearance and user roles.
+|Manage the server settings, appearance and user roles.
 
-|Authorized user
+|Authorized member
 |Create channels in my server
-|users that are members of my server can interact with each other.
+|Users that are members of my server can interact with each other.
 
 |User
 |Send messages
-|I can interact with other users in channels inside servers or in private messages.
+|Interact with other users in channels inside servers or in private messages.
 
 |User
 |Mention other users in messages
-|I can notify other users.
+|Notify other users.
 
 |User
 |Share files
-|I can share files with other users.
+|Share files with other users.
 
 |User
 |Share my voice, video and screen with other users
-|I can communicate with other users with real-time voice, video and screen sharing.
+|Communicate with other users with real-time voice, video and screen sharing.
 
 
 
@@ -204,6 +216,9 @@ In this section, I will identify user stories related to user management in Beep
 |Facilitate moderation
 
 |===
+
+From these user stories, we can regroup them into functional neighborhoods/business capabilities/capabilites and identify the following services:
+
 
 **POUR LE DIAGRAMME DES MICROSERVICES!!!!!!!!!:** https://stackoverflow.com/a/60084889
 Et avant, pour le diagramme des usages, celui avec les bonhommes
@@ -340,6 +355,9 @@ https://stackoverflow.com/a/60463179
 
 ```
 
+when is microservice not a good pattern
+https://dzone.com/articles/10-microservices-anti-patterns-you-need-to-avoid
+
 == II. Managing the authentication system with OIDC
 
 Lier les méthodes d'authentification aux comptes
@@ -355,6 +373,18 @@ OIDC (surcouche ?): https://www.youtube.com/watch?v=t18YB3xDfXI
 The following concerns my proposal of design and implementations for the communication between the microservices of Beep.
 
 gRPC, etc, other binary protocols formats stuffs...
+
+GraphQL!!! Format binaire underlying est interchangeable !!
+Par contre faut build soit-même les APIs? à voir. Pas grave en vrai. Mais faut les modifier soi-même ??
+
+Si je comprends p'tet, avec graphql tu renvoies masse de données et tu filtres ce groc bloc côté client. Donc faut modif ton code client généré. Et faire bien attention à l'aspect sécurité... ? À tester si c'est bien ça la différence. Noter les différences. Pour plus tard les comparer.
+Ou graphql pour server-client final et grpc pour service - service ?
+When to use gRPC or graphql? Do they even compare? If so, how?
+GraphQL for microservices?
+"[GraphQL] permet notamment aux consommateurs de l’API de demander seulement les champs nécessaires à l’inverse d’une API REST qui expose un schéma prédéfini."
+https://affluences.com/blog/optimiser-architecture-micro-services/
+Ah oui en effet niveau sécurité ça a l'air dur à gérer, si ton service toi exposer tout à tous les autres services et que c'est à eux de choisir... Ou à l'inverse... ??
+J'ai juste l'impression que ça ne suit PAS DU TOUT le principe de "smart data struct for simple code vs dumb data structure for complex code". Donc pour l'instant c'est un non. Le code serait dur à maintenir/scaler, et dur à sécuriser, il me semble. Et c'est aussi deux retours que j'ai lu. Un peu biaisé, mais aussi en partie logique. !! => Answer to "Why [gRPC and] not GraphQL?"
 
 In rust, with grpc? Contribute to Tonic's doc cuz it's shit, on build.rs setup?
 grpc cuz kube, google etc? Real motives. Why other are not better choices. USE REAL NUMBERS like estimations to say why they're not better!!! See kafka cours .md obsidian
@@ -488,12 +518,23 @@ https://www.youtube.com/watch?v=5GG-VUvruzE
 
 Chaos mesh
 
+Oso
+https://www.osohq.com/
+https://github.com/osohq/oso
+Mieux que OPA supposément. Niveau config et architecture du truc. Tester, poccer, prouver, comparer.
+
+oso vs opa
+
 == V. Tracing logs and queries
 
 handling traces in the new distributed architecture
 traces, logs, queries, metrics, observability, monitoring
 
 snowflake to sort chronologically and etc
+
+how does tracing work microservices
+
+https://www.youtube.com/watch?v=XYvQHjWJJTE
 
 == VI. Setting up a production ready system
 
