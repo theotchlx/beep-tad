@@ -1,7 +1,10 @@
 = AsciiDoc Article Title
 Théo Tchilinguirian <theo.tchilinguirian@etu.umontpellier.fr>
 14.02.2025
+//:doctype: book ? Article?
 :toc:
+//:sectnums:
+//:partnums: These two are for auto-generated chapter/section numbers! Can be configured I believe.
 
 **My guide to this TAD**
 
@@ -99,17 +102,20 @@ In the following sections, I will provide a brief overview of Beep's current arc
 
 Beep has a complex monolithic architecture. The following is an overview of its main components.
 
-DrawIO. Represented in the schema:
-
-- Monolithic frontend
-- Monolithic backend
-- Database
-- Monitoring/observability services/stack
-- Surrounding Kubernetes
-- Surrounding VM/promox cluster? (the VM?) and cite a plan to migrate the ifnrastructure to a proxmox cluster, talk about later in Q.6 (one cluster, not three... ??? Think about later)
-- Namespaces (they'd help to separate the services into business stuff/neighbourhoods/whatever these namespaces were made for)
+DrawIO components and interactions schema.
 
 Explications
+
+The below image is a rudimentary overview of Beep's current architecture, as of March 2025.
+
+.Rudimentary overview of Beep's current architecture, as of March 2025. Made with Excalidraw.
+image::images/rudimentary-overview-current/rudimentary-overview-current.svg[Drawing of Beep's architecture showing the VM, K3s cluster, namespaces and deployments, nested inside each others, with arbitrary sizes and colours.]
+
+The purpose of this schema is for you to have a quick understanding of the curent the components and their interactions. Shapes and sizes have no particular meaning.
+
+Currently, Beep is deployed as a set of monolithic services and auxiliary tools (such as observability tools, registries, etc.) replicated on a single-node K3s cluster. The control plane is also part of this node. The K3s Kubernetes distribution is configured (by default, as is here) to use an embedded SQLite as its data store; and Flannel as a layer 3 network fabric/CNI plugin.
+
+The frontend and backend are monolithic, and the database is centralized. The monitoring and observability services are also centralized. The whole system is deployed on Kubernetes, and the infrastructure is hosted on a VM or a proxmox cluster. Namespaces are used to separate the services into business capabilities or functionnalities neighborhoods.
 
 === Microservices architecture explained
 
@@ -170,24 +176,25 @@ The following sections concerns my proposal to separate the Beep application int
 
 Before we can separate Beep into functional neighborhoods and microservices, we need to have an idea of how Beep's functionnalities can be grouped into autonomous business units/ functionnality neighboroods. +
 
-1. For that purpose, we will first identify the user stories that define how people interface with Beep's functionnalities. +
-2. Then, building on that, we will classify the identified functionalities of Beep into logical groups, or business capabilities/functionnalities neighborhoods. +
+1. For that purpose, we will first identify the user stories that define how people interface with Beep's functionnalities.
+2. Then, building on that, we will classify the identified functionalities of Beep into logical groups, or business capabilities/functionnalities neighborhoods.
 3. Lastly, from these logical groupings of functionalities, we will propose a separation of Beep into functional neighborhoods and microservices.
 
 === 1. Identifying user stories
 
-In this section, I will identify user stories in Beep.
+In this section, I will identify the user stories that make up Beep's functionalities.
 
 [TIP]
 A user story is an informal, natural language description of feature from the perspective of the end user. It typically follows the format: "As a [type of user], I want [some goal] so that [some reason]".
 
-==== Current user stories in Beep
+==== User stories currently in Beep
 
 In the following table, the following subjects are identified:
-- Guest: a user who does not have an account on Beep.
-- User: a user who has an account on Beep.
-- Member: a user who is part of a server on Beep.
-- Authorized member: a user who is an authorized member of a server on Beep.
+
+- Guest: a user who does not have an account on Beep, or a logged-out user.
+- User: a user who has an account on Beep, and is logged-in.
+- Member: a user who is part of, and connected on a server on Beep.
+- Authorized member: a user who is a member of a server on Beep, and has special permissions.
 - Beep admin: a user who is an administrator of Beep, part of the Beep team.
 
 [cols="1,1,2"]
@@ -197,14 +204,6 @@ In the following table, the following subjects are identified:
 |Guest
 |Create an account
 |Use the features of Beep.
-
-|User
-|Get information about my account
-|Review my account information.
-
-|User
-|Update my account information
-|Modify my personal information, recovery mechanisms, my authentication mechanisms, language and other information relative to my account.
 
 |User
 |Create a server 
@@ -227,12 +226,24 @@ In the following table, the following subjects are identified:
 |Easily switch between communities and user groups to interact with.
 
 |Member
-|Get more information about other users in server I'm a part of
+|Get information about my account
+|Review my account information.
+
+|Member
+|Update my account information
+|Modify my personal information, recovery mechanisms, my authentication mechanisms, language and other information relative to my account.
+
+|Member
+|Get more information about other users in a server I'm a member of
 |Better interact with them, and send them friend requests to chat in private messages.
 
 |Authorized member
 |Configure a server I'm a member of
 |Manage the server settings, appearance and user roles.
+
+|Authorized member
+|Generate a time-limited invitation link to a server I'm a member of
+|Invite other users to join the server.
 
 |Authorized member
 |Create and manage roles in a server I'm a member of
@@ -266,14 +277,40 @@ In the following table, the following subjects are identified:
 |Delete my account
 |Remove my account information from the apps and servers.
 
+|User
+|Get information about my account
+|Review my account information.
+
+|User
+|Update my account information
+|Modify my personal information, recovery mechanisms, my authentication mechanisms, language and other information relative to my account.
+
 |Beep admin
 |Have full control over public servers
 |Ensure Beep's terms of service are respected across publicly accessible servers.
 
 |===
 
+==== Use case diagram of Beep's current user stories
+
+These user stories can be formally represented using a UML use case diagram. Below is the use case diagram describing Beep's current user stories, with the end user's different roles as actors, and the user stories as use cases.
+
+The below image is a rudimentary overview of Beep's current architecture, as of March 2025.AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+
+.Rudimentary overview of Beep's current architecture, as of March 2025. Made with Excalidraw.
+image::images/use-case-current/beep-uml-use-case-diagram-trans.svg[Drawing of Beep's architecture showing the VM, K3s cluster, namespaces and deployments, nested inside each others, with arbitrary sizes and colours.]
+
+The purpose of this schema is for you to have a quick understanding of the curent the components and their interactions. Shapes and sizes have no particular meaning.AAAAAAAAAAAAAAAA
+
+==== Separating Beep's functionalities into functional neighborhoods
+
 From these user stories, we can regroup them into functional neighborhoods/business capabilities/capabilites and identify the following services:
 
+==== Component diagram proposal for separating Beep into microservices
+
+These functional neighborhoods/business capabilities/... can be formally represented using a UML components diagram. Below is the components diagram describing my proposal for Beep's separation into microservices.
+
+(diagram)
 
 **POUR LE DIAGRAMME DES MICROSERVICES!!!!!!!!!:** https://stackoverflow.com/a/60084889
 Et avant, pour le diagramme des usages, celui avec les bonhommes
@@ -341,8 +378,6 @@ Earlier, we saw an overview of Beep's current architecture, of the microservices
 In the last section, we went over my proposal to separate Beep into functional neighborhoods and microservices. +
 In this section, I will give my answers to how the Beep team can break down the application into microservices.
 
-```
-
 Redefine all functionalities in the form:
 
 - “As [guest user / server admin / ...], I want to [create a channel / ...] so that [the user can self-assess his channel / ...]”
@@ -407,8 +442,6 @@ Was told this is a good tutorial to understand async await (in rust at least, bu
 https://stackoverflow.blog/2020/03/02/best-practices-for-rest-api-design/
 https://stackoverflow.com/questions/60457740/rest-endpoint-for-complex-actions
 https://stackoverflow.com/a/60463179
-
-```
 
 when is microservice not a good pattern
 https://dzone.com/articles/10-microservices-anti-patterns-you-need-to-avoid
@@ -583,6 +616,13 @@ oso vs opa
 https://github.com/Permify
 Permify !!
 
+https://getsops.io/
+SOPS: encrypts data client-side(?verify), + sealedsecrets encrypts server-side.
+https://getsops.io/docs/
+It's CNCF-sandboxed. But I think it's a bit too much for now, and also this particular software doesn't seem extremely well defined/developed yet? See others.
+But it's not really a current concern in Beep. I think. I dunno!
+https://github.com/getsops/sops
+
 == V. Tracing logs and queries
 
 handling traces in the new distributed architecture
@@ -609,6 +649,15 @@ Apache Mesos: Program against your datacenter like it’s a single pool of resou
 https://www.baeldung.com/apache-mesos
 https://mesos.apache.org/documentation/latest/
 https://agenda.infn.it/event/29701/sessions/21750/attachments/88134/117909/Apache%20Mesos.pdf
+
+CNI plugins: Flannel, cilium, calico, ... There are more good ones!
+To read to understand stuff:
+https://mvallim.github.io/kubernetes-under-the-hood/documentation/kube-flannel.html
+https://kubernetes.io/docs/concepts/extend-kubernetes/compute-storage-net/network-plugins/
+https://kubernetes.io/docs/concepts/cluster-administration/networking/
+Flannel has basic features when compared to cilium/calico. Supposedly. I haven't tested it yet.
+
+MinIO vs seaweedfs vs deuxfleurs's garage
 
 == VII. Infrastructure security
 design, implementation, automation and handling
