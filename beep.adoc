@@ -98,6 +98,9 @@ Tout ça est implémenté dans Istio !!!!
 https://istio.io/latest/docs/tasks/
 Exemples de comment mettre en oeuvre ces fonctionnalités !!!!!!!!!!
 
+https://www.cloudflare.com/learning/access-management/what-is-mutual-tls/
+https://www.youtube.com/watch?v=uWmZZyaHFEY
+
 === Why Beep should consider migrating to a microservices architecture
 
 In this section, I will explain why the Beep team should consider migrating to a microservices architecture.
@@ -117,7 +120,7 @@ A user story is an informal, natural language description of feature from the pe
 
 In this section, I will identify user stories related to user management in Beep.p ,efrp,erg
 
-[cols="1,1,1"]
+[cols="1,1,2"]
 |===
 |As a |I want to |So that I can
 
@@ -132,10 +135,6 @@ In this section, I will identify user stories related to user management in Beep
 |User
 |Update my account information
 |Modify my personal information, recovery mechanisms, my authentication mechanisms, language and other information relative to my account.
-
-|User
-|Delete my account
-|Remove my account information from the apps and servers.
 
 |User
 |Create a server 
@@ -158,15 +157,19 @@ In this section, I will identify user stories related to user management in Beep
 |Easily switch between communities and user groups to interact with.
 
 |Authorized member
-|Configure my server
+|Configure a server I'm a member of
 |Manage the server settings, appearance and user roles.
 
 |Authorized member
-|Create channels in my server
-|Users that are members of my server can interact with each other.
+|Create and manage roles in a server I'm a member of
+|Allow or restrain other users to do specific actions or see specific channels
+
+|Authorized member
+|Create and manage channels and categories in a server I'm a member of
+|Group discussions by topics or themes, manage the visibility of these discussions, and pin messages.
 
 |User
-|Send messages
+|Send messages, including markdown text and emojis, files and images, links with interactive previews
 |Interact with other users in channels inside servers or in private messages.
 
 |User
@@ -174,46 +177,24 @@ In this section, I will identify user stories related to user management in Beep
 |Notify other users.
 
 |User
-|Share files
-|Share files with other users.
-
-|User
 |Share my voice, video and screen with other users
 |Communicate with other users with real-time voice, video and screen sharing.
 
+|===
 
+===== Important features that are not yet part of Beep
+
+[cols="1,1,2"]
+|===
+|As a |I want to |So that I can
 
 |User
-|See markdown styled messages, interact with links that generate embeds, get information on connected users
-|Know the user
+|Delete my account
+|Remove my account information from the apps and servers.
 
-|Admin
-|Promote a user to Content Creator
-|Give the right to create content to a user
-
-|Admin
-|Promote a user to Assessment Creator
-|Give the right to create test to a user
-
-|Admin
-|Promote a user to Admin
-|Give the right to manage the app to a user
-
-|Admin
-|Create a new user
-|Add a user to the app
-
-|Admin
-|Get all the information about a user
-|Facilitate moderation
-
-|Admin
-|Update the information of a user
-|Facilitate moderation
-
-|Admin
-|Delete a user
-|Facilitate moderation
+|Beep admin
+|Have full control over public servers
+|Ensure Beep's terms of service are respected across publicly accessible servers.
 
 |===
 
@@ -524,6 +505,9 @@ https://github.com/osohq/oso
 Mieux que OPA supposément. Niveau config et architecture du truc. Tester, poccer, prouver, comparer.
 
 oso vs opa
+
+https://github.com/Permify
+Permify !!
 
 == V. Tracing logs and queries
 
