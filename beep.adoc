@@ -3,12 +3,56 @@ Théo Tchilinguirian <theo.tchilinguirian@etu.umontpellier.fr>
 14.02.2025
 :toc:
 
-Under every question:
+**My guide to this TAD**
+
+====
+Chapters (==)
+"In the following sections, I/we will..."
+"The following sections concern..."
+
+Sections (===)
+"In this section, I/we will..."
+"The following section concerns..."
+====
+
+====
+**Pronouns**
+
+TODO: choose the right pronoun to use between  "I" and "we" for the whole document. +
+https://www.writing-skills.com/knowledge-hub/business-report-writing/can-you-use-i-we-in-report +
+Maybe mix the two. "I" for when I suggest something, and "we" for when we dive into why I chose this (benchmarks, comparisions, I include the reader.s). +
+A suggestion is personal, but a choice is shared. As well as the reasons that led to this choice. +
+
+=> Use "I" for personal suggestions, "we" for choices and explanations/reasons; where the reader should be included. +
+=> TODO: make sure this rule is applied and respected throughout the document.
+====
+
+====
+**Chaque choix doit être argumenté et justifié objectivement:**
+
+- POCs,
+- Nombres réels (benchmarks, comparaisons, estimations des différentes limites de perf/réseau/charge/ressources... etc.)
+- Comparaisons avec d'autres solutions, avantages et inconvénients objectifs (perfs, DX, future proofness de la solution (modularité, scalabilité, extensibilité...), etc.)
+- Sources citées à chaque fois que nécessaire
+- ... (trouver plus de règles pour mieux définir ce framework à appliquer sur le TAD. Voir sur internet. De mêmes pour les autres groupes de règles à appliquer sur le TAD.)
+
+Appliquer ces règles autant que possibler. +
+Vérifier que ces règles sont appliquées sur tout le document.
+====
+
+====
+**Under every question:**
+
 - Use What Why How to distribute the text ideas & knowledge, if and when it makes sense. You may need to break it down further.
 - Visuals (schema, graphs) (at least one)
 - Make a PoC where asked, and when relevant. It must provide a real example of the implementation, and useful results such as performance metrics, usability, etc.
 - Use real data / estimations to support choices and motives. This is real design, using real cost metrics of time, capacity, resources etc.
 - Cite your sources at the end of the question
+
+====
+
+====
+**Instructions:**
 
 We are looking to migrate BEEP to a microservices architecture.
 The specifications are the same as described during all previous iterations of beep.
@@ -25,8 +69,14 @@ You are forbidden to propose or consider the following technologies:
 - Messages queue
 - CQRS
 - Event Sourcing
+====
 
-pocs, QUE en Rust.
+====
+**POCs:**
+
+poccer en Rust. Peut être en Go pour certains +
+=> Prendre plus la main dessus (pour le stage) + Avantages et inconvénients détaillés au niveau des examinations des POCs.
+====
 
 == Glossary
 
@@ -34,9 +84,13 @@ In alphabetical order.
 
 "The purpose of a glossary is to provide definitions for words or phrases that may be unfamiliar to the reader, or that have a specialized or technical meaning within the context of the document."
 
+//TODO: fill glossary with relevant terms and definitions.
+
 == The What and Why of Beep and the microservices architecture
 
-In this section, I will provide a brief overview of Beep's current architecture, what a microservices architecture is, and why Beep should consider migrating to a microservices architecture.
+//TODO: complete this section. Section preface/number zero.
+
+In the following sections, I will provide a brief overview of Beep's current architecture, what a microservices architecture is, and why Beep should consider migrating to a microservices architecture.
 
 === Current state of Beep
 
@@ -110,15 +164,25 @@ Avantages et inconvénients. Rester objectif. Donner des nombres. Dev experience
 
 == I. Separating Beep into functional neighborhoods and microservices
 
-The following concerns my proposal to separate the Beep application into functional neighborhoods and microservices.
+//TODO: find the right vocabulary to refer to functionnal neighborhoods/business capabilities/units/etc. in the right places.
+
+The following sections concerns my proposal to separate the Beep application into functional neighborhoods and microservices.
+
+Before we can separate Beep into functional neighborhoods and microservices, we need to have an idea of how Beep's functionnalities can be grouped into autonomous business units/ functionnality neighboroods. +
+
+1. For that purpose, we will first identify the user stories that define how people interface with Beep's functionnalities. +
+2. Then, building on that, we will classify the identified functionalities of Beep into logical groups, or business capabilities/functionnalities neighborhoods. +
+3. Lastly, from these logical groupings of functionalities, we will propose a separation of Beep into functional neighborhoods and microservices.
 
 === 1. Identifying user stories
 
+In this section, I will identify user stories in Beep.
+
+[TIP]
 A user story is an informal, natural language description of feature from the perspective of the end user. It typically follows the format: "As a [type of user], I want [some goal] so that [some reason]".
 
-==== User management 
+==== Current user stories in Beep
 
-In this section, I will identify user stories related to user management in Beep. +
 In the following table, the following subjects are identified:
 - Guest: a user who does not have an account on Beep.
 - User: a user who has an account on Beep.
@@ -192,7 +256,7 @@ In the following table, the following subjects are identified:
 
 |===
 
-===== Important features that are not yet part of Beep
+==== Important user stories that are not yet part of Beep
 
 [cols="1,1,2"]
 |===
@@ -361,7 +425,7 @@ OIDC (surcouche ?): https://www.youtube.com/watch?v=t18YB3xDfXI
 
 == III. Inter-service communication
 
-The following concerns my proposal of design and implementations for the communication between the microservices of Beep.
+The following sections concern my proposal of design and implementations for the communication between the microservices of Beep.
 
 gRPC, etc, other binary protocols formats stuffs...
 
