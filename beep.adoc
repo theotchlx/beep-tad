@@ -114,11 +114,17 @@ The following concerns my proposal to separate the Beep application into functio
 
 === 1. Identifying user stories
 
-A user story is an informal, natural language description of feature from the perspective of the end user.It typically follows the format: "As a [type of user], I want [some goal] so that [some reason]".
+A user story is an informal, natural language description of feature from the perspective of the end user. It typically follows the format: "As a [type of user], I want [some goal] so that [some reason]".
 
 ==== User management 
 
-In this section, I will identify user stories related to user management in Beep.p ,efrp,erg
+In this section, I will identify user stories related to user management in Beep. +
+In the following table, the following subjects are identified:
+- Guest: a user who does not have an account on Beep.
+- User: a user who has an account on Beep.
+- Member: a user who is part of a server on Beep.
+- Authorized member: a user who is an authorized member of a server on Beep.
+- Beep admin: a user who is an administrator of Beep, part of the Beep team.
 
 [cols="1,1,2"]
 |===
@@ -155,6 +161,10 @@ In this section, I will identify user stories related to user management in Beep
 |User
 |Have quick access to the servers I'm a part of
 |Easily switch between communities and user groups to interact with.
+
+|Member
+|Get more information about other users in server I'm a part of
+|Better interact with them, and send them friend requests to chat in private messages.
 
 |Authorized member
 |Configure a server I'm a member of
