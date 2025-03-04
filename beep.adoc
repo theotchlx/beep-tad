@@ -367,7 +367,7 @@ Context map draft
 - Authorization context (Manage RBAC, ABAC and PBAC. Apply policies between/across services to users queries/requests, etc.)
 - Chatting context (messages, files, "text" channels lifecycle management)
 - Video/audio calls context (handles all the media, real-time audio/video/screen sharing logic/features, and "voice" channels lifecycle management)
-- Notifications context (push notifications to devices. At least that would need a message queuing system, I believe?)
+- Notifications context (push notifications to devices. At least that would need a message queuing...)
 - User context (users and their settings)
 - Search context (search for servers (overview page), channels, users, messages, files... Anything)
 - Communities/servers context (manage communities/servers lifecycle, crud, invitations/... Potential future features such as groupings of servers as communities/...)
@@ -416,7 +416,8 @@ If we had defined Beep's microservices architecture from its initial database sc
 
 Also doesn't make sense since databases will be separated into their own services and can be designed completely independently of the rest of the system. They become not part of the business capabilities of Beep, but really just tools to store and retrieve data/state for each service.
 
-->Should user and auth be one service, or two services? Is auth, login, register etc part of users? Managed by the same team? Same group of features? Same goal? OR should auth be a separate service, and also be used to authenticate other stuff like bots, and other requests?
+Also also, how can we have a notification service... Without a message queuing system?? We'd have to use some other way like... Mongodb... To manage the push notifs state... Ugh. It's just a hacky hack, compared to a message queue. Or we'd assume that every device in the world who runs Beep is always on and has a stable connection to Beep (so that there would be no state to manage).
+OH I KNOW!! We get rid of mobile push notifications (so no need for kafka, or third parties), and for the browser, we use a websocket. I suppose it would work for browser notifications into desktop notifications.. Maybe??
 
 ==== Component diagram for Beep's separation into microservices
 
@@ -425,7 +426,7 @@ These functional neighborhoods/business capabilities/... can be formally represe
 The resulting UML component diagram
 
 .Component diagram for Beep's separation into microservices. Made with draw.io
-image::images/fig2.use-case-current/beep-uml-use-case-diagram-light.svg[Component diagram showing Beep's architecture separated into microservices.]
+image::images/fig3.component/beep-uml-component-diagram-light.svg[Component diagram showing Beep's architecture separated into microservices.]
 
 Reading a component diagram: components are strictly logical, design-time constructs. The idea is that you can easily reuse and/or substitute a different component implementation in your designs because a component encapsulates behavior and implements specified interfaces.
 
@@ -434,6 +435,8 @@ This diagram is a first draft of the separation of Beep into microservices. This
 (Authentication and) authorization (centralized, or decentralized store/policy agent? will depend on tech used. See corresponding chapter) services do not appear in this diagram will be defined in later chapters.
 
 This component diagram only illustrates components and their interactions. It is not a proposal for inter-services communication, which will be studied in the next chapter.
+
+Also there isn't the frontend, surrounding load balancer and API gateway, which allows the frontend to reach API endpoints that lead to different services, and authenticate the requests via JWT.
 
 **POUR LE DIAGRAMME DES MICROSERVICES!!!!!!!!!:** https://stackoverflow.com/a/60084889
 Et avant, pour le diagramme des usages, celui avec les bonhommes
@@ -643,7 +646,8 @@ Per directives:
 Benchmarks, or at least real numbers, then comparisons, +
 Advantages|benefis/disadvantages|drawbacks of each
 
-gRPC, etc, other binary protocols formats stuffs...
+https://devopedia.org/inter-service-communication-for-microservices
+https://github.com/Netflix/Hystrix fault tolerant capable framework n more
 
 GraphQL!!! Format binaire underlying est interchangeable !!
 Par contre faut build soit-même les APIs? à voir. Pas grave en vrai. Mais faut les modifier soi-même ??
