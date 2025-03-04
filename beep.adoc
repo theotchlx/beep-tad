@@ -277,7 +277,7 @@ In the following table, the following subjects are identified:
 |Modify my personal information, recovery mechanisms, my authentication mechanisms, language and other information relative to my account.
 
 |Member
-|Search for messages or files in a channel in a server I'm a member of
+|Search for users, messages or files in servers I'm a member of
 |Find back specific conversations or files.
 
 |Beep admin
@@ -297,6 +297,45 @@ The purpose of this schema is to capture the requirements of Beep considering it
 //TODO: stop the blabla between business capabilities and user stories. Time to be clear and concise, bro. Yeah.
 
 A business capability is the expression or articulation of the capacity, materials, and expertise an organization needs to perform core functions.
+
+==== Some rough estimates of Beep's expected loads and limitations
+
+In this section, I will provide estimates to metrics that I consider important for designing a new architecture for Beep.
+
+===== Estimates of averages
+
+- Average daily active users: 300 000
+
+- Average text message size: 200B
+
+- Average shared file size: 1MB
+
+- Average proportion of files to text messages: 1/30
+
+- Average number of messages per user per day: 60
+
+- Average duration of voice/video calls: 30mn
+
+- Average bandwidth of voice/video calls per hour: 600MB
+
+===== Resulting calculations and requirements
+
+- Average number of files shared per user per day: 60/30 = 2
+
+//TODO: - Network latency requirements: 
+
+//TODO: - Bandwidth requirements: 
+
+- Storage requirements:
+//TODO: calculate based on previously determined values (clarify calculations?)
+
+//TODO : more estimations 
+
+From the preceding estimates, we can calculate the expected loads on Beep.
+
+//TODO: explain what/why/how these numbers will be useful for later down.
+
+In the following, we will assume that these estimations apply.
 
 ==== Separating Beep's user stories into functional neighborhoods
 
@@ -320,6 +359,8 @@ From our previous analysis, the following services can be identified:
 
 |===
 
+If we take future features into account, we would add a "search" service, taking care of the search for users, messages, files and other elements across storage systems.
+
 We can be tempted to separate Beep into microservices following the current SQL database's schema and relations, that we saw in the initial chapter. But this would be a mistake, since as we defined in the initial chapter, microservices should be organized around business capabilities; and the current database schema is not a faithful representation of Beep's business capabilities, as opposed to the user stories, business capabilities and functionalities their represent, that we identified in the earlier sections. +
 If we had defined Beep's microservices architecture from its initial database schema, we would end up with a distributed monolithic architecture, with tightly coupled services, a lot of inter-service communication, and thus scalability, and other benefits of a microservices architecture would be impacted.
 
@@ -330,6 +371,8 @@ These functional neighborhoods/business capabilities/... can be formally represe
 The resulting UML component diagram
 
 (diagram)
+
+This diagram is a first draft of the separation of Beep into microservices. This proposal, and will be refined in the following sections, where we will take into account multiple other issues such as authentication, authorization, observability and many more.
 
 Authentication and authorization services do not appear in this diagram will be defined in later chapters.
 
