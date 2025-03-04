@@ -93,92 +93,80 @@ In alphabetical order.
 
 //TODO: complete this section. Section preface/number zero.
 
-In the following sections, I will provide a brief overview of Beep's current architecture, what a microservices architecture is, and why Beep should consider migrating to a microservices architecture.
+In the following sections, I will provide a brief overview of Beep, why it exists, its current architecture, what a microservices architecture is, and why Beep should consider migrating to a microservices architecture.
 
 === Current state of Beep
 
-(what) Beep is
-(why) Beep solves the issue.s/problem.s of
+Beep is a platform for sharing and communicating with friends communities. With Beep, you have instant messaging, file sharing, real-time voice and video. It's entirely free, and the code is soon to be open sourced.
 
-Beep has a complex monolithic architecture. The following is an overview of its main components.
-
-DrawIO components and interactions schema.
-
-Explications
+We first started Beep in January 2024 as a school project. It currently runs on our school's infrastructure. What's neat about Beep is that there are no paid features, lots of features get added from time to time, you'll soon be able to read the code and contribute; and most importantly, if we had a community to listen to, we probably would!! Maybe. Probably.
 
 The below image is a rudimentary overview of Beep's current architecture, as of March 2025.
 
 .Rudimentary overview of Beep's current architecture, as of March 2025. Made with Excalidraw.
-image::images/rudimentary-overview-current/rudimentary-overview-current.svg[Drawing of Beep's architecture showing the VM, K3s cluster, namespaces and deployments, nested inside each others, with arbitrary sizes and colours.]
+image::images/fig1.rudimentary-overview-current/rudimentary-overview-current.svg[][Drawing of Beep's architecture showing the VM, K3s cluster, namespaces and deployments, nested inside each others, with arbitrary sizes and colours.]
 
-The purpose of this schema is for you to have a quick understanding of the curent the components and their interactions. Shapes and sizes have no particular meaning.
+The purpose of this schema is for you to have a quick understanding of the curent the components and their interactions. Colours, shapes and sizes have no particular meaning.
 
 Currently, Beep is deployed as a set of monolithic services and auxiliary tools (such as observability tools, registries, etc.) replicated on a single-node K3s cluster. The control plane is also part of this node. The K3s Kubernetes distribution is configured (by default, as is here) to use an embedded SQLite as its data store; and Flannel as a layer 3 network fabric/CNI plugin.
 
-The frontend and backend are monolithic, and the database is centralized. The monitoring and observability services are also centralized. The whole system is deployed on Kubernetes, and the infrastructure is hosted on a VM or a proxmox cluster. Namespaces are used to separate the services into business capabilities or functionnalities neighborhoods.
+The frontend and backend are monolithic, and the database is centralized. The monitoring and observability services are also centralized. The whole system is deployed on Kubernetes, and the infrastructure is hosted on a VM or a proxmox cluster. Namespaces are used to separate the services into business capabilities or functionalities neighborhoods.
+
+An important part to bear in mind throughout this document is Beep's current database s
 
 === Microservices architecture explained
 
-In this section, we will focus on a short explanation of what a microservices architecture is. In later section, we will go through why Beep should consider migrating to a microservices architecture, followed by how to do it.
+Following the goal of this document, in this section, we will focus on a short explanation of what a microservices architecture is. In later section, we will go through why Beep should consider migrating to a microservices architecture. The following chapters of this document will focus on what needs to be done to migrate the architecture, and how to do it.
 
-A microservices architecture is an architectural style that structures an application as a collection of services that
+The microservices architecture is an architectural style or pattern, which follows four main principles:
 
-"service" = unité atomique qui représente littéralement un *service*. Une fonction. Un service rendu de logique ou quoi. Une unité fonctionnelle. Implémente une logique business/fonctionnelle. Équipe dédie, de plus petite taille. Opérable de manière indépendant. Critères de définition d'un microservice, pas la taille mais le service rendu : taille = subjective. Utilité (faire *une* chose) : objectif. Leur cycle de vie est différent aussi. Chacun vie indépendemment.
-Genre c'est pas micro en taille, c'est micro en service rendu.
+- Services are (typically) organized around business capabilities,
+- Each service is owned by its own team,
+- Each service is independently deployable,
+- Services are loosely coupled.
 
-Pas toujours le bon pattern !! (Quand ? Linux ? ...)
--> When to use ? Scalability, fine grained control on blablabla (but more complex to manage, etc)
+These principles make up the basis of the microservices architecture. There's a lot to it, it's got plenty of advantages as well as disadvantages. In short, it's not a miracle solution.
 
--> Advantages, disadvantages, objective stuff, etc.
+==== Benefits
 
+- Simple services: "microservices" are only "micro" in terms of their single business capability provided, not in size. As such, they are simpler than the whole, easier to understand, maintain and upgrade.
+- Team autonomy: services are independently developed, tested, managed and deployed (,the whole lifecycle is managed independently). They run independently from each other. As such, teams can work independently of each other, cutting down on the time it takes to manage intertwined teams.
+- Faster CI/CD processes: services independence also cuts on the time it takes to build, test and deploy each service, thanks to their relative size compared to the whole.
+- Support different paradigms per service: service independence allows each team to chose different paradigms freely - such as using a different technology stack, which is managed and maintained by this team.
+//TODO: review/redo benefits. Also maybe talk more about scalability, fine grained control
 
-Monitorer monolithe : ez.
-Monitorer microservices : monitorer chacun d'entre eux ET les comms entre eux, etc !!
+==== Drawbacks
 
-à GCP, pour la comm entre CHAQUE service, y'a un système d'AUTHENT puis d'authorization !!! Pas juste authorization (0 trust approach). Est-ce que ça suffit d'avoir du chiffrement entre les services, ou faut-il un système d'auth complet ?
+- Complexity: a distributed architecture is more complex than a monolithic one on every level: networks, observability, latency, authorization, authentication, service coupling... - all needs to be rethought and managed in a distributed environment, and new problems arise. The architecture itself is difficult to properly understand and design.
+- Some distributed operations might involve tight runtime coupling between services, which reduces their availability.//
+- Risk of tight design-time coupling between services, which requires time consuming lockstep changes//
+//TODO: refactor drawbacks
+//TODO: add numbers? Objective stuff?
 
-Faut des trucs en plus pour les microservices :
-Circuit breaking pattern. Important pour les microservices pour pas que ça call en continue avec les retry réseau. Retry exponentiel (1s, 10s, 1mn... et que ça bloque tout le service) -> on arrête d'appeler le service (on ouvre le circuit) et pas mécanisme de fallback (réponse préfaite en cas de pb, genre "ah dsl jpp afficher ça en fait" alors que ça chargeait) -> En gros gestion d'erreur réseau en fait. Pour éviter surcharge réseau + jamais de réponse.
-Aussi circuit breaking, fault tolerance, latency... Problématiques de microservices entre eux.
--> Quota (peut faire 1M d'appels à service X sur un mois, etc) + Rate limiting (même chose mais sur une période très courte, genre secondes ou 1mn).
-
-Et logging, metrics (métriques techniques, CPU, etc. Ou plus fonctionnelles rédigées par le développeur genre nb de requêtes, etc.), distributed tracings (suivre l'appel de son entrée et toutes ses transitations de svc en svc. Permet d'identifier dans quel svc y'a des pbs quand y'a un pb sur la requete, genre latence ou erreurs) et topology.
-
-Security, observability, network resilience (genre trucs de circuit breaking etc), policies. En sidecar containers (envoy??) en PLUS du service logique !! dans le pod. Donc un container app et un container proxy qui a les 4 trucs secu, obs, netw resi et poli. Qui intercepte en premier tous les calls puis retransmet.
-
-Inscrire les services et leurs endpoints dans une bibliothèque de services, un "service discovery". Pour gérer leur scalabilité et des trucs.
-
-Dans un service mesh : Il y a un control plane : api/interface pour donner des instructions pour configurer le control plane, ses proxy qui vont appliquer les configs (d'auth, de traffic management, de sécu réseau type ntls?mtls? c'était mTLS etc. Certaines traitées en inbound ou outbound du proxy), etc;
-Pour les microservices, le service mesh permet de gérer facilement le traffic entrant, sortant et intérieur aux services (traffic splitting, canary, blue-green, mirroring...), sécuriser l'accès et comms (mTLS etc.), et visibilité complète sur etc.
-
-mTLS avec Istio ou HCP Consul
-
-Tout ça est implémenté dans Istio !!!!
-
-https://istio.io/latest/docs/tasks/
-Exemples de comment mettre en oeuvre ces fonctionnalités !!!!!!!!!!
-
-https://www.cloudflare.com/learning/access-management/what-is-mutual-tls/
-https://www.youtube.com/watch?v=uWmZZyaHFEY
+A microservices architecture doesn't suit all needs, and it takes a lot of effort to properly design a suiting microservices architecture. Initial design or redesign decisions may lead to unforeseen consequencies in the future, that may be difficult to correct afterwards.
 
 === Why Beep should consider migrating to a microservices architecture
 
 In this section, I will explain why the Beep team should consider migrating to a microservices architecture.
 
-Avantages et inconvénients. Rester objectif. Donner des nombres. Dev experience. Etc. Trucs de management. Penser au futur. Etc. Exemple concret : Kubernetes plus grand nb de contributions DE LOIN de tous les projets CNCF. Easy car tout plugginisé et découpé et customisable etc.
+As students, migrating Beep to a microservices architecture is a very rewarding exercise. But more than that, it's a necessary step if we expect Beep to be able to accomodate hundreds, if not thousands of users and still be in control of our applications and infrastructure.
 
+Considering our currently small team, moderate resources and recent concerns, what I believe Beep needs most from the microservices architecture is mostly better fine-grained control over scalability, security and observability between and around our deployed workloads, but also to enable us to add features more seamlessly, without potentially impacting the whole system's integrity.
+//TODO: add numbers and estimations on limits, physical limits, number of users, etc. Or maybe in the next section?
 
 == I. Separating Beep into functional neighborhoods and microservices
 
-//TODO: find the right vocabulary to refer to functionnal neighborhoods/business capabilities/units/etc. in the right places.
+//TODO: find the right vocabulary to refer to functional neighborhoods/business capabilities/units/etc. in the right places. Be clear and concise.
 
-The following sections concerns my proposal to separate the Beep application into functional neighborhoods and microservices.
+The following sections concern my proposal to separate the Beep application into functional neighborhoods and microservices.
 
-Before we can separate Beep into functional neighborhoods and microservices, we need to have an idea of how Beep's functionnalities can be grouped into autonomous business units/ functionnality neighboroods. +
+Before we can separate Beep into services, we need to have an idea of how Beep's functionalities can be grouped into autonomous business units/ functionality neighboroods. +
 
-1. For that purpose, we will first identify the user stories that define how people interface with Beep's functionnalities.
-2. Then, building on that, we will classify the identified functionalities of Beep into logical groups, or business capabilities/functionnalities neighborhoods.
+//TODO: review if this is summary still correct (and needed?).
+1. For that purpose, we will first identify the user stories that define how people interface with Beep's functionalities.
+2. Then, building on that, we will classify the identified functionalities of Beep into logical groups, or business capabilities/functionalities neighborhoods.
 3. Lastly, from these logical groupings of functionalities, we will propose a separation of Beep into functional neighborhoods and microservices.
+// Saying "functional neighborhood", "user story", "business capability" so soon, before explaining what they are, may be a bad idea, and confuse the reader.
 
 === 1. Identifying user stories
 
@@ -295,22 +283,48 @@ In the following table, the following subjects are identified:
 
 These user stories can be formally represented using a UML use case diagram. Below is the use case diagram describing Beep's current user stories, with the end user's different roles as actors, and the user stories as use cases.
 
-The below image is a rudimentary overview of Beep's current architecture, as of March 2025.AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+.Use case diagram of Beep's current user stories. Made with draw.io
+image::images/fig2.use-case-current/beep-uml-use-case-diagram-automatic-trans.svg[Use case diagram of Beep's current user stories.]
 
-.Rudimentary overview of Beep's current architecture, as of March 2025. Made with Excalidraw.
-image::images/use-case-current/beep-uml-use-case-diagram-trans.svg[Drawing of Beep's architecture showing the VM, K3s cluster, namespaces and deployments, nested inside each others, with arbitrary sizes and colours.]
+The purpose of this schema is to capture the requirements of Beep considering its users. This will help us outline business capabilities and user stories into functional neighborhoods, and thus redefine Beep into microservices.
+//TODO: stop the blabla between business capabilities and user stories. Time to be clear and concise, bro. Yeah.
 
-The purpose of this schema is for you to have a quick understanding of the curent the components and their interactions. Shapes and sizes have no particular meaning.AAAAAAAAAAAAAAAA
+A business capability is the expression or articulation of the capacity, materials, and expertise an organization needs to perform core functions.
 
-==== Separating Beep's functionalities into functional neighborhoods
+==== Separating Beep's user stories into functional neighborhoods
 
-From these user stories, we can regroup them into functional neighborhoods/business capabilities/capabilites and identify the following services:
+In this section, we will classify the user stories we identified into functional neighborhoods.
+
+A functional neighborhood is a group of functionalities that are related to a specific business capability (in Beep).
+// Is it a bit late to define this term? Or is it good here? Follow where each term is defined. Also add them to the glossary? If we assume the reader doesn't know these terms? See how it's done in academics. Who would read this?
+// This definition is worth nothing if "business capability" isn't defined earlier.
+
+From our previous analysis, the following services can be identified:
+
+[cols="1,1,2"]
+|===
+|Functional neighborhood |Corresponding user stories |Description
+
+|Authentication / User
+
+|Authorization
+
+|
+
+|===
+
+We can be tempted to separate Beep into microservices following the current SQL database's schema and relations, that we saw in the initial chapter. But this would be a mistake, since as we defined in the initial chapter, microservices should be organized around business capabilities; and the current database schema is not a faithful representation of Beep's business capabilities, as opposed to the user stories, business capabilities and functionalities their represent, that we identified in the earlier sections. +
+If we had defined Beep's microservices architecture from its initial database schema, we would end up with a distributed monolithic architecture, with tightly coupled services, a lot of inter-service communication, and thus scalability, and other benefits of a microservices architecture would be impacted.
 
 ==== Component diagram proposal for separating Beep into microservices
 
-These functional neighborhoods/business capabilities/... can be formally represented using a UML components diagram. Below is the components diagram describing my proposal for Beep's separation into microservices.
+These functional neighborhoods/business capabilities/... can be formally represented using a UML component diagram. Below is the components diagram describing my proposal for Beep's separation into microservices.
+
+The resulting UML component diagram
 
 (diagram)
+
+Authentication and authorization services do not appear in this diagram will be defined in later chapters.
 
 **POUR LE DIAGRAMME DES MICROSERVICES!!!!!!!!!:** https://stackoverflow.com/a/60084889
 Et avant, pour le diagramme des usages, celui avec les bonhommes
@@ -352,7 +366,7 @@ http://butunclebob.com/ArticleS.UncleBob.PrinciplesOfOod
 
 Functional requirements: US, functions.
 Quality of a service: scalable, reliable, secure, maintainable, testable, etc.
-=> Implementable functionnalities are dependent on the quality of the architecture design. Future-proof design, stays easy to update with features, good abstractions (see how good filesystems are :3)
+=> Implementable functionalities are dependent on the quality of the architecture design. Future-proof design, stays easy to update with features, good abstractions (see how good filesystems are :3)
 
 Liskov principle, ouvert en extension fermé en modification (en gros les bonnes abstractions type filesystem)
 
@@ -455,8 +469,38 @@ https://developers.google.com/identity/protocols/oauth2
 Oauth2: https://www.youtube.com/watch?v=ZV5yTm4pT8g
 OIDC (surcouche ?): https://www.youtube.com/watch?v=t18YB3xDfXI
 
+à GCP, pour la comm entre CHAQUE service, y'a un système d'AUTHENT puis d'authorization !!! Pas juste authorization (0 trust approach). Est-ce que ça suffit d'avoir du chiffrement entre les services, ou faut-il un système d'auth complet ?
 
-== III. Inter-service communication
+Faut des trucs en plus pour les microservices :
+Circuit breaking pattern. Important pour les microservices pour pas que ça call en continue avec les retry réseau. Retry exponentiel (1s, 10s, 1mn... et que ça bloque tout le service) -> on arrête d'appeler le service (on ouvre le circuit) et pas mécanisme de fallback (réponse préfaite en cas de pb, genre "ah dsl jpp afficher ça en fait" alors que ça chargeait) -> En gros gestion d'erreur réseau en fait. Pour éviter surcharge réseau + jamais de réponse.
+Aussi circuit breaking, fault tolerance, latency... Problématiques de microservices entre eux.
+-> Quota (peut faire 1M d'appels à service X sur un mois, etc) + Rate limiting (même chose mais sur une période très courte, genre secondes ou 1mn).
+
+Et logging, metrics (métriques techniques, CPU, etc. Ou plus fonctionnelles rédigées par le développeur genre nb de requêtes, etc.), distributed tracings (suivre l'appel de son entrée et toutes ses transitations de svc en svc. Permet d'identifier dans quel svc y'a des pbs quand y'a un pb sur la requete, genre latence ou erreurs) et topology.
+
+Security, observability, network resilience (genre trucs de circuit breaking etc), policies. En sidecar containers (envoy??) en PLUS du service logique !! dans le pod. Donc un container app et un container proxy qui a les 4 trucs secu, obs, netw resi et poli. Qui intercepte en premier tous les calls puis retransmet.
+
+Inscrire les services et leurs endpoints dans une bibliothèque de services, un "service discovery". Pour gérer leur scalabilité et des trucs.
+
+Dans un service mesh : Il y a un control plane : api/interface pour donner des instructions pour configurer le control plane, ses proxy qui vont appliquer les configs (d'auth, de traffic management, de sécu réseau type ntls?mtls? c'était mTLS etc. Certaines traitées en inbound ou outbound du proxy), etc;
+Pour les microservices, le service mesh permet de gérer facilement le traffic entrant, sortant et intérieur aux services (traffic splitting, canary, blue-green, mirroring...), sécuriser l'accès et comms (mTLS etc.), et visibilité complète sur etc.
+
+mTLS avec Istio ou HCP Consul
+
+Tout ça est implémenté dans Istio !!!!
+
+https://istio.io/latest/docs/tasks/
+Exemples de comment mettre en oeuvre ces fonctionnalités !!!!!!!!!!
+
+https://www.cloudflare.com/learning/access-management/what-is-mutual-tls/
+https://www.youtube.com/watch?v=uWmZZyaHFEY
+
+OAUTH
+OIDC
+SSO
+SAML
+
+== III. Enabling communication between services
 
 The following sections concern my proposal of design and implementations for the communication between the microservices of Beep.
 
