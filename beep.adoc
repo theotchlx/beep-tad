@@ -55,7 +55,7 @@ Vérifier que ces règles sont appliquées sur tout le document.
 ====
 
 ====
-**Instructions:**
+**Instructions/TAD directives:**
 
 We are looking to migrate BEEP to a microservices architecture.
 The specifications are the same as described during all previous iterations of beep.
@@ -276,6 +276,10 @@ In the following table, the following subjects are identified:
 |Update my account information
 |Modify my personal information, recovery mechanisms, my authentication mechanisms, language and other information relative to my account.
 
+|User
+|Receive push notification on my devices
+|Be notified of various events such as mentions.
+
 |Member
 |Search for users, messages or files in servers I'm a member of
 |Find back specific conversations or files.
@@ -347,14 +351,56 @@ A functional neighborhood is a group of functionalities that are related to a sp
 
 From our previous analysis, the following services can be identified:
 
+// Idea: presenting a view of the current database schema before this section could help identify tight couplings, and thus help group stuff(?) into services? Maybe? Explore this possibility.
+
+> Cutting microservices like database tables is one of the most common anti-patterns in microservice architecture. This approach, often called the "Entity-Service Anti-Pattern", creates distributed monoliths where each service becomes a CRUD wrapper around a table, leading to excessive coupling, chatty communication between services, and performance issues.
+
+//We will apply principles of DDD (such as bounded contexts) and ... to... avoid...
+//TODO: draw a "context map"!! To clearly identify the contexts around which services should be grouped.
+https://medium.com/@mike_7149/context-mapping-4b4909cf195a
+Context map draft
+
+- Chatting context (messages, files, channels)
+- Calls context (handles all the media, real-time audio/video/screen sharing logic/features)
+- Notifications context
+- User and authentication context (users and their settings)
+- Search context (search for servers (overview page), channels, users, messages, files... Anything)
+- Communities / servers context? Seeing potential future features (regrouping servers into communities ? Etc.), I think it's rightly a context.
+Are servers their own context?? Or are they part of the chatting context?
+
+How do these contexts organize around teams, features, and how they'd interact with each other?
+I'm confused for channels. Chat and calls need to interact with channels, it's part of their endpoints, it's their parent. Messages as well as calls belong to a specific channel, but does that mean neither one of these two should "own"/manage channels? Whose context are channels a part of?
+
 [cols="1,1,2"]
 |===
-|Functional neighborhood |Corresponding user stories |Description
+|Service name |Goal and provided features |Corresponding user stories
 
 |Authentication / User
+|Authenticate users(, authenticate external (and internal) requests)(?).
+|
+
+|Notification
+|Send push notifications to users' devices.
+|
+
+|Chat
+|Enable users to send messages and share files.
+|
+
+|Media
+|Manage files (CRUD, fast retrieval, long-term storage in iceberg or else...).
+|
+
+|Voice/Video
+|Enable users to share voice/video feeds with minimal latency.
+|
 
 |Authorization
+|Manage (CRUD, apply policies) user roles and permissions across services.
+|
 
+|User
+|Manages (CRUD) user-related data (pfp, username/email/password..., preferences, etc.)
 |
 
 |===
@@ -372,7 +418,9 @@ The resulting UML component diagram
 
 (diagram)
 
-This diagram is a first draft of the separation of Beep into microservices. This proposal, and will be refined in the following sections, where we will take into account multiple other issues such as authentication, authorization, observability and many more.
+Reading a component diagram: components are strictly logical, design-time constructs. The idea is that you can easily reuse and/or substitute a different component implementation in your designs because a component encapsulates behavior and implements specified interfaces.
+
+This diagram is a first draft of the separation of Beep into microservices. This draft will be refined and completed further in the following sections, where we will take into account multiple other issues such as authentication, authorization, observability and many more.
 
 Authentication and authorization services do not appear in this diagram will be defined in later chapters.
 
