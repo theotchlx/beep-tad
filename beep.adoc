@@ -81,6 +81,9 @@ poccer en Rust. Peut être en Go pour certains +
 => Prendre plus la main dessus (pour le stage) + Avantages et inconvénients détaillés au niveau des examinations des POCs.
 ====
 
+//TODO: replace diagrams with PlantUML?
+//https://docs.asciidoctor.org/diagram-extension/latest/diagram_types/plantuml/
+
 == Glossary
 
 In alphabetical order.
@@ -273,6 +276,10 @@ In the following table, the following subjects are identified:
 |Update my account information
 |Modify my personal information, recovery mechanisms, my authentication mechanisms, language and other information relative to my account.
 
+|Member
+|Search for messages or files in a channel in a server I'm a member of
+|Find back specific conversations or files.
+
 |Beep admin
 |Have full control over public servers
 |Ensure Beep's terms of service are respected across publicly accessible servers.
@@ -339,6 +346,7 @@ https://martinfowler.com/bliki/BoundedContext.html
 Obstacles à la décomposition : network latency, data inconsistency/interfaces, god classes (fait tout, dure à décomposer, big) and reduced availability. Énormément de contextes sont impactés.
 
 Thématiques 12 factors !!!
+https://12factor.net/
 "The philosophy of Twelve-Factor turned out to be surprisingly timeless. More than a decade later, people still find its insights valuable, and it's often cited as a solid set of best practices for application development. But while the concepts remain relevant, many of the details have started to show their age."
 Domain-Driven Development. Application est construite sous forme d'abstractions au dessus de notre modèle.
 
@@ -500,6 +508,9 @@ OIDC
 SSO
 SAML
 
+https://samarthasthan.com/posts/building-a-scalable-e-commerce-empire-a-micro-services-system-design-approach/
+https://www.geeksforgeeks.org/how-discord-scaled-to-15-million-users-on-one-server/
+
 == III. Enabling communication between services
 
 The following sections concern my proposal of design and implementations for the communication between the microservices of Beep.
@@ -548,7 +559,7 @@ gRPC plein de styles d'intéraction, stream bidirectionnel, etc.
 
 Service registries pour qu'ils sachent qu'il y a eu une modif d'api ou quoi.
 
-Sozu vs nginx, vs sozu? benchmarking!! (Dockerfiles)
+Sozu vs nginx, vs sozu? benchmarking!! (Dockerfiles) vs rpxy
 
 === Communication framework proposal
 
@@ -702,6 +713,11 @@ https://kubernetes.io/docs/concepts/cluster-administration/networking/
 Flannel has basic features when compared to cilium/calico. Supposedly. I haven't tested it yet.
 
 MinIO vs seaweedfs vs deuxfleurs's garage
+
+Pour le load balancer à self hoster :
+https://geek-cookbook.funkypenguin.co.nz/kubernetes/loadbalancer/
+https://medium.com/@ferdinandklr/creating-a-production-ready-self-hosted-kubernetes-cluster-from-scratch-on-a-vps-ipv6-compatible-660aa5018feb
+MetalLB(?)
 
 == VII. Infrastructure security
 design, implementation, automation and handling
