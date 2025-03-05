@@ -50,7 +50,7 @@ Vérifier que ces règles sont appliquées sur tout le document.
 - Visuals (schema, graphs) (at least one)
 - Make a PoC where asked, and when relevant. It must provide a real example of the implementation, and useful results such as performance metrics, usability, etc.
 - Use real data / estimations to support choices and motives. This is real design, using real cost metrics of time, capacity, resources etc.
-- Cite your sources at the end of the question
+- Cite your sources at the end of the question/chapter/section(?)
 
 ====
 
@@ -92,6 +92,9 @@ In alphabetical order.
 
 //TODO: fill glossary with relevant terms and definitions.
 
+- **Business capability**: A business capability is a capacity a business or organization has to perform core functions, fulfill its objectives and responsibilities in a particular domain.
+
+
 == The What and Why of Beep and the microservices architecture
 
 //TODO: complete this section. Section preface/number zero.
@@ -113,18 +116,21 @@ The purpose of this schema is for you to have a quick understanding of the curen
 
 Currently, Beep is deployed as a set of monolithic services and auxiliary tools (such as observability tools, registries, etc.) replicated on a single-node K3s cluster. The control plane is also part of this node. The K3s Kubernetes distribution is configured (by default, as is here) to use an embedded SQLite as its data store; and Flannel as a layer 3 network fabric/CNI plugin.
 
-The frontend and backend are monolithic, and the database is centralized. The monitoring and observability services are also centralized. The whole system is deployed on Kubernetes, and the infrastructure is hosted on a VM or a proxmox cluster. Namespaces are used to separate the services into business capabilities or functionalities neighborhoods.
+The frontend and backend are monolithic, and the database is centralized. The monitoring and observability services are also centralized. The whole system is deployed on Kubernetes, and the infrastructure is hosted on a VM or a proxmox cluster. Namespaces are used to separate the services by function.
 
 An important part to bear in mind throughout this document is Beep's current database s
 
 === Microservices architecture briefly explained
 
-Following the goal of this document, in this section, we will focus on a concise explanation of what a microservices architecture consits of. In later section, we will go through why Beep should consider migrating to a microservices architecture. The following chapters of this document will focus on what needs to be done to migrate the architecture, and how to do it.
+Following the goal of this document, in this section, we will focus on a concise explanation of what a microservices architecture consits of. In later sections, we will go through why Beep should consider migrating to a microservices architecture. The following chapters of this document will focus on what needs to be done to migrate the architecture, and how to do it.
+
+A microservices architecture is complex to design and implement properly. This is why it is critical that everyone on the team has a common understanding of a microservices ecosystem, which is the goal of this section.
 
 The microservices architecture is an architectural style or pattern, which follows four main principles:
 
-- Services are (typically) organized around business capabilities,
-- Each service is owned by its own team,
+//TODO: automatically link terms to glossary? At least for their first encounter? Also move terms defined in text to glossary (?). Remove that ugly and stupid "(see glossary)". It should either be explained here, or made obvious (with a discreet but visible link reference to the glossary)
+- Services are (typically) organized around business capabilities (see glossary),
+- Each service is owned by its own team.,
 - Each service is independently deployable,
 - Services are loosely coupled.
 
@@ -132,11 +138,17 @@ These principles make up the basis of the microservices architecture. There's a 
 
 ==== Benefits
 
-- Simple services: "microservices" are only "micro" in terms of their single business capability provided, not in size. As such, they are simpler than the whole, easier to understand, maintain and upgrade.
-- Team autonomy: services are independently developed, tested, managed and deployed (,the whole lifecycle is managed independently). They run independently from each other. As such, teams can work independently of each other, cutting down on the time it takes to manage intertwined teams.
+- Simple services: "microservices" are only "micro" in terms of their single business capability provided, not in size. As such, they are simpler than the whole, easier to understand, maintain and upgrade. The size of a service matters least in its definition.
+- Team autonomy: each team can own one or a few services. The microservices architecture enforces team autonomy and independence: services are independently developed, tested, managed and deployed (,the whole lifecycle is managed independently). They run independently from each other. As such, teams can work independently of each other, cutting down on the time it takes to manage intertwined teams, reducing the overhead for the teams leader.
 - Faster CI/CD processes: services independence also cuts on the time it takes to build, test and deploy each service, thanks to their relative size compared to the whole.
 - Support different paradigms per service: service independence allows each team to chose different paradigms freely - such as using a different technology stack, which is managed and maintained by this team.
-//TODO: review/redo benefits. Also maybe talk more about scalability, fine grained control
+//TODO: review/redo benefits. Also maybe talk more about scalability, fine grained control. And be clearer and more concise.!Noblabla after cleaning dis.
+
+More on Why microservices?: (martin fowler breaking the monolith article)
+
+> "The ones who embark on this journey have aspirations such as increasing the scale of operation, accelerating the pace of change and escaping the high cost of change. They want to grow their number of teams while enabling them to deliver value in parallel and independently of each other. They want to rapidly experiment with their business's core capabilities and deliver value faster. They also want to escape the high cost associated with making changes to their existing monolithic systems."
+
+> "Microservices have independent lifecycle. Developers can build, test and release each microservice independently."
 
 ==== Drawbacks
 
@@ -348,15 +360,45 @@ In this section, we will classify the user stories we identified into functional
 
 ==== Identifying functional neighborhoods and bounded contexts
 
-A functional neighborhood is a group of functionalities that are related to a specific business capability (in Beep).
+A functional neighborhood is a group of functionalities that are related to a specific business capability of Beep.
 // Is it a bit late to define this term? Or is it good here? Follow where each term is defined. Also add them to the glossary? If we assume the reader doesn't know these terms? See how it's done in academics. Who would read this?
 // This definition is worth nothing if "business capability" isn't defined earlier.
 
-From our previous analysis, the following services can be identified:
+Some common pitfalls to avoid when defining functional neighborhoods and cutting microservices are:
+
+- Defining functional neighborhoods based on the current architecture, rather than the business capabilities of Beep,
+- Defining functional neighborhoods that are too tightly coupled,
+- Identifying microservices from the database schema, which is an anti-pattern so common it has a name: "Entity-Service Anti-Pattern". This results in distributed monoliths where each service becomes a CRUD wrapper around a table, leading to excessive coupling and communication between services, causing performance issues.
+
+Generally, this comes down to not following the microservices architecture as we defined it earlier.
+
+In order to avoid those pitfalls and more correctly identify which microservices should make up Beep's architecture in a way that fulfills all of the user stories and business capabilities of Beep, we have to examine the current architecture, database schema, levels of dependency between components of the current monolith, and more. This will allow us to consider, and better avoid past architectural truths while designing the new architecture, which is to be based on services revolving around business capabilities. In order to do that, we will apply some principles of Domain-Driven Development, such as identifying bounded contexts.
 
 // Idea: presenting a view of the current database schema before this section could help identify tight couplings, and thus help group stuff(?) into services? Maybe? Explore this possibility.
 
-> Cutting microservices like database tables is one of the most common anti-patterns in microservice architecture. This approach, often called the "Entity-Service Anti-Pattern", creates distributed monoliths where each service becomes a CRUD wrapper around a table, leading to excessive coupling, chatty communication between services, and performance issues.
+//TODO: review DDD to see where this part (right below) needs rethinking. Also define DDD somewhere. Glossary+linkreference to it.
+
+We may start by identifying the main domains Beep revolves around.
+
+- Authentication of users and user management
+- Real-time communication and instant messaging and file sharing
+- Management and retrieval of large quantities of files and other stored media
+
+This first repartition of domains us a basic idea of what domains Beep's business capabilities, and the user stories they resolve, mainly revolve around. However, we need to break down and regroup these domains further, avoiding tight levels of coupling between them and their components. +
+Some parts of Beep are clearly more independent than others. These can already be set astide into their own "contexts", such as the authentication system, the real-time communication system, instant messaging system, media storage system, search system (which would search accross for resources across other systems), and the notification system (which would notify users' devices on events happening from other systems). +
+
+These couplings are starting to make more sense. There are features in Beep that we didn't mention yet, such as server lifecycle management: settings, invitations; as well as roles and permissions. +
+The lifecycle of servers in Beep is currently pretty simple, but that means it's bound to have many features added soon. That means it's important to future-proof this system as of now, by thinking about the possible user stories and business capabilities that could revolve around it in the future. +
+Currently, server lifecycle includes servers settings (names, etc.) as well as invitation links. But in the future, this could include communities, groupings of servers, academic communities available for students via their academic emails - for example. +
+Entirely future-proofing a system is not an easy task, and would require a document of its own. However, some basic principles can be applied to make most of the future-proofing have effect. Building a smart and common abstraction over the current models, and avoiding repetition are such core principles. +
+
+As such, all of this could be considered to constitute its own "server lifecycle management" context.
+
+And while we're structuring our services, let's keep in mind the common pitfalls we may involuntarily fall into. Especially the "Entity-Service Anti-Pattern", defined above.
+
+We have identifies contexts around which to define Beep's future microservices architecture. To further refine these contexts, we can draw a "context map" to clearly identify the contexts around which services should be grouped.
+
+//Review DDD's bounded contexts around here.
 
 //We will apply principles of DDD (such as bounded contexts) and ... to... avoid...
 //TODO: draw a "context map"!! To clearly identify the contexts around which services should be grouped.
@@ -374,11 +416,11 @@ Context map draft
 
 -> Check how do these contexts organize around teams, features, and how they'd interact with each other ; to make sure it's correct.
 
+// /!\ https://medium.com/@vladikk.com/bounded-contexts-are-not-microservices-ead44b8d6e35 Bounded context != microservice.. Be CAUTIOUS! Review DD and rethink what you're doing? Define a basic ubiquitous language for Beep? In the component diagram(), for the interfaces?) maybe?
+
 ==== Service separation proposal
 
-Attention, revoir le DDD ! https://medium.com/@vladikk.com/bounded-contexts-are-not-microservices-ead44b8d6e35 Bounded context != microservice... Gaffe. Define a basic ubiquitous language for Beep?
-
-In earlier sections, we identified the user stories and functionalities beep must provide. We then classified them into bounded contexts following domain-driven development principles. From these studies, I will propose a separation of Beep into microservices.
+In earlier sections, we identified the user stories and functionalities beep must provide. We then classified them into bounded contexts following domain-driven development principles. From these previous analyses, I will propose a separation of Beep into microservices.
 
 [cols="1,2"]
 |===
@@ -426,6 +468,8 @@ These functional neighborhoods/business capabilities/... can be formally represe
 ====
 **WIP**
 
+> "Deciding what capability to decouple when and how to migrate incrementally are some of the architectural challenges of decomposing a monolith to an ecosystem of microservices."
+
 Methods to break down the monolith:
 
 Decompose services by business capabilities : reflect organization behavior. -> component diagram. +
@@ -462,56 +506,29 @@ This component diagram only illustrates components and their interactions. It is
 
 Also there isn't the frontend, surrounding load balancer and API gateway, which allows the frontend to reach API endpoints that lead to different services, and authenticate the requests via JWT.
 
-
-=== 3. How Beep can migrate to a microservices architecture: Breaking down the Monoliths
+=== 4. How Beep can be migrated to a microservices architecture: breaking down the monolith
 
 Earlier, we saw an overview of Beep's current architecture, of the microservices architecture, and why Beep should consider migrating to a microservices architecture. +
 In the last section, we went over my proposal to separate Beep into functional neighborhoods and microservices. +
 In this section, we will briefly go over how the Beep team can break down the application into microservices.
 
-Redefine all functionalities in the form:
+In this section, we consider that the earlier chapters have been read and understood by the team, including the microservices architecture, as well as the separation of Beep into bounded contexts.
 
-- “As [guest user / server admin / ...], I want to [create a channel / ...] so that [the user can self-assess his channel / ...]”
-- Organize these proposals into coherent functional neighborhoods
-- Propose an architecture diagram for the breakdown of your application into (functional) microservices.
+There are two main ways the Beep team could break down the monolith:
 
-Help resources: 
+- The incremental way,
+- Or a complete redesign and reimplementation.
 
-- https://microservices.io/articles/glossary#dora-metrics
-- https://martinfowler.com/bliki/BoundedContext.html
-- https://martinfowler.com/articles/break-monolith-into-microservices.html
-- https://leofvo.me/articles/microservices-for-the-win
+A complete redesign and reimplementation may seem like a sound idea at first, but when studied with a critical eye on resources management and common operational principles, it becomes obvious that this choice is soldem the right one. +
+
+Limits in resources such as time, effort or hands would need to be much more than sufficient to entirely replace the current architecture at once. Maintenance and the rate of delivery of new features and on the current system would suffer greatly.
+
+On the contrary, incrementally redesigning and reimplementing groupings of features as new services, bounded inside their own contexts, and responsible of their own technology stack and business capabilities, would allow the Beep team to gradually replace parts of the current monolith with services, rendering the operational management of resources completely feasible across the team, with minimal impact on the current system's integrity, management, or feature delivery lifecycle.
+
+Moreover, by concentrating the efforts of some on the implementation of a new service, this approach may also be just as fast, if not faster than the former approach.
 
 
-
-List / table to divide Beep into functional neighborhoods, then into services.
-See online: "how to break up a monolith". Citer les sources à chaque question.
-
-Schémas draw.io
-
-> Business capability is the expression or articulation of the capacity, materials, and expertise an organization needs to perform core functions.
-
-https://martinfowler.com/articles/break-monolith-into-microservices.html
-commencer avec 1 service simple, puis on conçoit/dessine des services en fonction des "capacités verticales", qui sont importantes au "business", et sujettes à des changements fréquents.
-> "These services should be large at first and preferably not dependent upon the remaining monolith. We should ensure that each step of migration represents an atomic improvement to the overall architecture."
-
-What?
-
-> "Before embarking, it is critical that everyone has a common understanding of a microservices ecosystem."
-
-> "Microservices ecosystem is a platform of services each encapsulating a business capability. A business capability represents what a business does in a particular domain to fulfill its objectives and responsibilities."
-
-> "The microservices ecosystem enforces an organizational structure of autonomous long standing teams, each responsible for one or multiple services. Contrary to general perception and ‘micro’ in microservices, the size of each service matters least and may vary depending on the operational maturity of the organization." (microservices = label, not a description)
-
-Why?
-
-> "The ones who embark on this journey have aspirations such as increasing the scale of operation, accelerating the pace of change and escaping the high cost of change. They want to grow their number of teams while enabling them to deliver value in parallel and independently of each other. They want to rapidly experiment with their business's core capabilities and deliver value faster. They also want to escape the high cost associated with making changes to their existing monolithic systems."
-
-> "Microservices have independent lifecycle. Developers can build, test and release each microservice independently."
-
-How?
-
-> "Deciding what capability to decouple when and how to migrate incrementally are some of the architectural challenges of decomposing a monolith to an ecosystem of microservices."
+**Sources for the chapter:**
 
 https://microservices.io/refactoring/
 https://microservices.io/patterns/
@@ -536,6 +553,11 @@ https://stackoverflow.com/a/60463179
 
 when is microservice not a good pattern
 https://dzone.com/articles/10-microservices-anti-patterns-you-need-to-avoid
+
+- https://microservices.io/articles/glossary#dora-metrics
+- https://martinfowler.com/bliki/BoundedContext.html
+- https://martinfowler.com/articles/break-monolith-into-microservices.html
+- https://leofvo.me/articles/microservices-for-the-win
 
 == II. Managing the authentication system with OIDC
 
