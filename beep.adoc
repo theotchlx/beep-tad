@@ -674,6 +674,8 @@ Maybe briefly talk abt tracing for the next chapters too?
 Needs:
 link Google auth, Polytech auth, Beep auth (and associate accounts), manage identification and authentication and them give way to authorization. And take into account the fact that, iirc, keycloak can do all three. (verify)
 
+Dedicated central repository/location for the .proto files. And service discovery (or even a service that manages only that?)
+
 === 3. Comparing available technologies
 
 List and compare technologies, protocols, frameworks for communication.
@@ -793,6 +795,13 @@ https://github.com/hyperium/tonic/blob/master/examples/helloworld-tutorial.md
 https://github.com/theotchlx/inter-services-communication
 
 on vm in proxmox.
+
+SAY DTN AND BP FOR SMTH OTHER THAN HTTP!!! :3333333333
+
+microservice communication best practices
+microservice communication protocols
+microservice communication patterns
+microservice communication pitfalls
 ====
 
 == IV. Authorization system design and implementation
