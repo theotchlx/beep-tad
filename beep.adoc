@@ -561,6 +561,40 @@ https://dzone.com/articles/10-microservices-anti-patterns-you-need-to-avoid
 
 == II. Managing the authentication system with OIDC
 
+=== 1. OpenID Connect, OAuth2 and Beep
+
+Very briefly present the What? and Why? of these protocols, as an introduction to the next section: How?
+
+=== 2. Identifying needs and constraints
+
+Needs:
+link Google auth, Polytech auth, Beep auth (and associate accounts), manage identification and authentication and them give way to authorization. And take into account the fact that, iirc, keycloak can do all three. (verify)
+
+=== 3. Comparing available technologies
+
+Brief section +
+List of tech stacks for OIDC and identification+authentication system, with comparisons, benefits, drawbacks; if possible benchmarks (as pocs).
+
+No benchmarks (as pocs) because no time + keycloak constraint makes dis double-dumdum.
+
+=== 4. Authentication system design and implementation with Keycloak
+
+In this section, we will go over how OIDC can be integrated into Beep's microservices architecture as an authentication system.
+
+Proposition (explanation of the approach, system design, how it fits into chapter I's component and diagrams), and sequence/activity diagram(s). +
+The PoC too.
+
+==== How Keyclaok handles identification+authentication+authorization
+
+Explanations, diagrams, etc.
+
+==== Connecting Keycloak with surrounding authentication mechanisms
+
+PoC with current Beep app. Google + Polytech LDAP auth into an SSO or smth.
+
+====
+**WIP and sources**
+
 list of technologies & concepts that can be used:
 
 - OAuth2
@@ -568,6 +602,7 @@ list of technologies & concepts that can be used:
 - SAML
 - Ory
 - Okta L.O.L.
+- Keycloak ofc
 - SSO
 - See how GCP (and others) do IAM.
 - more?
@@ -613,9 +648,61 @@ SAML
 https://samarthasthan.com/posts/building-a-scalable-e-commerce-empire-a-micro-services-system-design-approach/
 https://www.geeksforgeeks.org/how-discord-scaled-to-15-million-users-on-one-server/
 
+====
+
 == III. Enabling communication between services
 
 The following sections concern my proposal of design and implementations for the communication between the microservices of Beep.
+
+=== 1. Inter-services communication in a microservices architecture
+
+Briefly present the What? and Why? of inter-services communication. This should be done as a natural introduction to the next chapter (Identifying needs and constraints).
+
+=== 2. Identifying needs and constraints
+
+Talk about the needs in latency etc (see chapter I. Maybe move these to chapter 0? to be more globally referenced) and that we need a proper solution for that (so no http1.1) +
+Also talk about the fact that we'd have teams working separately and independtly => Proper API definitions. So RPCs more than an OpenAPI spec (common/shared API definitions over viewable API specifications) +
+Talk about CQRS/event-sourcing etc (their use, why they are used typically) and say that we won't use them (and why it's not considered? Find the reason?) +
+Talk/warn about the very important constraint that is that communication between microservices is something that needs to be designed well, and future proofed very well, since it's very very hard to change later (and why).
+
+==== Accounting for considerations in inter-services communication
+
+Talk about the fact that since we're not doing event-driven architecture, we need API gateway interfaces (services, if not LBs) in front of each service family, to load balance/state-aware round-robin the requests. And that if requests are lost, they'd have to be resent, they are not queued - and services don't queue to event source either.
+
+Maybe briefly talk abt tracing for the next chapters too?
+
+Needs:
+link Google auth, Polytech auth, Beep auth (and associate accounts), manage identification and authentication and them give way to authorization. And take into account the fact that, iirc, keycloak can do all three. (verify)
+
+=== 3. Comparing available technologies
+
+List and compare technologies, protocols, frameworks for communication.
+
+Mainly:
+
+RPC and REST
+
+HTTP1.1 (json) and HTTP2/QUIC/3 (binary+compression+more)
+
+Deliberate the best one under those constraints. From all I've read until now, I'm choosing gRPC, mainly over GraphQL.
+
+I want to do benchmarks... At least give numbers and cite them from existing, relevant benchmarks... (You probably won't have time to benchmark yourself. Maybe if the poc is easily interchangeable, but that's very unlikely)
+
+=== 4. Communication framework implementation with gRPC
+
+Improve earlier diagrams with gRPC interfaces, RPCs and shared/common API definitions, inter-services interactions; and present the POC.
+
+In this section, we will go over how OIDC can be integrated into Beep's microservices architecture as an authentication system.
+
+Proposition (explanation of the approach, system design, how it fits into chapter I's component and diagrams), and sequence/activity diagram(s). +
+The PoC too.
+
+Link to poc: +
+https://github.com/theotchlx/inter-services-communication +
+Should it be deployed too?? No I don't think that's smart. But readme should be clear and consise steps. + excalidraw small archi diagram in readme.
+
+====
+**WIP and sources**
 
 List of technologies that can be used:
 
@@ -706,8 +793,13 @@ https://github.com/hyperium/tonic/blob/master/examples/helloworld-tutorial.md
 https://github.com/theotchlx/inter-services-communication
 
 on vm in proxmox.
+====
 
 == IV. Authorization system design and implementation
+
+
+====
+**WIP and sources**
 
 list of technologies that can be used:
 
@@ -816,6 +908,7 @@ https://getsops.io/docs/
 It's CNCF-sandboxed. But I think it's a bit too much for now, and also this particular software doesn't seem extremely well defined/developed yet? See others.
 But it's not really a current concern in Beep. I think. I dunno!
 https://github.com/getsops/sops
+====
 
 == V. Tracing logs and queries
 
