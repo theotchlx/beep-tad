@@ -421,9 +421,17 @@ OH I KNOW!! We get rid of mobile push notifications (so no need for kafka, or th
 
 ==== Component diagram for Beep's separation into microservices
 
-These functional neighborhoods/business capabilities/... can be formally represented using a UML component diagram. Below is the components diagram describing my proposal for Beep's separation into microservices.
+These functional neighborhoods/business capabilities/... can be formally represented using a UML component diagram. Below is the resulting UML component diagram describing my proposal for Beep's separation into microservices.
 
-The resulting UML component diagram
+Methods to break down the monolith:
+
+Decompose services by business capabilities : reflect organization behavior. -> component diagram. +
+En partant du domaine (communications temps réel), on va créer les différents services. Attention aux services qui communiquent beaucoup entre eux : **combiner les services**. +
+https://12factor.net/ +
+"The philosophy of Twelve-Factor turned out to be surprisingly timeless. More than a decade later, people still find its insights valuable, and it's often cited as a solid set of best practices for application development. But while the concepts remain relevant, many of the details have started to show their age." +
+Domain-Driven Development. Application est construite sous forme d'abstractions au dessus de notre modèle.
+
+Obstacles à la décomposition : network latency, data inconsistency/interfaces, god classes (fait tout, dure à décomposer, big) and reduced availability. Énormément de contextes sont impactés.
 
 .Component diagram for Beep's separation into microservices. Made with draw.io
 image::images/fig3.component/beep-uml-component-diagram-light.svg[Component diagram showing Beep's architecture separated into microservices.]
@@ -438,60 +446,27 @@ This component diagram only illustrates components and their interactions. It is
 
 Also there isn't the frontend, surrounding load balancer and API gateway, which allows the frontend to reach API endpoints that lead to different services, and authenticate the requests via JWT.
 
-**POUR LE DIAGRAMME DES MICROSERVICES!!!!!!!!!:** https://stackoverflow.com/a/60084889
-Et avant, pour le diagramme des usages, celui avec les bonhommes
-Et un activity diagram pour chaque user story/=le service rendu par chaque microservice (=authentication, etc.). Ou un sequence diagram? J'ai encore du mal à voir la différence entre les deux.
 
-Decompose services by business capabilities : reflect organization behavior. -> component diagram.
-En partant du domaine (communications temps réel), on va créer les différents services. Attention aux services qui communiquent beaucoup entre eux : **combiner les services**.
 
-Pattern de DDDevelopment : Bounded Contexts. = Separate by subdomains. I thnik.
-https://martinfowler.com/bliki/BoundedContext.html
 
-Obstacles à la décomposition : network latency, data inconsistency/interfaces, god classes (fait tout, dure à décomposer, big) and reduced availability. Énormément de contextes sont impactés.
+Architecture bien définie avec le DDD, bounded contexts. Architecture (enables org & proc), organization (enables proc) et process de développement => rapid, frequent & reliable delivery of software. +
+**1 service = 1 responsabilité. Un service rendu. N'est responsable que d'une chose à faire.** +
+Guidelines : +
+Dur à faire mais génial : signifie une bonne séparation des services : c'est le **Common Closure Pattern**. +
+En gros, une règle business n'affecte que 1 microservice, pas deux ou plus (si cette règle évolue il faudrait modifier plusieurs services...) +
+Disons que j'ai à modifier le mode de livraison : que ça ne soit fait que dans un seul service !!! +
+**Open Closed Princple** : on veut pouvoir intégrer facilement d'autres contrats d'API sans avoir à changer le coeur de fonctionnalités !!! -> Réelle abstraction. Logique non liée aux contrats d'APIs. => Des interfaces/contrats d'API génériques (comme un filesystem : create, read, update, delete, open d'un objet générique (fichier) ET NON PAS un type de fichier spécifique. C'est toujours que des fichiers ultra génériques avec leurs mêmes attributs communs : nom, taille, permissions, etc.) +
+Quality of a service: scalable, reliable, secure, maintainable, testable, etc. +
+=> Implementable functionalities are dependent on the quality of the architecture design. Future-proof design, stays easy to update with features, good abstractions (see how good filesystems are :3) +
+Liskov principle, ouvert en extension fermé en modification (en gros les bonnes abstractions type filesystem) +
+Je veux utiliser une autre bdd. Ou en utiliser plusieurs. Service and repository pattern. Hexagonal architecture. Des adaptateurs (que l'on branche sur un port) qui permettent de réaliser des opérations qui soient indépendantes de ce qu'il y a derrière (mongodb, postgres, filesystem...!! C'est dans l'adaptateur qu'on définit ça) +
 
-Thématiques 12 factors !!!
-https://12factor.net/
-"The philosophy of Twelve-Factor turned out to be surprisingly timeless. More than a decade later, people still find its insights valuable, and it's often cited as a solid set of best practices for application development. But while the concepts remain relevant, many of the details have started to show their age."
-Domain-Driven Development. Application est construite sous forme d'abstractions au dessus de notre modèle.
 
-https://leofvo.me/articles/microservices-for-the-win
 
-Architecture bien définie avec le DDD, bounded contexts. Architecture (enables org & proc), organization (enables proc) et process de développement => rapid, frequent & reliable delivery of software.
 
-**1 service = 1 responsabilité. Un service rendu. N'est responsable que d'une chose à faire.**
 
-Guidelines :
-Dur à faire mais génial : signifie une bonne séparation des services : c'est le **Common Closure Pattern**.
-En gros, une règle business n'affecte que 1 microservice, pas deux ou plus (si cette règle évolue il faudrait modifier plusieurs services...)
-Disons que j'ai à modifier le mode de livraison : que ça ne soit fait que dans un seul service !!!
 
-**Open Closed Princple** : on veut pouvoir intégrer facilement d'autres contrats d'API sans avoir à changer le coeur de fonctionnalités !!! -> Réelle abstraction. Logique non liée aux contrats d'APIs. => Des interfaces/contrats d'API génériques (comme un filesystem : create, read, update, delete, open d'un objet générique (fichier) ET NON PAS un type de fichier spécifique. C'est toujours que des fichiers ultra génériques avec leurs mêmes attributs communs : nom, taille, permissions, etc.)
 
-Event-driven architecture, aggregates.
-Si tu veux récup touuut l'historique d'un truc pour calculer le produit final (ensemble de transactions pour la balance de mon compte en banque) -> un aggrégat, recalculé de temps en temps (pas à chaque transaction car serait lourd sur le systèmes, triggers bdd) stocke le total pour éviter d'avoir à le recalculer tlt.
-
-Data access / database transactions in microservices. Saga pattern ? Another service that knows which services to go to to answer this query to give it back to the asking service?
-
-repository : expose un contrat pour la bdd. Appelé par les autres composants du service. Reprend l'open closed principle. Classe qui permet d'accéder à tes données.
-
-http://butunclebob.com/ArticleS.UncleBob.PrinciplesOfOod
-
-Functional requirements: US, functions.
-Quality of a service: scalable, reliable, secure, maintainable, testable, etc.
-=> Implementable functionalities are dependent on the quality of the architecture design. Future-proof design, stays easy to update with features, good abstractions (see how good filesystems are :3)
-
-Liskov principle, ouvert en extension fermé en modification (en gros les bonnes abstractions type filesystem)
-
-Je veux utiliser une autre bdd. Ou en utiliser plusieurs.
-Hexagonal architecture. Des adaptateurs (que l'on branche sur un port) qui permettent de réaliser des opérations qui soient indépendantes de ce qu'il y a derrière (mongodb, postgres, filesystem...!! C'est dans l'adaptateur qu'on définit ça)
-
-Communication. Message-driven architecture.
-Comm synchrone : http de l'un à l'autre, si l'autre tombe, la comm passe pas.
-Comm asynchrone : Envoie de mail. On l'envoie. il sera stocké et reçu à un moment dès que possible quand le service de réception/envoi sera good.
-
-**API composition pattern for microservices :** un service a la connaissance des autres services, connaît les contrats API qui permettent de les faire parler entre eux : fait de la composition.
-Tu as Cours et Etudiant : le machin map les deux. Et en plus peut enrichir la donnée ! Avec dans quel service elle est passée, etc. I thnik.
 
 === 2. Proposal of separations into functional neighborhoods
 
@@ -637,7 +612,7 @@ Per directives:
 -> No message queue, CQRS or event-sourcing (so no Kafka/etc.). Sadge.
 
 - REST: http 1.1, slow, heavy
-- gRPC: RPC, common defined API interfaces, interface is sent with message (verify), http2, faster than http
+- gRPC: RPC, common defined API interfaces, interface is sent with message (verify), http2, faster than http. Oh and interface attributes are numbered!! Very important difference. Why is it even like that? Verify. Just against name uniqueness by position? What advantages does this really have to offer?
 - GraphQL: lots of formats possible (including binary formats), but DX is not very scalable I believe + security&cie concern (whole data schema is sent, it's up to the client service to filter what it wants to see)
 - Apache Thrift: 
 - Avro: interface is sent with message, binary format, can be decoded to json natively/easily(verify), natively easily integrated with Kafka
@@ -648,6 +623,15 @@ Advantages|benefis/disadvantages|drawbacks of each
 
 https://devopedia.org/inter-service-communication-for-microservices
 https://github.com/Netflix/Hystrix fault tolerant capable framework n more
+
+
+Communication. Message-driven architecture. +
+Comm synchrone : http de l'un à l'autre, si l'autre tombe, la comm passe pas. +
+Comm asynchrone : Envoie de mail. On l'envoie. il sera stocké et reçu à un moment dès que possible quand le service de réception/envoi sera good. +
+
+**API composition pattern for microservices :** un service a la connaissance des autres services, connaît les contrats API qui permettent de les faire parler entre eux : fait de la composition. +
+Tu as Cours et Etudiant : le machin map les deux. Et en plus peut enrichir la donnée ! Avec dans quel service elle est passée, etc. I thnik.
+
 
 GraphQL!!! Format binaire underlying est interchangeable !!
 Par contre faut build soit-même les APIs? à voir. Pas grave en vrai. Mais faut les modifier soi-même ??
