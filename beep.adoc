@@ -344,7 +344,7 @@ In the following, we will assume that these estimations apply.
 
 === 3. Separating Beep's user stories into functional neighborhoods, contexts and services
 
-In this section, we will classify the user stories we identified into functional neighborhoods.
+In this section, we will classify the user stories we identified into functional neighborhoods, and I will give my proposal for breaking down Beep into microservices.
 
 ==== Identifying functional neighborhoods and bounded contexts
 
@@ -423,6 +423,9 @@ OH I KNOW!! We get rid of mobile push notifications (so no need for kafka, or th
 
 These functional neighborhoods/business capabilities/... can be formally represented using a UML component diagram. Below is the resulting UML component diagram describing my proposal for Beep's separation into microservices.
 
+====
+**WIP**
+
 Methods to break down the monolith:
 
 Decompose services by business capabilities : reflect organization behavior. -> component diagram. +
@@ -432,6 +435,19 @@ https://12factor.net/ +
 Domain-Driven Development. Application est construite sous forme d'abstractions au dessus de notre modèle.
 
 Obstacles à la décomposition : network latency, data inconsistency/interfaces, god classes (fait tout, dure à décomposer, big) and reduced availability. Énormément de contextes sont impactés.
+
+Architecture bien définie avec le DDD, bounded contexts. Architecture (enables org & proc), organization (enables proc) et process de développement => rapid, frequent & reliable delivery of software. +
+**1 service = 1 responsabilité. Un service rendu. N'est responsable que d'une chose à faire.** +
+Guidelines : +
+Dur à faire mais génial : signifie une bonne séparation des services : c'est le **Common Closure Pattern**. +
+En gros, une règle business n'affecte que 1 microservice, pas deux ou plus (si cette règle évolue il faudrait modifier plusieurs services...) +
+Disons que j'ai à modifier le mode de livraison : que ça ne soit fait que dans un seul service !!! +
+**Open Closed Princple** : on veut pouvoir intégrer facilement d'autres contrats d'API sans avoir à changer le coeur de fonctionnalités !!! -> Réelle abstraction. Logique non liée aux contrats d'APIs. => Des interfaces/contrats d'API génériques (comme un filesystem : create, read, update, delete, open d'un objet générique (fichier) ET NON PAS un type de fichier spécifique. C'est toujours que des fichiers ultra génériques avec leurs mêmes attributs communs : nom, taille, permissions, etc.) +
+Quality of a service: scalable, reliable, secure, maintainable, testable, etc. +
+=> Implementable functionalities are dependent on the quality of the architecture design. Future-proof design, stays easy to update with features, good abstractions (see how good filesystems are :3) +
+Liskov principle, ouvert en extension fermé en modification (en gros les bonnes abstractions type filesystem) +
+Je veux utiliser une autre bdd. Ou en utiliser plusieurs. Service and repository pattern. Hexagonal architecture. Des adaptateurs (que l'on branche sur un port) qui permettent de réaliser des opérations qui soient indépendantes de ce qu'il y a derrière (mongodb, postgres, filesystem...!! C'est dans l'adaptateur qu'on définit ça) +
+====
 
 .Component diagram for Beep's separation into microservices. Made with draw.io
 image::images/fig3.component/beep-uml-component-diagram-light.svg[Component diagram showing Beep's architecture separated into microservices.]
@@ -447,38 +463,11 @@ This component diagram only illustrates components and their interactions. It is
 Also there isn't the frontend, surrounding load balancer and API gateway, which allows the frontend to reach API endpoints that lead to different services, and authenticate the requests via JWT.
 
 
-
-
-Architecture bien définie avec le DDD, bounded contexts. Architecture (enables org & proc), organization (enables proc) et process de développement => rapid, frequent & reliable delivery of software. +
-**1 service = 1 responsabilité. Un service rendu. N'est responsable que d'une chose à faire.** +
-Guidelines : +
-Dur à faire mais génial : signifie une bonne séparation des services : c'est le **Common Closure Pattern**. +
-En gros, une règle business n'affecte que 1 microservice, pas deux ou plus (si cette règle évolue il faudrait modifier plusieurs services...) +
-Disons que j'ai à modifier le mode de livraison : que ça ne soit fait que dans un seul service !!! +
-**Open Closed Princple** : on veut pouvoir intégrer facilement d'autres contrats d'API sans avoir à changer le coeur de fonctionnalités !!! -> Réelle abstraction. Logique non liée aux contrats d'APIs. => Des interfaces/contrats d'API génériques (comme un filesystem : create, read, update, delete, open d'un objet générique (fichier) ET NON PAS un type de fichier spécifique. C'est toujours que des fichiers ultra génériques avec leurs mêmes attributs communs : nom, taille, permissions, etc.) +
-Quality of a service: scalable, reliable, secure, maintainable, testable, etc. +
-=> Implementable functionalities are dependent on the quality of the architecture design. Future-proof design, stays easy to update with features, good abstractions (see how good filesystems are :3) +
-Liskov principle, ouvert en extension fermé en modification (en gros les bonnes abstractions type filesystem) +
-Je veux utiliser une autre bdd. Ou en utiliser plusieurs. Service and repository pattern. Hexagonal architecture. Des adaptateurs (que l'on branche sur un port) qui permettent de réaliser des opérations qui soient indépendantes de ce qu'il y a derrière (mongodb, postgres, filesystem...!! C'est dans l'adaptateur qu'on définit ça) +
-
-
-
-
-
-
-
-
-=== 2. Proposal of separations into functional neighborhoods
-
-via business capabilities of services to separate into.
-
-In this subsection, I will give my proposal to separate the Beep application into functional neighborhoods and microservices.
-
 === 3. How Beep can migrate to a microservices architecture: Breaking down the Monoliths
 
 Earlier, we saw an overview of Beep's current architecture, of the microservices architecture, and why Beep should consider migrating to a microservices architecture. +
 In the last section, we went over my proposal to separate Beep into functional neighborhoods and microservices. +
-In this section, I will give my answers to how the Beep team can break down the application into microservices.
+In this section, we will briefly go over how the Beep team can break down the application into microservices.
 
 Redefine all functionalities in the form:
 
