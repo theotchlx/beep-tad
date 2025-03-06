@@ -654,6 +654,9 @@ https://www.geeksforgeeks.org/how-discord-scaled-to-15-million-users-on-one-serv
 
 The following sections concern my proposal of design and implementations for the communication between the microservices of Beep.
 
+Pour les diagrammes, reprendre la figure 3 et mettre le gRPC / interfaces RPCs(?) / repo protobuff(?).
+Puis refaire une 5e figure qui, par dessus cette figure 4, rajoute aussi l'api gateway/+/LB, le frontend devant, et derrière, les requêtes REST aux endpoints APIs offerts par chacun des services. C'est en json? P'tet.
+
 === 1. Inter-services communication in a microservices architecture
 
 Briefly present the What? and Why? of inter-services communication. This should be done as a natural introduction to the next chapter (Identifying needs and constraints).
