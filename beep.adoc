@@ -961,6 +961,8 @@ https://geek-cookbook.funkypenguin.co.nz/kubernetes/loadbalancer/
 https://medium.com/@ferdinandklr/creating-a-production-ready-self-hosted-kubernetes-cluster-from-scratch-on-a-vps-ipv6-compatible-660aa5018feb
 MetalLB(?)
 
+"Target diagram" == "Diagramme de l'architecture cible" !!
+
 == VII. Infrastructure security
 design, implementation, automation and handling
 
