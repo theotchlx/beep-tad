@@ -92,6 +92,8 @@ In alphabetical order.
 
 //TODO: fill glossary with relevant terms and definitions.
 
+- **Use case**: A scenario for a critical user journey / etc. business etc. WIP.
+
 - **Business capability**: A business capability is a capacity a business or organization has to perform core functions, fulfill its objectives and responsibilities in a particular domain.
 
 
@@ -168,6 +170,8 @@ As students, migrating Beep to a microservices architecture is a very rewarding 
 
 Considering our currently small team, moderate resources and recent concerns, what I believe Beep needs most from the microservices architecture is mostly better fine-grained control over scalability, security and observability between and around our deployed workloads, but also to enable us to add features more seamlessly, without potentially impacting the whole system's integrity.
 //TODO: add numbers and estimations on limits, physical limits, number of users, etc. Or maybe in the next section?
+
+//TODO: cite from https://microservices.io/articles/glossary#dora-metrics
 
 == I. Separating Beep into functional neighborhoods and microservices
 
@@ -491,6 +495,9 @@ Quality of a service: scalable, reliable, secure, maintainable, testable, etc. +
 => Implementable functionalities are dependent on the quality of the architecture design. Future-proof design, stays easy to update with features, good abstractions (see how good filesystems are :3) +
 Liskov principle, ouvert en extension fermé en modification (en gros les bonnes abstractions type filesystem) +
 Je veux utiliser une autre bdd. Ou en utiliser plusieurs. Service and repository pattern. Hexagonal architecture. Des adaptateurs (que l'on branche sur un port) qui permettent de réaliser des opérations qui soient indépendantes de ce qu'il y a derrière (mongodb, postgres, filesystem...!! C'est dans l'adaptateur qu'on définit ça) +
+
+https://www.uml-diagrams.org/component-diagrams.html
+https://developer.ibm.com/articles/the-component-diagram/
 ====
 
 .Component diagram for Beep's separation into microservices. Made with draw.io
@@ -558,6 +565,18 @@ https://dzone.com/articles/10-microservices-anti-patterns-you-need-to-avoid
 - https://martinfowler.com/bliki/BoundedContext.html
 - https://martinfowler.com/articles/break-monolith-into-microservices.html
 - https://leofvo.me/articles/microservices-for-the-win
+- https://www.geeksforgeeks.org/how-discord-scaled-to-15-million-users-on-one-server/
+- https://samarthasthan.com/posts/building-a-scalable-e-commerce-empire-a-micro-services-system-design-approach/
+- https://freedium.cfd/https://medium.com/@samarthasthan/from-zero-to-millions-crafting-a-scalable-discord-with-micro-services-0e55e65f2a16
+- https://microservices.io/patterns/decomposition/decompose-by-business-capability.html
+- https://microservices.io/patterns/microservices.html
+- https://microservices.io/articles/glossary#dora-metrics
+- https://microservices.io/patterns/data/database-per-service.html
+- https://microservices.io/patterns/data/saga.html
+- https://stackoverflow.com/questions/60071074/microservices-dependencies-in-uml-diagrams
+- https://www.uml-diagrams.org/component-diagrams.html
+- https://developer.ibm.com/articles/the-component-diagram/
+- https://www.edrawsoft.com/fr/article/microservices-architecture-diagram.html
 
 == II. Managing the authentication system with OIDC
 
@@ -594,6 +613,9 @@ PoC with current Beep app. Google + Polytech LDAP auth into an SSO or smth.
 
 ====
 **WIP and sources**
+
+https://adil.medium.com/multi-container-patterns-in-kubernetes-adapter-ambassador-sidecar-40bddbe7c468
+K8s containers-in-pod patterns identified : sidecar, adapter, ambassador. (more?)
 
 list of technologies & concepts that can be used:
 
@@ -648,6 +670,19 @@ SAML
 https://samarthasthan.com/posts/building-a-scalable-e-commerce-empire-a-micro-services-system-design-approach/
 https://www.geeksforgeeks.org/how-discord-scaled-to-15-million-users-on-one-server/
 
+Random important stuff:
+event driven architecture and aggregates
+saga pattern
+service that redirects microservices
+service and repository pattern
+http://butunclebob.com/ArticleS.UncleBob.PrinciplesOfOod
+https://medium.com/microsoftazure/certificate-pinning-for-mtls-authentication-at-the-istio-ingress-gateway-978ed31699ab
+https://www.youtube.com/watch?v=vJweuU6Qrgo
+https://www.geeksforgeeks.org/how-discord-scaled-to-15-million-users-on-one-server/
+activity diagram for authentication
+keycloak activity diagram
+activity vs sequence diagram
+
 ====
 
 == III. Enabling communication between services
@@ -689,7 +724,13 @@ RPC and REST
 
 HTTP1.1 (json) and HTTP2/QUIC/3 (binary+compression+more)
 
-Deliberate the best one under those constraints. From all I've read until now, I'm choosing gRPC, mainly over GraphQL.
+Deliberate the best one under those constraints. From all I've read until now, I'm choosing gRPC, mainly over GraphQL.  +
+From what I'm seeing, GraphQL and gRPC are opposites when compared on one of my favorites software development philosophies to follow: smart data structures for simple code over dumb data structures and complex code.  +
+GraphQL is the dumb data structure for complex code, and gRPC is the smart data structure for simple code. GraphQL is a query language that allows the client to request only the fields it needs, and nothing more. This means that the client has to filter the data it receives, and that the server has to send all the data it has. Blahblahblah. +
+Plus extremely heavy and intertwined configuration... What the fuck, graphql?? +
+What do you mean I gotta rewrite my schema in yaml for you?? AND THEN IN JSON?? IN ADDITION TO YOUR SDL??? Deduplicate even that??
+
+graphql needs a LOT of work to be proper. And then to grow it. It may offer some bandwidth advantages MAYBE. If done right that is. But disadvantages in other ways such as confidentiality? Idk. I think performance issues. Idk.
 
 I want to do benchmarks... At least give numbers and cite them from existing, relevant benchmarks... (You probably won't have time to benchmark yourself. Maybe if the poc is easily interchangeable, but that's very unlikely)
 
@@ -885,7 +926,7 @@ OTEL : très bien pour les traces. Attention Beta pour Rust. Metrics pas mal, lo
 
 https://prometheus.io/docs/introduction/overview/
 
-Elasticsearch pr données à bcp de cardinalité
+Elasticsearch pr données à bcp de cardinalité. Kibana
 Sinon Loki
 (entendu à conf cncf grafana sur OTEL)
 
@@ -965,6 +1006,10 @@ https://medium.com/@ferdinandklr/creating-a-production-ready-self-hosted-kuberne
 MetalLB(?)
 
 "Target diagram" == "Diagramme de l'architecture cible" !!
+
+How? to put this in place
+
+Like google: Dev measured in agility, ops measured in stability of product? No, makes quarrels (cuz change breaks stability) -> SRE approach = budget d'availability (25.9s à 99.999% par exemple). Availability : client's metrics ! Product/service/site must be ...(use cases/scenarios/critical user journey) (available, fast, provide good stuff, etc.). -> dev push push push... Until unavailability time is épuisé -> mains levées du clavier et ops et dev se concentrent sur availability.
 
 == VII. Infrastructure security
 design, implementation, automation and handling
