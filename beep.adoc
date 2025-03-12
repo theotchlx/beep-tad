@@ -961,6 +961,9 @@ https://getsops.io/docs/
 It's CNCF-sandboxed. But I think it's a bit too much for now, and also this particular software doesn't seem extremely well defined/developed yet? See others.
 But it's not really a current concern in Beep. I think. I dunno!
 https://github.com/getsops/sops
+
+Service mesh: Istio, Linkerd
+Mutual TLS (mTLS) encryption for secure inter-service communication
 ====
 
 == V. Tracing logs and queries
@@ -1010,6 +1013,9 @@ MetalLB(?)
 How? to put this in place
 
 Like google: Dev measured in agility, ops measured in stability of product? No, makes quarrels (cuz change breaks stability) -> SRE approach = budget d'availability (25.9s à 99.999% par exemple). Availability : client's metrics ! Product/service/site must be ...(use cases/scenarios/critical user journey) (available, fast, provide good stuff, etc.). -> dev push push push... Until unavailability time is épuisé -> mains levées du clavier et ops et dev se concentrent sur availability.
+
+Service mesh: Istio, Linkerd
+Mutual TLS (mTLS) encryption for secure inter-service communication
 
 == VII. Infrastructure security
 design, implementation, automation and handling
