@@ -578,6 +578,12 @@ https://dzone.com/articles/10-microservices-anti-patterns-you-need-to-avoid
 - https://developer.ibm.com/articles/the-component-diagram/
 - https://www.edrawsoft.com/fr/article/microservices-architecture-diagram.html
 
+====
+WIP
+
+Listen to DIS https://www.youtube.com/watch?v=rv4LlmLmVWk
+====
+
 == II. Managing the authentication system with OIDC
 
 === 1. OpenID Connect, OAuth2 and Beep
@@ -683,6 +689,13 @@ activity diagram for authentication
 keycloak activity diagram
 activity vs sequence diagram
 
+https://discord.com/developers/docs/topics/oauth2
+Find Discord's OAuth flow of authentication?
+
+
+https://developer.okta.com/blog/2019/10/21/illustrated-guide-to-oauth-and-oidc
+OAuth 2.0 is designed only for authorization, for granting access to data and features from one application to another. OpenID Connect (OIDC) is a thin layer that sits on top of OAuth 2.0 that adds login and profile information about the person who is logged in. Establishing a login session is often referred to as authentication, and information about the person logged in (i.e. the Resource Owner) is called identity. When an Authorization Server supports OIDC, it is sometimes called an identity provider, since it provides information about the Resource Owner back to the Client.
+https://developer.okta.com/blog/2019/10/21/illustrated-guide-to-oauth-and-oidc#learn-more-about-oauth-and-oidc
 ====
 
 == III. Enabling communication between services
@@ -846,6 +859,12 @@ microservice communication best practices
 microservice communication protocols
 microservice communication patterns
 microservice communication pitfalls
+
+TALK ABT asynchronous/synchronous comms. between microservices https://youtu.be/uprdxlQ1U5g?t=589
+How to do async. comms. without kafka/RabbitMQ or the other things forbidden?
+
+https://www.youtube.com/watch?v=16fgzklcF7Y omg nana
+https://www.youtube.com/watch?v=voAyroDb6xk NYAHHAHAHAHAH
 ====
 
 == IV. Authorization system design and implementation
