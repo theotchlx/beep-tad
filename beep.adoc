@@ -875,13 +875,22 @@ https://www.youtube.com/watch?v=voAyroDb6xk NYAHHAHAHAHAH
 ====
 **WIP and sources**
 
+Permify/OPA/Kyverno. ATTENTION policies infra/network VS policies applicatives !!! ATTENTION!!! Gérer les policies applicatives (mon user dans mon serveur) fait peut être partie de la logique service!!! Voir D'ABORD des vidéos/sites ou autre qui expliquent comment on gère les permissions d'une application/applicatives dans une architecture microservices.
+
+https://zanzibar.academy/
+Google zanzibar.
+
+ReBAC (relation-based access control)
+
+Permify has a playground: https://play.permify.co/
+
 list of technologies that can be used:
 
 - OPA
 - Oso
 - Keycloak
 - Permify
-- Ory
+- Ory (keto?)
 - See how GCP (and others) do IAM.
 - more?
 
@@ -935,7 +944,7 @@ https://istio.io/
 
 Istio + OPA
 
-Istio vs linkerd
+Istio vs linkerd (both cncf btw)
 
 Keycloak (and why not authentik)
 
