@@ -944,7 +944,7 @@ https://istio.io/
 
 Istio + OPA
 
-Istio vs linkerd (both cncf btw)
+Istio vs linkerd (both cncf btw) kiali: console for istio
 
 Keycloak (and why not authentik)
 
@@ -965,6 +965,8 @@ https://opentelemetry.io/docs/specs/otlp/
 https://cloud.google.com/iam/docs/roles-overview
 
 https://medium.com/@sadoksmine8/understanding-identity-and-access-management-iam-in-gcp-a-detailed-exploration-57030ec37609
+
+permify vs keto
 
 Permify : authorization for microservices. + patterns !!
 https://play.permify.com
@@ -994,6 +996,20 @@ https://github.com/getsops/sops
 
 Service mesh: Istio, Linkerd
 Mutual TLS (mTLS) encryption for secure inter-service communication
+
+fully externalized authorization:
+pros:
+- no workload on the targeted service
+- no authori to handle in the service
+cons:
+- Scattered logic : too much logic on the authorization software...
+- Heavy workload on authori software = even more of a SPOF!!
+Duplique de la logique : check d'auth en amont mais svc doit redemander si a le droit au sys d'auth etc etc.... -> Alors qu'on aurait pu juste check l'authorization au moment de la logique ds le service.
+Éviter aussi que le truc d'auth doive faire de la recherche en bdd.. Pas fait pour souvent en plus.. (plutôt fait pour renvoyer oui/non mdr)
+
+On a le mapping des ressources et les auth qui en découle. Pas avoir ça dans les bdd de chaque service (pr préserver leur indépendeance).
+Donc le svc d'auth va requeter SA bdd. et tu as la logique d'auth dans TON service.
+Donc en gros ce qu'il faut (car c'est génial un syst d'authorization externe centralisé) c'est d'avoir la logique d'authorization dans chaque service, mais les règles/mappings entre ressources et les auths qui en découlent DANS le service d'authorization.
 ====
 
 == V. Tracing logs and queries
@@ -1048,6 +1064,8 @@ Service mesh: Istio, Linkerd
 Mutual TLS (mTLS) encryption for secure inter-service communication
 
 Each team works on its service's logic. And a networks team + ... team works on the sidecar proxies (fault tolerance/circuit breakers: link my poc; auth; etc...)
+
+cockroachdb
 
 == VII. Infrastructure security
 design, implementation, automation and handling
