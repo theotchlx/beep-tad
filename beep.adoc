@@ -698,6 +698,19 @@ OAuth 2.0 is designed only for authorization, for granting access to data and fe
 https://developer.okta.com/blog/2019/10/21/illustrated-guide-to-oauth-and-oidc#learn-more-about-oauth-and-oidc
 
 Oauth, OIDC, identity **and access* managers: provide authentication (oauth), user identity (surcouche oidc de oauth), et parfois aussi gère l'authorization/perms! Genre okta : "and access" manager.
+
+JWT: bien pour avoir des sessions (date d'expiration)
+Ne pas mettre de data sensible
+PAS DE SYSTÈME DE RÉVOCATION!! On les révoque dans le système manuellement en les supprimant... C pas dans la spec. (biscuit y a pensé, voir plus bas chap IV)
+Le chiffrement du jwt dépend du SDK qui l'a créé.. Peut être passoir, si pas config, etc. Et si tu connais le SDK, tu peux crack.
+-> Alternative : PASETO (Platform Agnostic Secure Token) : version specific protocols, up-to-date, secure cryptographic algorithms
+Purpose explicit: public and private/local(server-side) tokens.
+Plus possible de changer l'algo de chiffrement sur le haeder déchiffré du token, et signature obligatoire. Meilleures règles d'inmplémentation/fiabilité en gros.
++ système de révocation. + le fait que t'ai la partie locale sur le service = on sait/est sûr de quel service l'a créé, nativement un peu en gros.
+https://permify.co/post/jwt-paseto/
+
+Oauth : juste la clé pour la serrure
+OIDC : toute l'identité raccrochée qui va avec.
 ====
 
 == III. Enabling communication between services
@@ -1010,6 +1023,15 @@ Duplique de la logique : check d'auth en amont mais svc doit redemander si a le 
 On a le mapping des ressources et les auth qui en découle. Pas avoir ça dans les bdd de chaque service (pr préserver leur indépendeance).
 Donc le svc d'auth va requeter SA bdd. et tu as la logique d'auth dans TON service.
 Donc en gros ce qu'il faut (car c'est génial un syst d'authorization externe centralisé) c'est d'avoir la logique d'authorization dans chaque service, mais les règles/mappings entre ressources et les auths qui en découlent DANS le service d'authorization.
+
+Biscuit : système d'authorization décentralisé
+Datalog (basé sur prolog)
+Token/JWT attenuation (When making the JWT, remake it from the request to minimally scope the authorizations). Donc au lieu de taper un système, tout est déjà scopé dans le JWT. la logique d'authorization est dans ton service.
+https://www.biscuitsec.org/
+https://github.com/eclipse-biscuit/biscuit
+Les SDKs/CLI/... créent le token de manière à ce qu'il 
+https://www.youtube.com/watch?v=v7JkOxSG4gI
+https://www.clever-cloud.com/blog/engineering/2021/04/12/introduction-to-biscuit/
 ====
 
 == V. Tracing logs and queries
@@ -1025,6 +1047,8 @@ how does tracing work microservices
 https://www.youtube.com/watch?v=XYvQHjWJJTE
 
 == VI. Setting up a production ready system
+
+FAULT TOLERANCE HEEHETEEHEEEEHEE
 
 cia triad
 principle of privilege (including in service mesh)
@@ -1066,6 +1090,43 @@ Mutual TLS (mTLS) encryption for secure inter-service communication
 Each team works on its service's logic. And a networks team + ... team works on the sidecar proxies (fault tolerance/circuit breakers: link my poc; auth; etc...)
 
 cockroachdb
+
+Mettre des UUIDs v4 ou v7 en bdd plutôt que incrémentaux, pour éviter que les attaquants puissent juste incrémenter l'ID pour trouver les autres users et voler toutes les infos des users ds la bdd.
+Aussi UUID v4 a plus de chances de clasher quand on en génère beaucoup d'un coup. UUIDv7 ajoute un timestamp. Donc en plus d'être plus unique, ça peut être trié, optimiser l'indexation, etc.
+https://www.uuidgenerator.net/
+Les UUIDv4 étaient trop rapides à faire : plus faciles à bruteforce. Les UUIDv7 sont un peu plus longs à générer... Mais exprès. Pour que ça soit plus dur à brute force.
+Genre ont rajouté des calculs de courbes elliptiques exprès pour que ça soit plus complexe en calcul et hasard, et que ça prenne plus de temps.
+
+TLS : va que dans un sens client-serveur. Le client sait qui est le serveur mais le serveur sait pas.
+
+QUIC (Quick UDP Internet Connections) : TLS + UDP. Gagne du temps/vitesse sur les handshakes TCP (et/ou TLS?). Et gestion de stream.
+Streaming dans la spec de TCP est rarement/efficiement bien implémenté.
+Rapidifie de bcp le first content load dûes aux handshakes TLS?
+
+mTLS : davantage confiance au client. Mutual authentication: improve trust.
+
+TLS : le serveur est vérifé et le client peut lui faire confiance.
+mTLS : le serveur peut aussi faire confiance au client! Peut plus sniffer.
+Il faut aussi des règles de sécurité. Pour complètement éviter le MITM.
+
+RGPDR : quand user demande à ce que ses data soit del, cela inclue aussi les backups de bd !
+Taille max de data chiffrable par clé = dépend de la taille de la clé. C'est aussi une des raisons pour laquelle on utilise des clés symmétriques.
+
+Toutes les données utilisateurs sont chiffrées : email, nom, mdp.
+
+Tradeoff qualité chiffrement et temps de création du secret. Par contre plus de temps = beaucoup plus dur de déchiffrer pour l'attaquant.
+
+Bcrypt: itère sur un nb de tour. Utilise du sel (aléatoire)
+GPUs pour paralléliser calculs : se prévenir d'attaques de crackage psswd par GPU : Argon2. Restreint l'usage mémoire. Optimisé pour la résistance contre les GPUs. => cryptomonnaies, applis avec moins de risques de side channel attacks.
+Plus lent que bcrypt tho. Donc pour un usecase anti-GPU.
+
+Les clés qui chiffrent les data en bdd... Sont aussi en bdd. Si je supprime la clé on peut faire un système qui clean les data user dans toutes les bdd. Avec les saga pattern.
+Mais les clés sont dans une autre bd du coup? Ou dans la bd de chaque service, clés diffs chiffrent données diffs?
+
+Ou les clés sont côté client. D'autres PBs (perdre sa clé, voler, ...) Mais plus de confidentialité.
+
+Ou split la clé privée en morceaux, et il les faut tous !! (Horcrux) https://github.com/jesseduffield/horcrux
+Vault fait ça ?
 
 == VII. Infrastructure security
 design, implementation, automation and handling
