@@ -6,6 +6,65 @@ Théo Tchilinguirian <theo.tchilinguirian@etu.umontpellier.fr>
 //:sectnums:
 //:partnums: These two are for auto-generated chapter/section numbers! Can be configured I believe.
 
+// "Je ne connais pas Beep, comment est-ce que Beep est construite ?"
+// Ce support devrait pouvoir être ressorti tout de suite en cas de crise. Pour savoir quoi faire, et puis où et comment.
+// En cas de crise, litige, et plus.
+
+// Dans ce document, on ne dit "On peut utiliser telle (ou telle) techno.". Ce n'est pas un document de débat, c'est un document de CHOIX réalisés. **Il n'y a même pas d'intérêt d'exposer la logique du choix !!!**
+// Le DAT décrit quelque chose qui doit exister.
+// Par contre on peut justifier le choix : on a fait ce choix CAR ...
+// Mais on ne fait pas une étude préalable de conception dans le DAT. La logique de choix n'est pas exprimée, mais pour quelle raison ce choix a été fait, si, c'est possible. "Parce que ceci, nous utiliserons ceci". Et non pas "Nous pourrions utiliser x, y, z; parce que W nous allons utiliser y".
+
+// Ne PAS non plus décrire la techno !!!!!!!!!!!!!!!!!!! Par contre, mettre les réferences !! Linker les docs/URLs/... !!!!!
+// Soit le gars connaît et fait OK, soit le gars ne connaît pas et va voir la doc.
+
+// En ces règles, viser l'exhaustivier.
+
+// Faire d'abord une vision globale des parties, puis découper pour zoomer.
+
+// Ne pas documenter l'existant.
+
+// Ne pas documenter ce qui est voué à changer du type les versions des logiciels.
+
+// Erreurs : Travailler seul, créer un document unique (on préfère les wikis en prod), séparer le DAT et la doc (doit être utile, servir comme de la doc), rédiger en début de projet sans révision : il faut faire des révisions en cours de route (avec un premier jet au début), mettre des procédures d'installation de trucs dedans (pire : captures d'écran de ces installs), négliger les schémas.
+
+// Définir au début les mots qui ont plusieurs définitions. Et TOUJOURS s'en tenir au même mot !!! Et garder le même : parler parfois de ram et de mémoire, de cpu et de processeur, de disque et de ssd. Pas de synonyme, et pas de mots qui ont plusieurs sens.
+
+// -> Déployer plusieurs "wikis" adoc : 1 avec comment rédiger un tad, 1 pour chaque cellule de prise de décision et comparaison de choix technologiques/..., 1 pour le TAD. P'tet d'autres ? Aussi 1 wiki par POC et truc technique/doc d'installation/conf... !! On peut décrire le POC dans le TAD.
+// On dit pas pourquoi on a pas pris les autres solutions. On dit plutôt pourquoi on a pris cette solution. Et on pousse ça avec un POC. Si le poc marche pas on arrive pas à faire le truc, on change de techno.
+
+// Pour les choix techniques, entre experts, ça peut facilement éclater. Cellules de prises de décisions :
+//Synchrone
+//repartir du pb
+//maximum de scénarios
+//consentement plutôt que consensus
+//que ce soit searchable et soit notifié
+//Titre (status draft/proposal/accepted/deprecated/superseeded by et date yyyy-MM-dd), contexte, options considérés, conséquences (techniques, organisationnelles, financières), conseils, références. -> Responsabilité collective, rapport de la prise de décision. Le TAD est un recueil de ces décisions qui sont dans ce cas prises tout seul.
+// C'est une instance de décision. Mène le plus souvent à une màj du TAD.
+
+// Dans le TAD, ne pas non plus parler de comment l'équipe devrait s'organiser pour implémenter ces technos.
+
+// TAD : on est toujours à la cible (avec du contexte, tho? Hmm. Pas des chapitres de contexte quoi. ?). C'est toujours le X de la cible.
+
+// Ne pas expliquer tel ou tel système ou quoi que ce soit.
+// => Parler des concepts, donner le moyen de l'implémenter.
+// Décrire le système qu'on vise.
+// Être exhaustif. Que tous les sujets soient traités, et correctement.
+
+// L'incontournable, à respecter absolument, c'est que les questions soient répondues
+
+
+// Revues de nos TADs:
+// Le plan ne doit pas être les questions. C'est un DAT qui est attendu !! Il faut cependant répondre aux questions. Ou peut être qu'il voulait dire que ça doit pas être des questions avec un "?" dans le titre ?
+// Qu'une seule langue
+// Pas donner de définitions : soit je sais ce que c'est soit il y a une réf à la doc de la techno, ou une définition du terme en début de document.
+
+// Le TAD intervient APRÈS les documents de conception qui détaillent les choix.
+
+// Le texte doit projeter quelque chose de plus que les schémas !!!!!! (paraphraser un schéma c'est non. Le décrire oui, ou ajouter un truc en plus en texte. Genre PAS dire alors sur ce schéma d'abord ça puis ça.... c déjà définit par le schéma.)
+// Mettre plus de principes pour rentrer dans le contexte
+
+
 **My guide to this TAD**
 
 ====
@@ -104,6 +163,8 @@ In alphabetical order.
 In the following sections, I will provide a brief overview of Beep, why it exists, its current architecture, what a microservices architecture is, and why Beep should consider migrating to a microservices architecture.
 
 === Current state of Beep
+
+// "état de l'art" ?
 
 Beep is a platform for sharing and communicating with friends communities. With Beep, you have instant messaging, file sharing, real-time voice and video. It's entirely free, and the code is soon to be open sourced.
 
@@ -513,6 +574,8 @@ This component diagram only illustrates components and their interactions. It is
 
 Also there isn't the frontend, surrounding load balancer and API gateway, which allows the frontend to reach API endpoints that lead to different services, and authenticate the requests via JWT.
 
+// TODO: maybe consider the database-per-service pattern here, and in the diagram (representing them).
+
 === 4. How Beep can be migrated to a microservices architecture: breaking down the monolith
 
 Earlier, we saw an overview of Beep's current architecture, of the microservices architecture, and why Beep should consider migrating to a microservices architecture. +
@@ -590,7 +653,9 @@ The following sections concern my proposal to integrate Open ID Connect authenti
 
 === 1. Authentication requirements
 
-In this section, we will discuss the functionnalities and requirements we need from Beep's authentication mechanism.
+In this section, we will discuss the functionnalities and requirements we need from Beep's authentication mechanism, as well as possible constraints.
+
+==== Authentication requirements
 
 Beeps needs to provide the following authentication mechanisms:
 
@@ -608,7 +673,38 @@ OIDC will be Keycloak
 A user can log in with his Polytech account (=> Polytech LDAP access via OIDC - to be taken into account in your deployment scheme)
 A user can associate his user account with a Google account
 
-=== 2. Keycloak as an external OIDC provider
+Needs:
+link Google auth, Polytech auth, Beep auth (and associate accounts), manage identification and authentication and them give way to authorization. And take into account the fact that, iirc, keycloak can do all three. (verify)
+
+==== Authentication constraints
+
+Should Beep store user data, have access to user data? RGPD? Deleting an account and all associated data, as well as from backups?
+
+Constraints/limits:
+- User data privacy:
+- User data security:
+- User data integrity:
+- User data availability:
+
+=== 2. OpenID Connect, OAuth2 and Beep
+
+Very briefly present the What? and Why? of these protocols, as an introduction to the next section: How?
+
+=== 3. Comparing available technologies
+
+Brief section +
+List of tech stacks for OIDC and identification+authentication system, with comparisons, benefits, drawbacks; if possible benchmarks (as pocs).
+
+No benchmarks (as pocs) because no time + keycloak constraint makes dis double-dumdum.
+
+=== 4. Authentication system design and implementation with Keycloak
+
+In this section, we will go over how OIDC can be integrated into Beep's microservices architecture as an authentication system.
+
+Proposition (explanation of the approach, system design, how it fits into chapter I's component and diagrams), and sequence/activity diagram(s). +
+The PoC too.
+
+=== 4. Keycloak as an OIDC provider
 
 In this section, we will go over Keycloak, the technology chosen to manage authentication in Beep.
 
@@ -616,7 +712,7 @@ In this section, we will go over Keycloak, the technology chosen to manage authe
 
 Keycloak provides the following features:
 
-- External authentication manager thingy
+- (External ?) authentication manager thingy OIDC provider
 - Identity Brokering and Social Login (setup through admin console, no code needed)
 - User Federation: built-in support to connect to existing LDAP or Active Directory servers.
 - Single-Sign On (SSO) which we need for apofenzioxnw
@@ -647,7 +743,7 @@ OAuth is authz. OIDC is an authn, identity super-layer. I believe.
 
 > With microservice architectures, one of the most used authentication type is OIDC (OpenID Connect), which adds authentication functionality to the OAuth2 protocol used for the authorization part with JWT Token. An open source popular identity provider used for this purpose is Keycloak. Other commercial OIDC alternatives include Okta, AUth0, Microsoft Azure Active Directory (AD), AWS Cognito and so on.
 
-=== 3. re-archiecting with keycloak authenticaiton service etc consideration taken in mind
+=== 5. Microservices architecture re-design considering Keycloak integration
 
 In this section
 Let us update our architecture diagram from part one to include Keycloak as an authentication service.
@@ -655,6 +751,22 @@ Let us update our architecture diagram from part one to include Keycloak as an a
 keycloak, api-gateway, services hidden behind in DMZ...
 
 Keycloak replacing the user service? Or being its database? (what about preferences, etc?) -> What can it store, what can it do.
+
+
+API Gateway Considerations:
+
+- The API Gateway can handle request authentication by verifying JWT tokens issued by Keycloak.
+- It can also route requests to the appropriate microservices based on the user's identity and permissions.
+
+Possible Architecture:
+
+- Keycloak → Handles authentication (login, token issuance, session management).
+- API Gateway → Enforces authentication & authorization before routing requests.
+- User Service → Manages user-related data beyond authentication.
+- Other Microservices (Chat, Call, Search, etc.) → Consume user identity from JWT.
+
+About what Keycloak can store, it's authentication-related information (username, password, email; roles, groups; authentication settings such as MFA, login attemps, sessions; OIDC tokens, SSO and stuff)
+So the User service would still need a database to store user preferences, settings, in-apps stats or whatever, ... -> Decouple authentication logic from application logic. And more stuff.
 
 ==== Why an api gateway/why network zones/network zones separation
 
@@ -680,29 +792,6 @@ Maybe use keycloak only for user management identity and authentication, and for
 
 RBAC on user, then OPA/Permify/... for ABAC/PBAC/ReBAC/...? Or all authz via keycloak? Lelz. ? ??
 > access tokens are also used by the underlying services for the role-based user authorization part. Roles are defined on Keycloak, assigned to users and included in the access tokens.
-
-=== 1. OpenID Connect, OAuth2 and Beep
-
-Very briefly present the What? and Why? of these protocols, as an introduction to the next section: How?
-
-=== 2. Identifying needs and constraints
-
-Needs:
-link Google auth, Polytech auth, Beep auth (and associate accounts), manage identification and authentication and them give way to authorization. And take into account the fact that, iirc, keycloak can do all three. (verify)
-
-=== 3. Comparing available technologies
-
-Brief section +
-List of tech stacks for OIDC and identification+authentication system, with comparisons, benefits, drawbacks; if possible benchmarks (as pocs).
-
-No benchmarks (as pocs) because no time + keycloak constraint makes dis double-dumdum.
-
-=== 4. Authentication system design and implementation with Keycloak
-
-In this section, we will go over how OIDC can be integrated into Beep's microservices architecture as an authentication system.
-
-Proposition (explanation of the approach, system design, how it fits into chapter I's component and diagrams), and sequence/activity diagram(s). +
-The PoC too.
 
 ==== How Keyclaok handles identification+authentication+authorization
 
@@ -995,6 +1084,8 @@ Google zanzibar.
 ReBAC (relation-based access control)
 
 Permify has a playground: https://play.permify.co/
+
+Keto/permify/opa
 
 list of technologies that can be used:
 
