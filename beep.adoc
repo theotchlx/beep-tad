@@ -58,11 +58,22 @@ Théo Tchilinguirian <theo.tchilinguirian@etu.umontpellier.fr>
 // Le plan ne doit pas être les questions. C'est un DAT qui est attendu !! Il faut cependant répondre aux questions. Ou peut être qu'il voulait dire que ça doit pas être des questions avec un "?" dans le titre ?
 // Qu'une seule langue
 // Pas donner de définitions : soit je sais ce que c'est soit il y a une réf à la doc de la techno, ou une définition du terme en début de document.
+// Vérifier avec Léo qu'on vise les bons attendus.
+// EXPLICITER LES CHOIX : pourquoi on découpe de telle manière de telle manière...
+
+// Dans les dimensionnements, ne pas dire les dimmensionnements finaux. (genre 8 machines avec 2 gigas de ram) Mais les faire par tranche de 1000 utilisateurs par exemple (comme j'ai fait). C'était très bien comme dimmensionnement.
+// Faire attention aux schémas qui mixent vue applicative et vue physique (apps et serveur et machin... Ambigus, pas clair, trop de choses, pas assez scope, introduits de la confusion dans la tête de lae lecteur.ice)
 
 // Le TAD intervient APRÈS les documents de conception qui détaillent les choix.
 
+// Pas de diagrammes fouillis. Ni illisibles. Bien les creuser.
+// Le garder pour toi si c'est compréhensible que pour toi. Peut mettre en annexe au pire.
+
 // Le texte doit projeter quelque chose de plus que les schémas !!!!!! (paraphraser un schéma c'est non. Le décrire oui, ou ajouter un truc en plus en texte. Genre PAS dire alors sur ce schéma d'abord ça puis ça.... c déjà définit par le schéma.)
 // Mettre plus de principes pour rentrer dans le contexte
+
+// Être objectif, non ambigü. Pas subjectif. "Parce que c'est pratique" non. "parce ce que c'est pratique CAR..." ouais.
+
 
 
 **My guide to this TAD**
