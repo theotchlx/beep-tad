@@ -55,7 +55,7 @@ Théo Tchilinguirian <theo.tchilinguirian@etu.umontpellier.fr>
 
 
 // Revues de nos TADs:
-// Le plan ne doit pas être les questions. C'est un DAT qui est attendu !! Il faut cependant répondre aux questions. Ou peut être qu'il voulait dire que ça doit pas être des questions avec un "?" dans le titre ?
+// Le plan ne doit pas être les questions. C'est un DAT qui est attendu !! Il faut cependant répondre aux questions. Ou peut être qu'il voulait dire que ça doit pas être des questions avec un "?" dans le titre ? ATTENTION NON EN FAIT pour le plan du TAD il faut pas que ce soit les questions ni même dans le même ordre. Il faut répondre aux questions, qu'elles apparaissent en sous-parties ou qu'elles soient dans le contenu simplement. Voir ses exemples de TAD.
 // Qu'une seule langue
 // Pas donner de définitions : soit je sais ce que c'est soit il y a une réf à la doc de la techno, ou une définition du terme en début de document.
 // Vérifier avec Léo qu'on vise les bons attendus.
@@ -74,6 +74,30 @@ Théo Tchilinguirian <theo.tchilinguirian@etu.umontpellier.fr>
 
 // Être objectif, non ambigü. Pas subjectif. "Parce que c'est pratique" non. "parce ce que c'est pratique CAR..." ouais.
 
+// Lexique en haut qui définit les termes : En quelques lignes.
+// Toujours donner le sens : le pourquoi. (le Why).
+
+// Définir un POC : Objectifs du POC, pourquoi et comment j'ai intégré ça dans l'app (lier ça avec les estimations du début), résultats, enseignements.
+
+// Vérifie pas la pertinence des choix. Vérifie qu'il y a un choix et qu'il colle/est cohérent avec le reste.
+
+// Citer les bonnes pratiques est pas une mauvaise idée, SURTOUT si on les applique ! ("j'ai appliqué ça car...").
+
+// Ne pas mettre de conf/tech dans le tad.
+
+// Dans les descriptions exhaustives dans le TAD, pas aller jusqu'aux partitions des disques quand on parle des solutions. C'est ici un choix trop près de l'install.
+
+// Ne pas mettre des mots tq "flux" sans ce qui le définit après "flux financier" et pas sans l'avoir définit au préalable... Et utilisé partout pareil et sans synonyme.
+
+// Matrices de flux ! Tableau avec machine sources vers machines destinations. Avec à chaque fois protocol et port source et destination. Ce qui passe d'une machine vers les autres. À donner dans le TAD.
+
+// Matrice de gestion des certificats (pour mTLS ig) !!
+
+// Se co-aider sur la rédaction des documents
+
+// Définir et schéma aussi pour la partie infra!!!!!!!!
+
+// Commit le pdf!!! P'tet aussi déployer en tant que wiki/site, ...
 
 
 **My guide to this TAD**
@@ -573,7 +597,10 @@ https://developer.ibm.com/articles/the-component-diagram/
 ====
 
 .Component diagram for Beep's separation into microservices. Made with draw.io
-image::images/fig3.component/beep-uml-component-diagram-light.svg[Component diagram showing Beep's architecture separated into microservices.]
+image::images/fig3.component/beep-uml-component-diagram-light.svg[Component diagram showing Beep's architecture separat
+ed into microservices.]
+
+//TODO: refaire un second diagramme de composants avec des blocs au lieu des services et dedans deux composants : l'applicatif et la bdd associée.
 
 Reading a component diagram: components are strictly logical, design-time constructs. The idea is that you can easily reuse and/or substitute a different component implementation in your designs because a component encapsulates behavior and implements specified interfaces.
 
@@ -1246,6 +1273,8 @@ snowflake UUIDs (UUIDv7 = snowflakes?) to sort chronologically and etc
 
 how does tracing work microservices
 https://www.youtube.com/watch?v=XYvQHjWJJTE
+
+Tracer les DENYs... Mais aussi les accès.
 
 == VI. Setting up a production ready system
 
