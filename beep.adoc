@@ -586,6 +586,101 @@ Listen to DIS https://www.youtube.com/watch?v=rv4LlmLmVWk
 
 == II. Managing the authentication system with OIDC
 
+The following sections concern my proposal to integrate Open ID Connect authentication to Beep.
+
+=== 1. Authentication requirements
+
+In this section, we will discuss the functionnalities and requirements we need from Beep's authentication mechanism.
+
+Beeps needs to provide the following authentication mechanisms:
+
+- User can connect to Beep via their Polytech account.
+- User can connect to Beep via their Google account.
+- User can associate their Google and Beep accounts.
+- Single-sign on (SSO), allowing users to connect via their Polytech account or Google account.
+
+To provide these authentication services, Beep needs to integrate the Open ID Connect (OIDC) protocol, which standardizes authentication, identification and authorization processes between systems that provide authentication.
+Polytech uses the Lightweight Directory Access Protocol (LDAP), which is why we can't associate a Beep account to a Polytech account????
+First of all, the authentication system will be managed by Keycloak, an identity and access management platform
+
+---
+OIDC will be Keycloak
+A user can log in with his Polytech account (=> Polytech LDAP access via OIDC - to be taken into account in your deployment scheme)
+A user can associate his user account with a Google account
+
+=== 2. Keycloak as an external OIDC provider
+
+In this section, we will go over Keycloak, the technology chosen to manage authentication in Beep.
+
+[Keycloak](https://www.keycloak.org/) is an [open source](https://github.com/keycloak/keycloak) identity and access management server/service.
+
+Keycloak provides the following features:
+
+- External authentication manager thingy
+- Identity Brokering and Social Login (setup through admin console, no code needed)
+- User Federation: built-in support to connect to existing LDAP or Active Directory servers.
+- Single-Sign On (SSO) which we need for apofenzioxnw
+- OIDC provider
+- RBAC (role based) authz AND "fine grained": If role based authorization doesn't cover your needs, Keycloak provides fine-grained authorization services as well. This allows you to manage permissions for all your services from the Keycloak admin console and gives you the power to define exactly the policies you need.
+
+- Add authentication to applications and secure services with minimum effort.
+- No need to deal with storing users or authenticating users.
+- Keycloak provides user federation, strong authentication, user management, fine-grained authorization, and more. 
+
+POC: `docker run --name keycloak -p 8080:8080 -e KEYCLOAK_ADMIN=admin -e KEYCLOAK_ADMIN_PASSWORD=admin quay.io/keycloak/keycloak start-dev`
+on proxmox VM
+Create a custom second (not the default) realm. The default should be used only for managing the keycloak server. Our custom realm will be for authentication and authorization purposes.
+https://www.youtube.com/watch?v=fvxQ8bW0vO8
+
+The UI and backend are gonna be keycloak "clients" (create in keycloak admin UI)
+Public vs private client : public client cannot securely store a client's secret.
+Web UI is public client, private/confidential client is for server-to-server communication.
+
+Tokens in OIDC flow: https://www.csharp.com/article/accesstoken-vs-id-token-vs-refresh-token-what-whywhen/
+Access, refresh, ID tokens. Their individual scopes.
+
+> Keycloak: once the user has authenticated via Keycloak, it provides tokens for the user, including ID, Access and Refresh tokens, which are JWTs. These are not shared with the frontend, but are stored on the gateway and associated with the user’s session.
+
+As for token contents, only ID so that data is not shared with clients/transmitted/stored there, and as such, always fresh.
+
+OAuth is authz. OIDC is an authn, identity super-layer. I believe.
+
+> With microservice architectures, one of the most used authentication type is OIDC (OpenID Connect), which adds authentication functionality to the OAuth2 protocol used for the authorization part with JWT Token. An open source popular identity provider used for this purpose is Keycloak. Other commercial OIDC alternatives include Okta, AUth0, Microsoft Azure Active Directory (AD), AWS Cognito and so on.
+
+=== 3. re-archiecting with keycloak authenticaiton service etc consideration taken in mind
+
+In this section
+Let us update our architecture diagram from part one to include Keycloak as an authentication service.
+
+keycloak, api-gateway, services hidden behind in DMZ...
+
+Keycloak replacing the user service? Or being its database? (what about preferences, etc?) -> What can it store, what can it do.
+
+==== Why an api gateway/why network zones/network zones separation
+
+Why we need an api-gateway: (microservices architecture complex, poses pbs, api gateway fixes these)
+https://www.solo.io/topics/api-gateway/api-gateway-microservices
+
+Manages request endpoints so that endpoint updates to services are internal only and not exposed to users? And stuff. See all that.
+Also is the only service that talks to keycloak, as an OAuth2 Client.
+User is a public client, api-gateway is a confidential client, maybe? The tokens it gets are used when communicating with a backend service.
+> API Gateway acts as an OAuth2 Client: in this case, any unauthenticated incoming request will initiate a flow to obtain a valid Token. Once the token is acquired by the gateway, it is then used when sending requests to a backend service. The API Gateway interacts with the authorization server to obtain access and refresh tokens and stores them securely.
+
+Maybe the other services do communicate to keycloak, but differently than the api-gateway?
+So that the api gateway doesn't have a huge load to handle?
+
+> At microservice level, authentication is not intended as the authentication used for identify users of an application. Authentication for a microservice means receive request authenticated and in this example means that all calls received from the gateway must be authenticated. A common example of authentication on microservices is JWT tokens. Endpoints exposed by microservices will only be accessible if a valid JWT token is provided.
+
+disadvantage: keycloak/authentication server is our SPOF. If not the api-gateway.
+
+2-3 zones?
+One (or two?) have to be publicly accessible: api-gateway (and keycloak?) or just keycloak? nah. Api-gateway is the endpoints, right?
+
+Maybe use keycloak only for user management identity and authentication, and for authz use something else, and mTLS for inter-services communication security/authentication? To avoid having too much load on keycloak/SPOF? Or does that just lead to more SPOFs? Would that be better/more scalable anyways? And performance? (What are Beep's performance/speed requirements? In/from chapter 0.)
+
+RBAC on user, then OPA/Permify/... for ABAC/PBAC/ReBAC/...? Or all authz via keycloak? Lelz. ? ??
+> access tokens are also used by the underlying services for the role-based user authorization part. Roles are defined on Keycloak, assigned to users and included in the access tokens.
+
 === 1. OpenID Connect, OAuth2 and Beep
 
 Very briefly present the What? and Why? of these protocols, as an introduction to the next section: How?
@@ -619,6 +714,10 @@ PoC with current Beep app. Google + Polytech LDAP auth into an SSO or smth.
 
 ====
 **WIP and sources**
+
+Goatesque : https://medium.com/@a.zagarella/microservices-architecture-a-real-business-world-scenario-c77c31a957fb
+
+Montrer les tokens reçus à la connection/création de compte, SSO, etc.
 
 https://adil.medium.com/multi-container-patterns-in-kubernetes-adapter-ambassador-sidecar-40bddbe7c468
 K8s containers-in-pod patterns identified : sidecar, adapter, ambassador. (more?)
