@@ -831,6 +831,8 @@ Maybe use keycloak only for user management identity and authentication, and for
 RBAC on user, then OPA/Permify/... for ABAC/PBAC/ReBAC/...? Or all authz via keycloak? Lelz. ? ??
 > access tokens are also used by the underlying services for the role-based user authorization part. Roles are defined on Keycloak, assigned to users and included in the access tokens.
 
+// Info : permify is bad for fetching data. It just wants to answer Y/N. Not a list of ID...
+
 ==== How Keyclaok handles identification+authentication+authorization
 
 Explanations, diagrams, etc.
