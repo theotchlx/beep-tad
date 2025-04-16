@@ -1,8 +1,0 @@
-= Beep technical architecture document
-Théo Tchilinguirian <theo.tchilinguirian@etu.umontpellier.fr>
-:sectnums:
-
-include::../../../../chapters/introduction.adoc[]
-include::../../../../chapters/getting-started.adoc[]
-include::../../../../chapters/deep-dive.adoc[]
-
