@@ -10,15 +10,14 @@ To locally build the TAD, you need to have the following tools installed:
 
 - asciidoctor
 - asciidoctor-pdf
-- rouge
-- antora node packages: antora/cli, antora/site-generator-default
-- pnpm
 
-To build the AsciiDoc document to a PDF, execute the following command:
+To build the AsciiDoc document to a PDF, run the Makefile:
 
 ```bash
-asciidoctor-pdf -o beep-tad.pdf beep.adoc
+make pdf
 ```
+
+Use `make clean` to remove the build artifacts.
 
 = Demo Documentation Component B
 // URLs
