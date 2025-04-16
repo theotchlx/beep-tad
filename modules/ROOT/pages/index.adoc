@@ -8,7 +8,7 @@ The other docs component, Component A, can be accessed using the component selec
 
 == Page source
 
-This page is sourced from the AsciiDoc file named [.path]_index.adoc_ that is located at [.path]_demo-component-b/docs/modules/ROOT/pages_.
+This page is sourced from the AsciiDoc file named [.path]_index.adoc_ that is located at [.path]_demo-beep-tad/docs/modules/ROOT/pages_.
 
 === Why is this the home page of Component B?
 
@@ -26,8 +26,8 @@ To create a cross reference *to this page from a page in Module One of Component
 
 === Always target the latest version of this page
 
-To create a cross reference *to the latest version of this page from a page in Component A*, the xref syntax would be `\xref:component-b::index.adoc[]`.
+To create a cross reference *to the latest version of this page from a page in Component A*, the xref syntax would be `\xref:beep-tad::index.adoc[]`.
 
 === Target a specific version of this page
 
-To create a cross reference *to version 1.0 of this page from a page in Component A*, the xref syntax would be `\xref:1.0@component-b::index.adoc[]`.
+To create a cross reference *to version 1.0 of this page from a page in Component A*, the xref syntax would be `\xref:1.0@beep-tad::index.adoc[]`.
