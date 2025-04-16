@@ -1,0 +1,12 @@
+== Getting Started
+
+Let’s get set up.
+
+=== Requirements
+
+What readers need before starting.
+
+=== Installation
+
+Step-by-step instructions.
+
