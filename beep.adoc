@@ -3,6 +3,7 @@ Théo Tchilinguirian <theo.tchilinguirian@etu.umontpellier.fr>
 14.02.2025
 //:doctype: book ? Article?
 :toc:
+:toclevels: 3
 //:sectnums:
 //:partnums: These two are for auto-generated chapter/section numbers! Can be configured I believe.
 
@@ -683,6 +684,8 @@ https://dzone.com/articles/10-microservices-anti-patterns-you-need-to-avoid
 WIP
 
 Listen to DIS https://www.youtube.com/watch?v=rv4LlmLmVWk
+
+POUR LA BDD DE MESSAGES : MONGO!!! car relationnel déjà pour le search... Mais aussi pour quand ds le msg y'a une image/un msg vocal, ne pas avoir 90% de champs null dans la postgres pour tous les msgs qui en ont pas... Et si y'a, dans le mongo, mettre l'url du file service/object storage/CDN/FTP...
 ====
 
 == II. Managing the authentication system with OIDC
@@ -832,6 +835,7 @@ RBAC on user, then OPA/Permify/... for ABAC/PBAC/ReBAC/...? Or all authz via key
 > access tokens are also used by the underlying services for the role-based user authorization part. Roles are defined on Keycloak, assigned to users and included in the access tokens.
 
 // Info : permify is bad for fetching data. It just wants to answer Y/N. Not a list of ID...
+// Et c'est un peu comme un elastic search en fait. Genre il va pas requêter la donnée tout seul, tu lui donnes (avec un svc devant) et lui va bosser dessus (te renvoyer oui/non t'es autorisé ou pas)
 
 ==== How Keyclaok handles identification+authentication+authorization
 
@@ -843,6 +847,8 @@ PoC with current Beep app. Google + Polytech LDAP auth into an SSO or smth.
 
 ====
 **WIP and sources**
+
+For the poc, use react-oidc-context
 
 Goatesque : https://medium.com/@a.zagarella/microservices-architecture-a-real-business-world-scenario-c77c31a957fb
 
@@ -1115,6 +1121,9 @@ https://www.youtube.com/watch?v=voAyroDb6xk NYAHHAHAHAHAH
 
 ====
 **WIP and sources**
+Utiliser les concepts de mon talk en cours de Go sur la résistance aux failles !!!!!!!!
+
+Permify, Zanzibar, AuthZed (zanzibar, permify en plus mature). https://authzed.com/, https://zanzibar.academy/, https://research.google/pubs/zanzibar-googles-consistent-global-authorization-system/, https://permify.co/post/google-zanzibar-in-a-nutshell/.
 
 Permify/OPA/Kyverno. ATTENTION policies infra/network VS policies applicatives !!! ATTENTION!!! Gérer les policies applicatives (mon user dans mon serveur) fait peut être partie de la logique service!!! Voir D'ABORD des vidéos/sites ou autre qui expliquent comment on gère les permissions d'une application/applicatives dans une architecture microservices.
 
