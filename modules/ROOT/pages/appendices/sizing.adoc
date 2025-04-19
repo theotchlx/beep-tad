@@ -1,12 +1,64 @@
 = APPENDIX II: System sizing requirements
 :navtitle: System sizing
 
-This appendix chapter specifies the system sizing requirements estimates of averages. These averages are operational targets that MUST be met for Beep to be considered fully operational.
-
-...goals to achieve such as SLA, performance goals/objectives/requirements, ... Architecture constraints...(?)
+This appendix chapter specifies the system sizing requirements as estimates of average loads and limitations. These estimates are operational targets that MUST be met for Beep to be considered fully operational.
 
 == Estimates of averages
 
 The below table specifies the system sizing requirements estimates of averages.
+expected loads and limitations
 
-table: |||
+=== Fundamental sizing metrics
+
+The below table specifies the system sizing requirements estimates of averages.
+
+[cols="1,10,10"]
+|===
+|ID |Sized metric |Estimate of average
+
+|1
+|Average daily active users
+|300 000
+
+|2
+|Average text message size
+|200B
+
+|3
+|Average shared file size
+|1MB
+
+|4
+|Average proportion of files to text messages
+|1/30
+
+|5
+|Average number of messages per user per day
+|60
+
+|6
+|Average duration of voice/video calls
+|30mn
+
+|7
+|Average bandwidth of voice/video calls per hour
+|600MB
+
+|===
+
+=== Derived sizing metrics
+
+The below table specifies the system sizing requirements estimates of averages derived from previous fundamental estimates.
+
+[cols="4,4,1"]
+|===
+|Sized metric |Estimate of average |Calculation
+
+|Average number of files shared per user per day
+|2
+|=ID4*ID5
+
+
+|===
+
+//TODO: Network latency requirements, Bandwidth requirements, Storage requirements, availability SLA/SLO, etc...
