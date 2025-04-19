@@ -1,17 +1,18 @@
-= APPENDIX I: Use cases
-:navtitle: Use cases
+= APPENDIX I: Usage scenarios
+:navtitle: Usage scenarios
 
-This appendix chapter specifies the use cases. These use cases MUST be provided by Beep.
+This appendix chapter specifies the usage scenarios of beep through a table of user stories, and an UML "Use Case" diagram. These usage scenarios MUST be provided by Beep.
 
-The below table specifies the use cases of Beep.
-
-In the following table, the following subjects are identified:
+In the below table, the following subjects are identified:
 
 - Guest: a user who does not have an account on Beep, or a logged-out user.
 - User: a user who has an account on Beep, and is logged-in.
+- Friend: a user who is a friend of another user on Beep, and can communiate with them privately.
 - Member: a user who is part of, and connected on a server on Beep.
-- Authorized member: a user who is a member of a server on Beep, and has special permissions.
-- Beep admin: a user who is an administrator of Beep, part of the Beep team.
+- Authorized member: a user who is a member of a server on Beep, and has special permissions in a server.
+- Beep admin: a user who is an administrator of Beep, part of the Beep team, that has special permissions.
+
+The following table specifies the use cases of Beep.
 
 [cols="1,2,2"]
 |===
@@ -73,7 +74,7 @@ In the following table, the following subjects are identified:
 
 |Friend
 |Share my voice, video and screen with friends
-|Communicate with other users with real-time voice, video and screen sharing in private messages.
+|Communicate with friends with real-time voice, video and screen sharing in private.
 
 
 |Member
@@ -108,6 +109,7 @@ In the following table, the following subjects are identified:
 |Search for users, messages or files in servers I'm a member of
 |Find back specific conversations or files.
 
+
 |Authorized member
 |Configure a server I'm a member of
 |Manage the server settings, appearance and user roles.
@@ -124,15 +126,23 @@ In the following table, the following subjects are identified:
 |Create and manage channels and categories in a server I'm a member of
 |Group discussions by topics or themes, manage the visibility of these discussions, and pin messages.
 
+
 |Beep admin
 |Have full control over public servers
 |Ensure Beep's terms of service are respected across publicly accessible servers.
 
 |===
 
-The below UML "Use Case" diagram specifies the use cases of Beep as well.
+The below UML "Use Case" diagram specifies the use cases of Beep as well, with the end user's different roles as actors, and the user stories as use cases.
 
-diagram: use case UML.
+.Use case diagram of Beep's current user stories. Made with draw.io
+image::appendices/beep-uml-use-case-diagram-light.svg[Fig. 1. Use case diagram of Beep's current user stories.,link=_images/appendices/beep-uml-use-case-diagram-light.svg,window=_blank]
+//I believe this diagram is unreadable. Rotate it (can't in asciidoc it seems), zoom in or cut it in parts, or remove its margins, or provide interactive zoom controls, or provide a static always-available link to an explorable version of this diagram.
+
+The purpose of this schema is to capture the requirements of Beep considering its users. This will help us outline business capabilities and user stories into functional neighborhoods, and thus redefine Beep into microservices.
+//TODO: stop the blabla between business capabilities and user stories. Time to be clear and concise, bro. Yeah.
+
+A business capability is the expression or articulation of the capacity, materials, and expertise an organization needs to perform core functions.
 
 Modify to add a "friend" user and the added/modified use cases.
 Also make it vertical.

@@ -2,8 +2,8 @@
 * xref:glossary.adoc[]
 
 * Appendix
-** xref:use-cases.adoc[]
-** xref:sizing.adoc[]
+** xref:appendices/scenarios.adoc[]
+** xref:appendices/sizing.adoc[]
 
 * xref:physical-infrastructure.adoc[]
 
