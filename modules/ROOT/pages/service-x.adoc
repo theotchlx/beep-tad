@@ -1,0 +1,8 @@
+= Service X
+
+(This is a service template)
+
+Use cases +
+Interfaces
+
+Database

@@ -1,0 +1,12 @@
+= APPENDIX II: System sizing requirements
+:navtitle: System sizing
+
+This appendix chapter specifies the system sizing requirements estimates of averages. These averages are operational targets that MUST be met for Beep to be considered fully operational.
+
+...goals to achieve such as SLA, performance goals/objectives/requirements, ... Architecture constraints...(?)
+
+== Estimates of averages
+
+The below table specifies the system sizing requirements estimates of averages.
+
+table: |||

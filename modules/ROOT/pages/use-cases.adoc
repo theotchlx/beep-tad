@@ -1,0 +1,12 @@
+= APPENDIX I: Use cases
+:navtitle: Use cases
+
+This appendix chapter specifies the use cases. These use cases MUST be provided by Beep.
+
+The below table specifies the use cases of Beep.
+
+table: |||
+
+The below UML "Use Case" diagram specifies the use cases of Beep as well.
+
+diagram: use case UML.

@@ -1,0 +1,33 @@
+= Service segmentation
+
+(like before but defines each service, is per service.)
+
+Services are segmented in domains. Business capabilities are separated. Core logic is segregated.
+
+== Layout
+
+UML "Component" diagram
+
+== Service boundaries/domains
+
+== Interfaces
+
+diagram with balls and joints
+
+interfaces table
+
+=== data structures
+
+Defines the transferred data structures
+
+== Service <X>
+
+=== Database specifications
+
+Database schemas
+
+UML Classe diagram. One for each database.
+
+=== Dependencies
+
+Authorized Languages (compiled, not interpreted, not resource hungry java, not memory unsafe C), frameworks, package dependency

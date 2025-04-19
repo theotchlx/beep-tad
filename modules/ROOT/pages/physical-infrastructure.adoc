@@ -1,0 +1,25 @@
+= Physical infrastructure
+
+This chapter specifies the expected fundamental hardware setup.
+
+== Hardware and physical network configuration
+
+=== Physical constraints
+
+Hardware infrastructure MAY run on infrastructure provided by Polytech Montpellier
+
+Hardware infrastructure MAY be contained within Polytech Montpellier's network. This means all traffic network must pass through Polytech's gateway servers.
+
+== Infrastructure security
+
+=== Data confidentiality
+
+Persistent data stored on hard drives MAY be encrypted using secure algorithms.
+
+=== Data integrity
+
+Hard drives SHOULD be configured in a software RAID1 array.
+
+Disk backups MUST be setup to run bi-weekly.
+
+=== Data availability

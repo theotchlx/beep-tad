@@ -1,0 +1,4 @@
+= API Gateway
+:navtitle: API Gateway service
+
+is just user API entry/outry point and maybe aggregator

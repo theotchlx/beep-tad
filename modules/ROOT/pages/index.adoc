@@ -1,7 +1,25 @@
-= Introduction and overview or goals
+= Introduction and goals
 :navtitle: Introduction
 
-== title
+== Document overview
 
-text
+Beep is <...>
 
+The target of this document is the definition of the technical architecture of the Beep project by the specification of its technical requirements.
+
+This document will also soon be available in PDF format.
+
+== Requirements language
+
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in [BCP 14](https://www.rfc-editor.org/info/bcp14) ([RFC 2119](https://datatracker.ietf.org/doc/html/rfc2119), [RFC 8174](https://datatracker.ietf.org/doc/html/rfc8174)) when, and only when, they appear in all capitals, as shown here.
+
+== Stakeholders
+
+Table: |Name|Role|Contact|
+|----|----|----|
+|HÉRITIER Léo|Project Overseer & Client||
+|Le gars de la région|Documentation Overseer||
+|TCHILINGUIRIAN Théo|Project contributor|theo.tchilinguirian@etu.umontpellier.fr|
+|PONTHIEU Hugo|Project contributor||
+|...|Student||
+TRIER PAR ORDRE ALPHABÉTIQUE DU NOM DE FAMILLE.

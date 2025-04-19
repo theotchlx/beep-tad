@@ -1,0 +1,55 @@
+= Software infrastructure
+
+This chapter defines the software infrastructure layout of the system. The rest of Beep's software system is deployed on top of this software infrastructure.
+
+Software deployment infrastructure?
+
+== Layout
+
+UML Component diagram? Or some other diagram to show the software infrastructure components and their relationships, the software infrastructure architecture.
+
+- Proxmox Virtual Environment (PVE) cluster
+
+- Kubernetes (K8s) cluster
+- Ceph cluster
+
+Smartmontools on top of PVE to monitor the disks and predict disk failure on top of ceph, send alerts...
+
+K8s on proxmox
+
+Kube on proxmox
+
+== System upgrades
+
+The system MUST be able to be upgraded without downtime.
+This means that the system MUST be able to be upgraded without stopping the system or any of its components.
+This is a requirement for all components of the system, including the operating system, the software infrastructure, and the applications running on top of it.
+
+== Security requirements
+
+=== Operating systems
+
+Every operating system running in the system MUST be either:
+
+- GNU/Linux 6.12 or later, including derivative distributions,
+- OpenBSD 7.6 or later, including derivate distributions.
+
+=== Dependencies
+
+Graphical components such as windowing systems, desktop environments, and graphical applications SHOULD NOT be installed on the system.
+
+=== Data confidentiality
+
+All sensitive information MUST be encrypted using any secure encryption algorithm.
+
+Sensitive informations includes:
+
+- User information (e.g. name, address, email, password, contact information and other user-related informations)
+
+=== Data integrity
+
+Hard drives SHOULD be configured in a software RAID1 array.
+
+Disk backups MUST be setup to run bi-weekly.
+
+=== Data availability

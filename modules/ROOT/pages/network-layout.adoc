@@ -1,0 +1,16 @@
+= Network layout
+
+
+== Network layout
+
+DMZ, Zoning réseau -> découpage logique et physique …
+- Matrices de flux réseau
+
+
+Linkerd svc mesh
+
+svc discovery (server side) with kube's dns. Linkerd handles load balancing over kube's dns. Each business svc just sends request to sidecar proxy, via sidecar. Sidecar also improves observability (tracing haeders, etc), same for mTLS security. Software infra logic is bigger/more complex softinfra, but business service logic is simplexer. Same for fault tolerance logic.
+Also more control over external and internal connections/incoming/outgoing requests. Managed by a control plane that pushes config, handles svc discovery, certificates...
+From developer's perspective: only preocuppied about their core business logic. I send a request to localhost, and the mesh handles the rest. Still doing gRPC, but not worry about how everything about security, failover etc... Is done/implemented/configured around it.
+
+Linkerd or istio? What about the future?

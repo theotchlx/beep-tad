@@ -1,2 +1,26 @@
 * xref:index.adoc[]
+* xref:glossary.adoc[]
 
+* Appendix
+** xref:use-cases.adoc[]
+** xref:sizing.adoc[]
+
+* xref:physical-infrastructure.adoc[]
+
+* xref:software-infrastructure.adoc[]
+
+* xref:network-layout.adoc[]
+
+* Business services
+** xref:service-requirements.adoc[]
+** xref:service-segmentation.adoc[]
+** xref:authentication.adoc[]
+** xref:authorization.adoc[]
+** xref:api-gateway.adoc[]
+** xref:service-x.adoc[]
+
+* Additional services
+** xref:observability.adoc[]
+** xref:registry.adoc[]
+
+* xref:security.adoc[]
