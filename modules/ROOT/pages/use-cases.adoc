@@ -5,8 +5,134 @@ This appendix chapter specifies the use cases. These use cases MUST be provided 
 
 The below table specifies the use cases of Beep.
 
-table: |||
+In the following table, the following subjects are identified:
+
+- Guest: a user who does not have an account on Beep, or a logged-out user.
+- User: a user who has an account on Beep, and is logged-in.
+- Member: a user who is part of, and connected on a server on Beep.
+- Authorized member: a user who is a member of a server on Beep, and has special permissions.
+- Beep admin: a user who is an administrator of Beep, part of the Beep team.
+
+[cols="1,2,2"]
+|===
+|As a |I want to |So that I can
+
+|Guest
+|Create an account
+|Use the features of Beep.
+
+
+|User
+|Create a server 
+|Grow a community around it.
+
+|User
+|Join existing servers
+|Become a member of public and private communities.
+
+|User
+|Explore public servers
+|Become a member of the public communities of my choosing.
+
+|User
+|Join private servers on invitation
+|Become a member of private communities I'm allowed to join.
+
+|User
+|Have quick access to the servers I'm a part of
+|Easily switch between communities and user groups to interact with.
+
+|User
+|Get information about my account
+|Review my account information.
+
+|User
+|Update my account information
+|Modify my personal information, recovery mechanisms, my authentication mechanisms, language and other information relative to my account.
+
+|User
+|Delete my account
+|Remove my account and personal information from Beep.
+
+|User
+|Send friend requests to other users
+|Become friends with other users and message them outside of servers.
+
+|User
+|Receive push notification on my devices
+|Be notified of various events such as mentions.
+
+
+|Friend
+|Send private messages, including markdown text and emojis, files and images, links with interactive previews
+|Message my friends in private message oustide of servers.
+
+|Friend
+|Mention friends in private messages
+|Notify friends in text channels inside servers or in private messages.
+
+|Friend
+|Share my voice, video and screen with friends
+|Communicate with other users with real-time voice, video and screen sharing in private messages.
+
+
+|Member
+|Get information about my account
+|Review my account information.
+
+|Member
+|Update my member account information
+|Modify my personal informationrelated to a server.
+
+|Member
+|Leave a server
+|Stop being a member of a server.
+
+|Member
+|Get more information about other users in a server I'm a member of
+|Better interact with them, and send them friend requests to chat in private messages.
+
+|Member
+|Send messages, including markdown text and emojis, files and images, links with interactive previews
+|Interact with other users in text channels inside servers.
+
+|Member
+|Mention other users in messages
+|Notify other users in text channels inside servers.
+
+|Member
+|Share my voice, video and screen with other users
+|Communicate with other users with real-time voice, video and screen sharing in voice channels inside servers.
+
+|Member
+|Search for users, messages or files in servers I'm a member of
+|Find back specific conversations or files.
+
+|Authorized member
+|Configure a server I'm a member of
+|Manage the server settings, appearance and user roles.
+
+|Authorized member
+|Generate a time-limited invitation link to a server I'm a member of
+|Invite other users to join the server.
+
+|Authorized member
+|Create and manage roles in a server I'm a member of
+|Allow or restrain other users to do specific actions or see specific channels
+
+|Authorized member
+|Create and manage channels and categories in a server I'm a member of
+|Group discussions by topics or themes, manage the visibility of these discussions, and pin messages.
+
+|Beep admin
+|Have full control over public servers
+|Ensure Beep's terms of service are respected across publicly accessible servers.
+
+|===
 
 The below UML "Use Case" diagram specifies the use cases of Beep as well.
 
 diagram: use case UML.
+
+Modify to add a "friend" user and the added/modified use cases.
+Also make it vertical.
