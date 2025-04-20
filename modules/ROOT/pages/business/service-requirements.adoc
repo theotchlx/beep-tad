@@ -1,67 +1,65 @@
-= Business services
+= General requirements
 
 This chapter defines the technical architecture requirements of every business service[Link to glossary].
 
-== General requirements
-
 This chapter defines general business services architecture requirements. Each of these requirements MUST be followed by any given business service (see <link to xref services chapter>).
 
-=== Dependencies
+== Dependencies
 
 This chapter defines business services[glossary] dependencies constraints and requirements.
 
-==== Languages
+=== Languages
 
 Authorized Languages (compiled, not interpreted, not resource hungry java, not memory unsafe C), frameworks, package dependency
 
-==== Libraries
+=== Libraries
 
 Frameworks, packages, libraries
 
-===== Library deprecation
+==== Library deprecation
 
 must be lts, supported, must conduct monthly audit on deprecated libraries in every services. (WAIT THATS NOT TECHNICAL ARCHI, is it? I can specify that every used libraries MUST do X or be X, but how can I specify a technical architecture requirement of doing audits... automatically maybe? Like a cron and alters? idk...)
 
-==== Databases
+=== Databases
 
 Authorized databases/db technologies
 
-===== Scaling databases
+==== Scaling databases
 
-=== Inter-service communication
+== Inter-service communication
 
 Pattern that they communicate together directly. OR via the api gateway???
 communication interfaces architecture schema
 
 Pattern: server-side service discovery with linkerd svc mesh doing the hard work of load balancing services. Kubernetes, when a pod starts, it's automatically registered, as part of the internal DNS system.
 
-==== Communication protocol
+=== Communication protocol
 
 protobuff or avro or http json or...
 
-==== HTTPS/mTLS/Secure certificates handling n stuf
+=== HTTPS/mTLS/Secure certificates handling n stuf
 
-==== Network policies, grpc service mesh linkerd
+=== Network policies, grpc service mesh linkerd
 
-=== Fault tolerance
+== Fault tolerance
 
-=== Observability
+== Observability
 
-==== System health
+=== System health
 
 Each service MUST implement the 3 k8s default probes
 
-==== Logging
+=== Logging
 
 Every service MUST implement a health endpoint
 
-===== Logging endpoint
+==== Logging endpoint
 
-===== Logging interface
+==== Logging interface
 
 stdout
 
-===== Logs format
+==== Logs format
 
 Logs MUST follow the below format:
 

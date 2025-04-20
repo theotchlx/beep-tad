@@ -12,15 +12,15 @@
 * xref:network-layout.adoc[]
 
 * Business services
-** xref:service-requirements.adoc[]
-** xref:service-segmentation.adoc[]
-** xref:authentication.adoc[]
-** xref:authorization.adoc[]
-** xref:api-gateway.adoc[]
-** xref:service-x.adoc[]
+** xref:business/service-requirements.adoc[]
+** xref:business/service-segmentation.adoc[]
+** xref:business/authentication.adoc[]
+** xref:business/authorization.adoc[]
+** xref:business/api-gateway.adoc[]
+** xref:business/service-x.adoc[]
 
 * Additional services
-** xref:observability.adoc[]
-** xref:registry.adoc[]
+** xref:additional/observability.adoc[]
+** xref:additional/registry.adoc[]
 
 * xref:security.adoc[]

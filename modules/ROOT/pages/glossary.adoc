@@ -2,8 +2,11 @@
 
 == Definitions of terms
 
+**Usage scenario**::
+Either a use case or a user story.
+
 **Business service**::
-Service that provides one of Beep's use cases to users.
+Service that provides one of Beep's usage scenario to users.
 
 **Additional service**::
 Service that does not provide one of Beep's use cases to users, but is deployed and provides more control over the system.

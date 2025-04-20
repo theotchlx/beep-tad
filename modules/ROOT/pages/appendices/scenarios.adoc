@@ -1,7 +1,7 @@
 = APPENDIX I: Usage scenarios
 :navtitle: Usage scenarios
 
-This appendix chapter specifies the usage scenarios of beep through a table of user stories, and an UML "Use Case" diagram. These usage scenarios MUST be provided by Beep.
+This appendix chapter specifies the *usage scenarios*[link to glossary] of beep through a table of user stories, and an UML "Use Case" diagram. These usage scenarios MUST be provided by Beep.
 
 In the below table, the following subjects are identified:
 
@@ -135,7 +135,7 @@ The following table specifies the use cases of Beep.
 
 The below UML "Use Case" diagram specifies the use cases of Beep as well, with the end user's different roles as actors, and the user stories as use cases.
 
-.Use case diagram of Beep's current user stories. Made with draw.io
+.Use case diagram of Beep's current user stories. Made using draw.io
 image::appendices/beep-uml-use-case-diagram-light.svg[Fig. 1. Use case diagram of Beep's current user stories.,link=https://beep.theotchlx.me/beep-tad/1/_images/appendices/beep-uml-use-case-diagram-light.svg,window=_blank]
 //I believe this diagram is unreadable. Rotate it (can't in asciidoc it seems), zoom in or cut it in parts, or remove its margins, or provide interactive zoom controls, or provide a static always-available link to an explorable version of this diagram.
 
