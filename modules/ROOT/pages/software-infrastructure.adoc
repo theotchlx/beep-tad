@@ -8,12 +8,12 @@ Software deployment infrastructure?
 
 UML Component diagram? Or some other diagram to show the software infrastructure components and their relationships, the software infrastructure architecture.
 
-- Proxmox Virtual Environment (PVE) cluster
+- Proxmox Virtual Environment (PVE) cluster MAY
 
-- Kubernetes (K8s) cluster
+- Kubernetes (K8s) cluster MUST
 - Ceph cluster
 
-Smartmontools on top of PVE to monitor the disks and predict disk failure on top of ceph, send alerts...
+Smartmontools on top of PVE to monitor the disks and predict disk failure on top of ceph, send alerts... SHOULD
 
 K8s on proxmox
 
@@ -31,8 +31,8 @@ This is a requirement for all components of the system, including the operating 
 
 Every operating system running in the system MUST be either:
 
-- GNU/Linux 6.12 or later, including derivative distributions,
-- OpenBSD 7.6 or later, including derivate distributions.
+- The latest actively maintained LTS GNU/Linux version, including derivative distributions,
+- The latest actively maintained OpenBSD version, including derivate distributions.
 
 === Dependencies
 
@@ -41,6 +41,7 @@ Graphical components such as windowing systems, desktop environments, and graphi
 === Data confidentiality
 
 All sensitive information MUST be encrypted using any secure encryption algorithm.
+//TODO: préciser les contraintes sur ces algos (institut qui les vérifie, assure leur non-breach state, etc) Aussi peut être en proposer, en mode "such as AES" etc?
 
 Sensitive informations includes:
 

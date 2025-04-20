@@ -5,3 +5,6 @@ Authorization and identification steps
 
 Keycloak
 POC
+
+authenticate users and external requests (such as coming from bot accounts, webhooks, APIs/SDKs, etc.)
+not authenticate internal requests, right? Cuz mTLS in svc mesh?...?

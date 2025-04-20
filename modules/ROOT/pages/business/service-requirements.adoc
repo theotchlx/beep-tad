@@ -1,12 +1,10 @@
 = General requirements
 
-This chapter defines the technical architecture requirements of every business service[Link to glossary].
-
-This chapter defines general business services architecture requirements. Each of these requirements MUST be followed by any given business service (see <link to xref services chapter>).
+This chapter defines the technical architecture requirements specific to every xref:glossary.adoc#definitions-of-terms[_business service_]. These requirements MUST be met by every business service implementation.
 
 == Dependencies
 
-This chapter defines business services[glossary] dependencies constraints and requirements.
+This chapter defines _business services_ dependencies constraints and requirements.
 
 === Languages
 

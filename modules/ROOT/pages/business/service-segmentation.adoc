@@ -1,6 +1,6 @@
 = Service segmentation
 
-This chapter defines the *business services*[link to glossary] of Beep.
+This chapter defines the xref:glossary.adoc#definitions-of-terms[_business services_] of Beep.
 
 Services are segmented in domains. Business capabilities are separated. Core logic is segregated.
 
@@ -14,29 +14,50 @@ The following table defines the segmentation of Beep's usage scenarios into serv
 |Service name |Goal and provided features
 
 |Authentication
-|Authenticate users and other external requests (such as coming from bot accounts, webhooks, APIs/SDKs, etc.), and possibly also internal requests(?).
+|Authenticate users and other external requests, manage xref:glossary.adoc#definitions-of-terms[_core user identity_].
 
 |User
-|Manages the lifecycle of user information and related data (such as pfp, username/email/password..., preferences in language and authentication mechanisms, etc.)
+|Manage xref:glossary.adoc#definitions-of-terms[_Beep-specific user identity_].
 
 |Chat
-|Manages text channel conversation and lifecycle with styled messages, file previews, etc.
+|Manage text channel conversations.
 
 |Call
 |Enable users to share voice/video feeds with minimal latency in voice channels.
 
 |Search
-|Provide results to search queries for servers, channels, users, messages, files, etc.
+|Provide results to search queries for servers, channels, users, messages and files.
 
 |Notification
-|Send, and manage push notifications sent to devices.
+|Manage push notifications sent to devices.
 
-|Media
-|Manage files (CRUD, fast retrieval, long-term storage in iceberg or else...).
+|Files
+|Manage file storage and retrieval.
+
+|Frontend
+|Provide a web interface to users to arrange the lifecycle of usage scenarios on the web application.
 
 |===
 
+Missing the authorization serivce, missing the fast that authn is keycloak, see others that could be missing.
+
 UML "Component" diagram
+
+
+These functional neighborhoods/business capabilities/... can be formally represented using a UML component diagram. Below is the resulting UML component diagram describing my proposal for Beep's separation into microservices.
+
+.Component diagram for Beep's separation into microservices. Made with draw.io
+image::images/fig3.component/beep-uml-component-diagram-light.svg[Component diagram showing Beep's architecture separat
+ed into microservices.]
+
+//TODO: refaire un second diagramme de composants avec des blocs au lieu des services et dedans deux composants : l'applicatif et la bdd associée. Peut être les sidecars aussi?? nan...?
+
+The idea is that you can easily reuse and/or substitute a different component implementation in your designs because **a component encapsulates behavior and implements specified interfaces**.
+
+illustrates components and their interactions
+
+Protobuff / REST HTTP JSON + DTO
+
 
 == Service boundaries/domains
 

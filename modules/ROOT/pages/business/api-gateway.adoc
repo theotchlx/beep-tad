@@ -2,3 +2,9 @@
 :navtitle: API Gateway service
 
 is just user API entry/outry point and maybe aggregator
+
+== Interfaces
+
+REST API with JSON over HTTP
+
+gRPC

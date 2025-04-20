@@ -1,13 +1,19 @@
 = Introduction and goals
 :navtitle: Introduction
 
-== Document overview
+== Project overview
 
 Beep is a social media platform and instant messaging web application with real-time video and audio capabilites, file sharing, and more.
+
+== Document overview
 
 The target of this document is the definition of the technical architecture of the Beep project by the specification of its technical requirements.
 
 This document is available in PDF format on request.
+
+== Intended audience
+
+This document is intended for the team of contributors to the Beep project, and others involved in the design and implementation of the system, as well as any stakeholder or individual interested in the technical architecture of the project.
 
 == Requirements language
 
@@ -21,18 +27,18 @@ The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "S
 
 |HÉRITIER Léo
 |Project overseer & Client
-|leo.heritier@umontpellier.fr
+|leo.heritier at umontpellier.fr
 
 |SOULTANEM Frédéric
 |Documentation overseer & Client
-|frederic.soultanem@gmail.com
+|frederic.soultanem at gmail.com
 
 |TCHILINGUIRIAN Théo
 |Project contributor
-|theo.tchilinguirian@etu.umontpellier.fr
+|theo.tchilinguirian at etu.umontpellier.fr
 
 |DO Students
 |Project contributors
-|
+|theo.tchilinguirian at etu.umontpellier.fr
 
 |===

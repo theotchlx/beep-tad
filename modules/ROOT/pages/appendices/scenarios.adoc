@@ -1,7 +1,7 @@
 = APPENDIX I: Usage scenarios
 :navtitle: Usage scenarios
 
-This appendix chapter specifies the *usage scenarios*[link to glossary] of beep through a table of user stories, and an UML "Use Case" diagram. These usage scenarios MUST be provided by Beep.
+This appendix chapter specifies the xref:glossary.adoc#definitions-of-terms[_usage scenarios_] of beep through a table of user stories, and a UML "Use Case" diagram. These usage scenarios MUST be provided by Beep.
 
 In the below table, the following subjects are identified:
 

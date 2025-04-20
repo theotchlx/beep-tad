@@ -2,14 +2,20 @@
 
 == Definitions of terms
 
-**Usage scenario**::
-Either a use case or a user story.
+**Additional service**::
+Service that does not provide one of Beep's use cases to users, but is deployed and provides more control over the system.
+
+**Beep-specific user identity**::
+A user's profile picture, preferences and settings.
 
 **Business service**::
 Service that provides one of Beep's usage scenario to users.
 
-**Additional service**::
-Service that does not provide one of Beep's use cases to users, but is deployed and provides more control over the system.
+**Core user identity**::
+A user's name, username, email, username and password.
+
+**Usage scenario**::
+Either a use case or a user story.
 
 == Acronyms
 
