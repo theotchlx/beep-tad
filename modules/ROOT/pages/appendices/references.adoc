@@ -1,0 +1,33 @@
+= APPENDIX III: References
+:navtitle: References
+
+This appendix chapter specifies external references used in this document.
+
+== Table of figures
+
+Figure 1 from the xref:appendices/scenarios.adoc[Usage scenarios] appendix chapter was made using the draw.io online tool.
+
+== Proofs of concept
+
+link:XXXX[Inter-service communication]
+
+link:XXXX[YYYY]
+
+== Continuity plan
+
+In case of downtime, attack, power outage, data loss/corruption...
+
+== Monthly security audit on dependencies and libraries deprecations
+
+
+== Libraries
+
+Frameworks, packages, libraries
+
+=== Library deprecation
+
+must be lts, supported, must conduct monthly audit on deprecated libraries in every services. (WAIT THATS NOT TECHNICAL ARCHI, is it? I can specify that every used libraries MUST do X or be X, but how can I specify a technical architecture requirement of doing audits... automatically maybe? Like a cron and alters? idk...)
+
+== System upgrades
+
+Related technical architecture requirements???

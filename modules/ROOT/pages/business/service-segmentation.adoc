@@ -1,13 +1,12 @@
 = Service segmentation
 
-This chapter defines the xref:glossary.adoc#definitions-of-terms[_business services_] of Beep.
+This chapter defines the technical architecture requirements of xref:glossary.adoc#definitions-of-terms[_business services_] of Beep. Each business service MUST implement those requirements.
 
-Services are segmented in domains. Business capabilities are separated. Core logic is segregated.
+Technical architecture requirements specific to each business service are defined in their respective chapters.
 
-== Layout
+== Service landscape layout
 
-The following table defines the segmentation of Beep's usage scenarios into services.
-
+The following table defines the segmentation of Beep's xref:glossary.adoc#definitions-of-terms[_usage scenarios_] into business services.
 
 [cols="1,2"]
 |===
@@ -16,20 +15,14 @@ The following table defines the segmentation of Beep's usage scenarios into serv
 |Authentication
 |Authenticate users and other external requests, manage xref:glossary.adoc#definitions-of-terms[_core user identity_].
 
-|User
-|Manage xref:glossary.adoc#definitions-of-terms[_Beep-specific user identity_].
-
-|Chat
-|Manage text channel conversations.
+|Authorization
+|Manage user and resources permission relationships, user roles.
 
 |Call
 |Enable users to share voice/video feeds with minimal latency in voice channels.
 
-|Search
-|Provide results to search queries for servers, channels, users, messages and files.
-
-|Notification
-|Manage push notifications sent to devices.
+|Chat
+|Manage text channels and messages lifecycle.
 
 |Files
 |Manage file storage and retrieval.
@@ -37,47 +30,28 @@ The following table defines the segmentation of Beep's usage scenarios into serv
 |Frontend
 |Provide a web interface to users to arrange the lifecycle of usage scenarios on the web application.
 
+|Notification
+|Manage push notifications sent to devices.
+
+|Search
+|Provide results to search queries for servers, channels, users, messages and files.
+
+|Server
+|Manage servers and members lifecycle.
+
+|Status
+|Manage user ephemeral status information (online, typing). (websocket connections and the like..)
+
+|User
+|Manage xref:glossary.adoc#definitions-of-terms[_Beep-specific user identity_].
+
 |===
 
-Missing the authorization serivce, missing the fast that authn is keycloak, see others that could be missing.
+The following UML "Component" diagram describes the layout of the business services of Beep.
 
-UML "Component" diagram
-
-
-These functional neighborhoods/business capabilities/... can be formally represented using a UML component diagram. Below is the resulting UML component diagram describing my proposal for Beep's separation into microservices.
-
-.Component diagram for Beep's separation into microservices. Made with draw.io
-image::images/fig3.component/beep-uml-component-diagram-light.svg[Component diagram showing Beep's architecture separat
-ed into microservices.]
-
+.UML "Component" diagram of Beep.
+image::appendices/beep-uml-use-case-diagram-light.svg[Fig. 2. UML "Component" diagram of Beep.,link=https://beep.theotchlx.me/beep-tad/1/_images/business/beep-uml-component-diagram-light.svg,window=_blank]
 //TODO: refaire un second diagramme de composants avec des blocs au lieu des services et dedans deux composants : l'applicatif et la bdd associée. Peut être les sidecars aussi?? nan...?
-
-The idea is that you can easily reuse and/or substitute a different component implementation in your designs because **a component encapsulates behavior and implements specified interfaces**.
-
-illustrates components and their interactions
-
-Protobuff / REST HTTP JSON + DTO
-
-
-== Service boundaries/domains
-
-== Interfaces
-
-diagram with balls and joints
-
-interfaces table
-
-=== data structures
-
-Defines the transferred data structures
-
-== Service <X>
-
-=== Database specifications
-
-Database schemas
-
-UML Classe diagram. One for each database.
 
 === Dependencies
 

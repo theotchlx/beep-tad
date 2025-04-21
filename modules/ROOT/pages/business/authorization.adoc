@@ -3,4 +3,4 @@
 
 Authorization steps to authorize users on certain actions depending on the ressource, user roles, and relationships between the two.
 
-Authzed or permify (or OPA)
+Permify

@@ -4,22 +4,21 @@
 * Appendix
 ** xref:appendices/scenarios.adoc[]
 ** xref:appendices/sizing.adoc[]
+** xref:appendices/references.adoc[]
 
 * xref:physical-infrastructure.adoc[]
 
 * xref:software-infrastructure.adoc[]
-
-* xref:network-layout.adoc[]
 
 * Business services
 ** xref:business/service-requirements.adoc[]
 ** xref:business/service-segmentation.adoc[]
 ** xref:business/authentication.adoc[]
 ** xref:business/authorization.adoc[]
-** xref:business/api-gateway.adoc[]
 ** xref:business/service-x.adoc[]
 
 * Additional services
+** xref:additional/gateway.adoc[]
 ** xref:additional/observability.adoc[]
 ** xref:additional/registry.adoc[]
 

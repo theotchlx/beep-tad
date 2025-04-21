@@ -6,15 +6,15 @@ This chapter specifies the expected fundamental hardware setup.
 
 === Physical constraints
 
-Hardware infrastructure MAY run on infrastructure provided by Polytech Montpellier
+Hardware infrastructure SHOULD run on infrastructure provided by Polytech Montpellier
 
-Hardware infrastructure MAY be contained within Polytech Montpellier's network. This means all traffic network must pass through Polytech's gateway servers.
+Hardware infrastructure SHOULD be contained within Polytech Montpellier's network. If so, this means all network traffic MUST pass through Polytech's gateway servers.
 
 == Infrastructure security
 
 === Data confidentiality
 
-Persistent data stored on hard drives MAY be encrypted using secure algorithms.
+Persistent data stored on hard drives MAY be encrypted using the LUKS (Linux Unified Key Setup) disk encryption specification.
 
 === Data integrity
 

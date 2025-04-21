@@ -3,7 +3,7 @@
 == Definitions of terms
 
 **Additional service**::
-Service that does not provide one of Beep's use cases to users, but is deployed and provides more control over the system.
+Service that does not provide one of Beep's use cases to users, but provides control over the system.
 
 **Beep-specific user identity**::
 A user's profile picture, preferences and settings.

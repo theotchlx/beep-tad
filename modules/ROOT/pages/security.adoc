@@ -1,4 +1,5 @@
 = General security requirements
+:navtitle: Security requirements
 
 == Data confidentiality
 

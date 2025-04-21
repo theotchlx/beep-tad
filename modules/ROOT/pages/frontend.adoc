@@ -1,4 +1,10 @@
-= Service X
+= Frontend service
+:navtitle: Frontend
+
+left out bcuz implemented in JS + is outside network or stuff??? + Isnt like, business logic usage scenario implementation...
+
+microfrontend components? backends for frontend?
+
 
 This chapter defines the technical architecture requirements specific to the X service. These requirements MUST be met by the X service implementation.
 
@@ -20,11 +26,11 @@ The X service is a xref:glossary.adoc#definitions-of-terms[_business service_]. 
 
 === Protocol
 
-Every interface implemented by the X service MUST only use the gRPC protocol.
+Every interface implemented by the X service MUST use the gRPC protocol.
 
 === Data format
 
-All data transferred via the interfaces MUST be transferred in Protocol Buffers format.
+All data transferred via the interfaces MUST be transferred in protobuf format.
 
 === Data Transfer Objects
 
@@ -76,9 +82,9 @@ The X service MUST implement the interfaces defined in the following table.
 
 == State management
 
-=== Databases
+=== Database
 
-The X service MUST only use the link:https://www.postgresql.org/[PostgreSQL] database management system to store all persistent data.
+The X service MUST use the link:https://www.postgresql.org/[PostgreSQL] database management system to store all persistent data.
 //TODO: this link is external, so not persistent. Possibly replace with local copy or reference in appendix.
 
 This database is a dependency of the X service.
