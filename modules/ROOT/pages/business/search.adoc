@@ -1,14 +1,25 @@
-= Authorization service
-:navtitle: Authorization
-
-Authorization steps to authorize users on certain actions depending on the ressource, user roles, and relationships between the two.
-
-Permify
+= Search service
+:navtitle: Search
 
 
 
+VIII. Search engine design and implementation
 
-= Service X
+Sequence diagram of the indexing and search mechanism.
+
+Can search whats? All/most elements of Beep?
+
+- Servers (from server discovery pages, side page, etc.)
+- Users (from channels, from private messages, etc.)
+- Messages (from channels, from private messages, etc.)
+- Files (from channels, from private messages, etc.)
+- more? What else. Channels? meh. It's a bit stupid. Maybe channels but across servers? Like in message transfer in Discord, you can choose a channel across servers.
+
+for files:
+
+Files have multiple lifecycle stages (short term, for previews etc. Long term, for storage etc. Iceberg & similar). Multiple object storages. Multiple file storages. Many different types and sizes. How to manage and distribute all that, and also search and index it?
+
+
 
 This chapter defines the technical architecture requirements specific to the X service. These requirements MUST be met by the X service implementation.
 

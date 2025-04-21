@@ -15,9 +15,17 @@
 ** xref:business/service-segmentation.adoc[]
 ** xref:business/authentication.adoc[]
 ** xref:business/authorization.adoc[]
-** xref:business/service-x.adoc[]
+** xref:business/calls.adoc[]
+** xref:business/chats.adoc[]
+** xref:business/files.adoc[]
+** xref:business/notifications.adoc[]
+** xref:business/search.adoc[]
+** xref:business/servers.adoc[]
+** xref:business/status.adoc[]
+** xref:business/users.adoc[]
 
 * Additional services
+** xref:additional/frontend.adoc[]
 ** xref:additional/gateway.adoc[]
 ** xref:additional/observability.adoc[]
 ** xref:additional/registry.adoc[]

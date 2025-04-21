@@ -1,14 +1,5 @@
-= Authorization service
-:navtitle: Authorization
-
-Authorization steps to authorize users on certain actions depending on the ressource, user roles, and relationships between the two.
-
-Permify
-
-
-
-
-= Service X
+= Calls service
+:navtitle: Calls
 
 This chapter defines the technical architecture requirements specific to the X service. These requirements MUST be met by the X service implementation.
 

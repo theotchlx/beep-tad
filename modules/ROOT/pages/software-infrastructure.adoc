@@ -70,6 +70,14 @@ Linkerd-vis to connect to prometheus and grafana (additional services) to store 
 
 == Security
 
+IX. Managing platform security issues
+
+VII. Infrastructure security
+design, implementation, automation and handling
+
+cia triad
+principle of privilege (including in service mesh)
+
 === Operating systems
 
 Every operating system running in the system MUST be either:

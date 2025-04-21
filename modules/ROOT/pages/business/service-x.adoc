@@ -1,4 +1,5 @@
-= Service X
+= X service
+:navtitle: X
 
 This chapter defines the technical architecture requirements specific to the X service. These requirements MUST be met by the X service implementation.
 

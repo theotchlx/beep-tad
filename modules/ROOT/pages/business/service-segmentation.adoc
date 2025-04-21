@@ -18,31 +18,28 @@ The following table defines the segmentation of Beep's xref:glossary.adoc#defini
 |Authorization
 |Manage user and resources permission relationships, user roles.
 
-|Call
+|Calls
 |Enable users to share voice/video feeds with minimal latency in voice channels.
 
-|Chat
+|Chats
 |Manage text channels and messages lifecycle.
 
 |Files
 |Manage file storage and retrieval.
 
-|Frontend
-|Provide a web interface to users to arrange the lifecycle of usage scenarios on the web application.
-
-|Notification
+|Notifications
 |Manage push notifications sent to devices.
 
 |Search
 |Provide results to search queries for servers, channels, users, messages and files.
 
-|Server
+|Servers
 |Manage servers and members lifecycle.
 
 |Status
 |Manage user ephemeral status information (online, typing). (websocket connections and the like..)
 
-|User
+|Users
 |Manage xref:glossary.adoc#definitions-of-terms[_Beep-specific user identity_].
 
 |===
