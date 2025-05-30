@@ -10,16 +10,20 @@ There are no relations contstraints on messages, each message is simply linked t
 
 The messaging service also provides features for notifying users about new messages, and mentions in messages.
 
+=== Dependencies
+
+The messaging service depends on a MongoDB database for both storing messages and implementing search features on messages.
+
+MongoDB is used for its flexibility in handling unstructured data, which is ideal for messages as they can vary in format and content (such as attachments or pinning status). It also provides efficient indexing and querying capabilities for search operations, while still being able to handle large volumes of data writes and queries, which makes it more suitable than Elasticsearch for the use case of Beep's messaging service in this regard. +
+Utilizing the same database for both storing messages and implementing search features is essential for ensuring consistency, as well as real-time performance in message retrieval and search operations, especially in a synchronous distributed context.
+
 The below UI mockup illustrates the messaging service's user interface, showing a list of messages in a channel, with the ability to send new messages and search for messages.
 
 .UI mockup of message search.
 image::search-feature-ui-mockup/search-feature-mockup.svg[Fig. 13. UI mockup of message search.,link=https://beep.theotchlx.me/beep-tad/1/_images/search-feature-ui-mockup/search-feature-mockup.svg,window=_blank]
 
-=== Dependencies
-
-The messaging service depends on a MongoDB database for both storing messages and implementing search features on messages.
-
-MongoDB is used for its flexibility in handling unstructured data, which is ideal for messages as they can vary in format and content (such as attachments or pinning status). It also provides efficient indexing and querying capabilities for search operations, while still being able to handle large volumes of data writes and queries, which makes it more suitable than Elasticsearch in this regard.
+.UI mockup of message search.
+image::search-feature-ui-mockup/search-feature-mockup-2.svg[Fig. 14. UI mockup of message search.,link=https://beep.theotchlx.me/beep-tad/1/_images/search-feature-ui-mockup-2/search-feature-mockup.svg,window=_blank]
 
 The following proof of concept illustrates message search using Elasticsearch as both a database for messages, and a search engine:
 

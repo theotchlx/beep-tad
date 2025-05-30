@@ -233,3 +233,13 @@ These reports MAY be stored for longer periods, depending on the business requir
 
 Logs MAY be compressed and archived following the initial retention period, and saved in S3-compatible storage for long-term storage and retrieval. +
 This allows for efficient storage management while still retaining the ability to access logs if needed in the future.
+
+The following UML Deployment diagram illustrates the deployed observability stack:
+
+.UML Deployment diagram of the Beep observability stack.
+image::observability/observability-stack-deployment.svg[UML Deployment diagram of the Beep observability stack.,link=https://beep.theotchlx.me/beep-tad/1/_images/observability/observability-stack-deployment.svg,window=_blank]
+
+The following UML sequence diagram illustrates the observability of a query between the users and communities services, through the observability stack:
+
+.UML Sequence diagram of a query in the Beep observability stack.
+image::observability/observability-query.svg[UML Sequence diagram of a query in the Beep observability stack.,link=https://beep.theotchlx.me/beep-tad/1/_images/observability/observability-query.svg,window=_blank]

@@ -17,3 +17,8 @@ For that purpose, it has its own back-for-front (BFF) API accessible from the ga
 Native mobile applications have different requirements and needs as compared to web applications, such as offline support, push notifications support, Digital Rights Management (DRM) for media content, and access to device features. They also have different user interface patterns and design guidelines.
 
 For that purpose, the mobile user interface is built with React Native, which allows for building cross-platform mobile applications using the same codebase. It provides a native-like user experience and access to device features, while still being able to share code with the web UI.
+
+To illustrate the communication between the mobile user interface and the gateway service with BFF, the following UML sequence diagram shows how a user interacts with the mobile application to authenticate to the application.
+
+.UML Sequence diagram of mobile UI authentication.
+image::mobile/mobile-auth-bff.svg[UML Sequence diagram of mobile UI authentication.,link=https://beep.theotchlx.me/beep-tad/1/_images/mobile/mobile-auth-bff.svg,window=_blank]
