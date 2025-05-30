@@ -140,4 +140,4 @@ The following table specifies the user dtories of Beep.
 The following UML "Use Case" diagram describes the use cases of Beep and the interactions between them and the actors involved.
 
 .UML Use Case diagram of Beep.
-image::appendices/beep-uml-use-case-diagram-light.svg[Fig. I. UML Use Case diagram of Beep.,link=https://beep.theotchlx.me/beep-tad/1/_images/appendices/beep-uml-use-case-diagram-light.svg,window=_blank]
+image::use-case-diagram/beep-uml-use-case-diagram-light.svg[Fig. I. UML Use Case diagram of Beep.,link=https://beep.theotchlx.me/beep-tad/1/_images/use-case-diagram/beep-uml-use-case-diagram-light.svg,window=_blank]

@@ -19,7 +19,7 @@ This protocol and format together allow for efficient communication between serv
 The below sequence diagram illustrates the communication between two business services via gRPC:
 
 .UML Sequence diagram between two Beep business services.
-image::business/beep-grpc-sequence-diagram-friend.svg[Fig. 5. UML Sequence diagram between two Beep business services.,link=https://beep.theotchlx.me/beep-tad/1/_images/business/beep-grpc-sequence-diagram-friend.svg,window=_blank]
+image::grpc/beep-grpc-sequence-diagram-friend.svg[Fig. 5. UML Sequence diagram between two Beep business services.,link=https://beep.theotchlx.me/beep-tad/1/_images/grpc/beep-grpc-sequence-diagram-friend.svg,window=_blank]
 
 == Observability
 

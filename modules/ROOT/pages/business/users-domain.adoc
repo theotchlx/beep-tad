@@ -21,32 +21,32 @@ The below sequence diagrams illustrate different user actions around authenticat
 A user creates a Beep account via the user service (the "vanilla" way)
 
 .UML Sequence diagram for vanilla Beep user registration.
-image::business/beep-grpc-sequence-diagram-vanilla-reg.svg[Fig. 6. UML Sequence diagram for vanilla Beep user registration.,link=https://beep.theotchlx.me/beep-tad/1/_images/business/beep-grpc-sequence-diagram-vanilla-reg.svg,window=_blank]
+image::authentication/beep-grpc-sequence-diagram-vanilla-reg.svg[Fig. 6. UML Sequence diagram for vanilla Beep user registration.,link=https://beep.theotchlx.me/beep-tad/1/_images/authentication/beep-grpc-sequence-diagram-vanilla-reg.svg,window=_blank]
 
 A user creates a Beep account via Polytech account (LDAP)
 
 .UML Sequence diagram for Polytech LDAP Beep user registration.
-image::business/beep-grpc-sequence-diagram-polytech-reg.svg[Fig. 7. UML Sequence diagram for Polytech LDAP Beep user registration.,link=https://beep.theotchlx.me/beep-tad/1/_images/business/beep-grpc-sequence-diagram-polytech-reg.svg,window=_blank]
+image::authentication/beep-grpc-sequence-diagram-polytech-reg.svg[Fig. 7. UML Sequence diagram for Polytech LDAP Beep user registration.,link=https://beep.theotchlx.me/beep-tad/1/_images/authentication/beep-grpc-sequence-diagram-polytech-reg.svg,window=_blank]
 
 A user creates a Beep account via Google account (OIDC)
 
 .UML Sequence diagram for Google OIDC Beep user registration.
-image::business/beep-grpc-sequence-diagram-google-reg.svg[Fig. 8. UML Sequence diagram for Google OIDC Beep user registration.,link=https://beep.theotchlx.me/beep-tad/1/_images/business/beep-grpc-sequence-diagram-google-reg.svg,window=_blank]
+image::authentication/beep-grpc-sequence-diagram-google-reg.svg[Fig. 8. UML Sequence diagram for Google OIDC Beep user registration.,link=https://beep.theotchlx.me/beep-tad/1/_images/authentication/beep-grpc-sequence-diagram-google-reg.svg,window=_blank]
 
 A user logs in to Beep via the user service (the "vanilla" way)
 
 .UML Sequence diagram for vanilla Beep user login.
-image::business/beep-grpc-sequence-diagram-vanilla-log.svg[Fig. 9. UML Sequence diagram for vanilla Beep user login.,link=https://beep.theotchlx.me/beep-tad/1/_images/business/beep-grpc-sequence-diagram-vanilla-log.svg,window=_blank]
+image::authentication/beep-grpc-sequence-diagram-vanilla-log.svg[Fig. 9. UML Sequence diagram for vanilla Beep user login.,link=https://beep.theotchlx.me/beep-tad/1/_images/authentication/beep-grpc-sequence-diagram-vanilla-log.svg,window=_blank]
 
 A user logs in to Beep via the Polytech account (LDAP)
 
 .UML Sequence diagram for Polytech LDAP Beep user login.
-image::business/beep-grpc-sequence-diagram-polytech-log.svg[Fig. 10. UML Sequence diagram for Polytech LDAP Beep user login.,link=https://beep.theotchlx.me/beep-tad/1/_images/business/beep-grpc-sequence-diagram-polytech-log.svg,window=_blank]
+image::authentication/beep-grpc-sequence-diagram-polytech-log.svg[Fig. 10. UML Sequence diagram for Polytech LDAP Beep user login.,link=https://beep.theotchlx.me/beep-tad/1/_images/authentication/beep-grpc-sequence-diagram-polytech-log.svg,window=_blank]
 
 A user associates their Google account and their Beep account.
 
 .UML Sequence diagram for Google account and Beep account association.
-image::business/beep-grpc-sequence-diagram-google-association.svg[Fig. 11. UML Sequence diagram for Google account and Beep account association.,link=https://beep.theotchlx.me/beep-tad/1/_images/business/beep-grpc-sequence-diagram-google-association.svg,window=_blank]
+image::authentication/beep-grpc-sequence-diagram-google-association.svg[Fig. 11. UML Sequence diagram for Google account and Beep account association.,link=https://beep.theotchlx.me/beep-tad/1/_images/authentication/beep-grpc-sequence-diagram-google-association.svg,window=_blank]
 
 The following proof of concept illustrates authentication with Keycloak:
 

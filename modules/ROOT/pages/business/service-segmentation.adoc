@@ -66,9 +66,9 @@ The following table defines the furher segmentation of Beep's business domains i
 The following context map illustrates the bounded contexts as business domains, each containing one or more business services (or technical domains), and their relationships.
 
 .Context map of Beep.
-image::appendices/beep-context-map-light.svg[Fig. 3. Context map of Beep.,link=https://beep.theotchlx.me/beep-tad/1/_images/business/beep-context-map.svg,window=_blank]
+image::context-map/beep-context-map.svg[Fig. 3. Context map of Beep.,link=https://beep.theotchlx.me/beep-tad/1/_images/context-map/beep-context-map.svg,window=_blank]
 
 The following UML "Component" diagram describes the layout of the business services of Beep and their dependencies.
 
 .UML Component diagram of Beep.
-image::appendices/beep-uml-component-diagram-light.svg[Fig. 4. UML Component diagram of Beep.,link=https://beep.theotchlx.me/beep-tad/1/_images/business/beep-uml-component-diagram.svg,window=_blank]
+image::component-diagram/beep-uml-component-diagram-light.svg[Fig. 4. UML Component diagram of Beep.,link=https://beep.theotchlx.me/beep-tad/1/_images/component-diagram/beep-uml-component-diagram.svg,window=_blank]

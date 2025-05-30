@@ -7,7 +7,7 @@ This chapter defines the software infrastructure layout of the system. This incl
 The folowing diagram illustrates the software infrastructure architecture of the system:
 
 .Target architecture diagram.
-image::business/beep-target-infrastructure.svg[Fig. 2. Target architecture diagram.,link=https://beep.theotchlx.me/beep-tad/1/_images/business/beep-target-infrastructure.svg,window=_blank]
+image::target-infrastructure/beep-target-infrastructure.svg[Fig. 2. Target architecture diagram.,link=https://beep.theotchlx.me/beep-tad/1/_images/target-infrastructure/beep-target-infrastructure.svg,window=_blank]
 
 === Operating system
 

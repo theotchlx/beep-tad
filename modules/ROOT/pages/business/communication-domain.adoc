@@ -13,7 +13,7 @@ The messaging service also provides features for notifying users about new messa
 The below UI mockup illustrates the messaging service's user interface, showing a list of messages in a channel, with the ability to send new messages and search for messages.
 
 .UI mockup of message search.
-image::business/search-feature-mockup.svg[Fig. 13. UI mockup of message search.,link=https://beep.theotchlx.me/beep-tad/1/_images/business/search-feature-mockup.svg,window=_blank]
+image::search-feature-ui-mockup/search-feature-mockup.svg[Fig. 13. UI mockup of message search.,link=https://beep.theotchlx.me/beep-tad/1/_images/search-feature-ui-mockup/search-feature-mockup.svg,window=_blank]
 
 === Dependencies
 
