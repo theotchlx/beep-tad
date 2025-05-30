@@ -7,9 +7,19 @@ Beep is a social media platform and instant messaging web application with real-
 
 == Document overview
 
-The target of this document is the definition of the technical architecture of the Beep project by the specification of its technical requirements.
+The target of this document is the definition of the technical architecture of the Beep project by the specification of its technical requirements. This document is sufficient specification to implement and exploit Beep.
 
-This document is available in PDF format on request.
+The Beep project is to evolve according to the evolution of the technical architecture requirements defined in this document. +
+This document is to evolve as architecture decisions are made.
+
+You can find the Architecture Decision Records (ADRs) by clicking the lower left corner of the page and switching to the "Architecture Decision Records" site.
+
+When coming across diagrams, you can click on them to open them in full for a better look.
+
+NOTE: This is only the first iteration of that document (made for the 30th of May, 2025, as part of the course evaluation). After this date, a second iteration of the document will begin, to integrate the work of every contributors into this document, clean the structure, and evolve the architecture decisions for a future implementation. +
+This document is laid out in a way that allows for easy updates and additions, so that it can be maintained as the project evolves. Each section is designed to be a specification of a particular aspect of the technical architecture, to be followed by specific teams of contributors.
+
+NOTE: Appendix appear first because they provide interesting context.
 
 == Intended audience
 

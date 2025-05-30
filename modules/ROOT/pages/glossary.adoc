@@ -14,6 +14,12 @@ Service that provides one of Beep's usage scenario to users.
 **Core user identity**::
 A user's name, username, email, username and password.
 
+**Critical data**::
+Data whose availability is essential, and of first order of importance in case of unavailability. This includes _core user identity_ information and _Beep-specific user identity_ information.
+
+**Sensitive data**::
+Data whose confidentiality is essential, and of first order of importance in case of confidentiality breach. This includes _core user identity_ information and _Beep-specific user identity_ information.
+
 **Usage scenario**::
 Either a use case or a user story.
 

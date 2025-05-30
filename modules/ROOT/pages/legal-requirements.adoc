@@ -1,0 +1,11 @@
+= Legal requirements
+
+This chapter addresses the legal requirements that Beep must comply with. These requirements are essential for ensuring that Beep operates within legal framework and protects user data.
+
+== GDPR compliance
+
+When a user requests that their data be deleted, the user's data MUST be completely removed from the system, including from all associated business services and their databases. This includes database backups.
+
+== Other security requirements
+
+All xref:glossary.adoc#definitions-of-terms[_sensitive data_] stored at rest MUST be encrypted using disk encryption mechanisms such as LUKS. This ensures that sensitive data is protected against unauthorized access, even if the physical disks are compromised.

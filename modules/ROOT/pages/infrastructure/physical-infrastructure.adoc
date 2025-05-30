@@ -1,0 +1,66 @@
+= Physical infrastructure
+
+This chapter specifies the expected fundamental hardware setup.
+
+== Hardware infrastructure layout
+
+Hardware infrastructure SHOULD run on infrastructure provided by Polytech Montpellier
+
+Hardware infrastructure SHOULD be contained within Polytech Montpellier's network. If so, this means all network traffic MUST pass through Polytech's gateway servers.
+
+The provided infrastructure consists of nine machines, each with the following specifications:
+
+- 2 6-core 1.9GHz CPUs
+- 64 GB of RAM
+- 256 GB of SSD storage
+- 2.4 TB of HDD storage
+- 2 10Gbps Ethernet interfaces
+
+== Physical network layout
+
+One machine will be reserved as the DMZ - a publicly exposed node with gateway services running on it, and two firewalls around it, one for the external network/Internet and one for the internal network.
+
+Three machines will be reserved for handling application and cluster databases, including the etcd cluster and application databases.
+
+The remaining five machines will be used for running the business application services, as well as the container registry.
+
+These machines are assigned IP addresses in private ranges, non routable from the internet, to ensure they are not directly accessible from outside the Polytech Montpellier network.
+
+The physical network layout is configured as follows. The below diagram (Fig. 1.) shows the ethernet interfaces and their connections between the machines:
+
+```plaintext
+                                           ┌──────────────────┐
+                                           │                  │
+                                ┌─────────►│ DMZ MACHINE N°01 │
+                                │ ens1f0np0│                  │
+                                ▼          └──────────────────┘
+                         ┌────────────┐
+                         │ ROUTER N°1 │
+                         └────────────┘
+                              ▲  ▲
+ ┌──────────────────┐         │  │         ┌──────────────────┐       ┌──────────────────┐                      ┌──────────────────┐
+ │                  │ens1f0np0│  │ens1f0np0│                  │       │                  │ ens1f0np0  ens1f0np0 │                  │
+ │ APP MACHINE N°03 │◄────────┘  └────────►│ APP MACHINE N°02 │       │ DB MACHINE N°07  │◄────────────────────►│ DB MACHINEDN°08  │
+ │                  │                      │                  │       │                  │                      │                  │
+ └──────────────────┘                      └──────────────────┘       └──────────────────┘                      └──────────────────┘
+          ▲ ens1f1np1                               ▲ ens1f0np0                ▲                                          ▲
+          │                                         │                          │                                          │ ens1f1np1
+          │                                         │                          │                                          │
+          ▼ ens1f1np1                               ▼ ens1f0np0                │                                          │
+ ┌──────────────────┐                      ┌──────────────────┐                ▼           ┌──────────────────┐           │
+ │                  │                      │                  │          ┌────────────┐    │                  │           │
+ │ APP MACHINE N°04 │                      │ APP MACHINE N°06 │          │ ROUTER N°3 │    │ DB MACHINEDN°09  │◄──────────┘
+ │                  │                      │                  │          └────────────┘    │                  │
+ └──────────────────┘                      └──────────────────┘               ▲  ▲         └──────────────────┘ ens1f1np1
+          ▲                                  ens1f1np1 ▲                      │  │                 ▲
+          │ ens1f0np0                                  │                      │  │                 │ ens1f0np0
+          │                                            │                      │  └─────────────────┘
+          │                                            │                      │
+          │           ┌──────────────────┐             ▼                      │
+          │           │                  │         ┌────────────┐◄────────────┘
+          └──────────►│ APP MACHINE N°05 │◄────────│ ROUTER N°2 │
+                      │                  │         └────────────┘
+            ens1f0np0 └──────────────────┘ ens1f1np1
+```
+
+The ring topology allows for one machine to fail without affecting the overall network connectivity.

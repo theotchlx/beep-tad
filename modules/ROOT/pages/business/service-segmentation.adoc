@@ -6,50 +6,69 @@ Technical architecture requirements specific to each business service are define
 
 == Service landscape layout
 
-The following table defines the segmentation of Beep's xref:glossary.adoc#definitions-of-terms[_usage scenarios_] into business services.
+The following table defines the segmentation of Beep's xref:glossary.adoc#definitions-of-terms[_usage scenarios_] into business domains.
 
-[cols="1,2"]
+[cols="1,3"]
 |===
-|Service name |Goal and provided features
-
-|Authentication
-|Authenticate users and other external requests, manage xref:glossary.adoc#definitions-of-terms[_core user identity_].
-
-|Authorization
-|Manage user and resources permission relationships, user roles.
-
-|Calls
-|Enable users to share voice/video feeds with minimal latency in voice channels.
-
-|Chats
-|Manage text channels and messages lifecycle.
-
-|Files
-|Manage file storage and retrieval.
-
-|Notifications
-|Manage push notifications sent to devices.
-
-|Search
-|Provide results to search queries for servers, channels, users, messages and files.
-
-|Servers
-|Manage servers and members lifecycle.
-
-|Status
-|Manage user ephemeral status information (online, typing). (websocket connections and the like..)
+|Business Domain |Domain Description
 
 |Users
-|Manage xref:glossary.adoc#definitions-of-terms[_Beep-specific user identity_].
+|Handles user information (including xref:glossary.adoc#definitions-of-terms[_Beep-specific user identity_] and xref:glossary.adoc#definitions-of-terms[_Beep-specific user identity_] information) and authentication.
+
+|Communities
+|Handles servers, members, roles, and channels lifecycle management.
+
+|Communication
+|Handles messaging, file sharing, search, real-time video/audio WebRTC streaming, and notifications.
 
 |===
 
-The following UML "Component" diagram describes the layout of the business services of Beep.
+Each business domain is its own context, separate from the others, and is implemented by one or more business services (or technical domains).
 
-.UML "Component" diagram of Beep.
-image::appendices/beep-uml-use-case-diagram-light.svg[Fig. 2. UML "Component" diagram of Beep.,link=https://beep.theotchlx.me/beep-tad/1/_images/business/beep-uml-component-diagram-light.svg,window=_blank]
-//TODO: refaire un second diagramme de composants avec des blocs au lieu des services et dedans deux composants : l'applicatif et la bdd associée. Peut être les sidecars aussi?? nan...?
+A business domain is segmented into multiple technical when technical concerns arise, such as the need for different technologies, scaling, or separation of concerns on a technical basis.
 
-=== Dependencies
+The following table defines the furher segmentation of Beep's business domains into technical domains.
 
-Authorized Languages (compiled, not interpreted, not resource hungry java, not memory unsafe C), frameworks, package dependency
+[cols="1,3,1"]
+|===
+|Technical Domain |Service Description |Business domain
+
+|Users
+|Relies on Keycloak (the Authentication service) as its database. Handles user information, native registration, and user relationships (such as friends).
+|Users
+
+|Authentication (Keycloak)
+|Handles user authentication and identification. Uses PostgreSQL as its database. Enforces user authentication and identification across all other business domains.
+|Users
+
+|Communities
+|Manages servers, members, and channels lifecycle.
+|Communities
+
+|Authorization (AuthZed)
+|Manages user permissions and roles across all business domains. Its main component and database live closer to the Communities business domain, as it manages permissions and roles inside Communities.
+|Communities
+
+|Messaging
+|Manages messages lifecycle. Uses MongoDB for storing messages. Implements search features on messages and files. Handles push notifications to devices, which may be implemented as a separate service for scaling or asynchronicity concerns.
+|Communication
+
+|Files
+|Provides authenticated CDN and file storage, with a public part if the file is public.
+|Communication
+
+|Calls
+|Implements real-time video/audio WebRTC streaming.
+|Communication
+
+|===
+
+The following context map illustrates the bounded contexts as business domains, each containing one or more business services (or technical domains), and their relationships.
+
+.Context map of Beep.
+image::appendices/beep-context-map-light.svg[Fig. 3. Context map of Beep.,link=https://beep.theotchlx.me/beep-tad/1/_images/business/beep-context-map.svg,window=_blank]
+
+The following UML "Component" diagram describes the layout of the business services of Beep and their dependencies.
+
+.UML Component diagram of Beep.
+image::appendices/beep-uml-component-diagram-light.svg[Fig. 4. UML Component diagram of Beep.,link=https://beep.theotchlx.me/beep-tad/1/_images/business/beep-uml-component-diagram.svg,window=_blank]

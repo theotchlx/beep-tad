@@ -1,0 +1,60 @@
+= Communities domain
+
+This chapter defines the technical architecture requirements specific to the Communities domain and its services.
+
+== Communities service
+
+The communities service is responsible for managing servers, members, and channels lifecycle.
+
+It provides features for creating, updating, and deleting servers, channels, and members, as well as managing roles and permissions within those servers and channels.
+
+The communities service also provides features for searching servers and channels through its database.
+
+=== Dependencies
+
+The communities service depends on a PostgreSQL database for storing servers, members, channels and related data.
+
+== Authorization service
+
+The authorization service will be AuthZed.
+
+It will manage user permissions and roles policies across all business domains, based defined actions and resources. Its main component and database live closer to the Communities business domain, as it manages permissions and roles inside Communities.
+
+The authorization service provides features for defining, updating, and deleting permissions and roles, as well as checking user permissions for specific actions on resources.
+
+As an authorization service, it provides fine-grained access control of complex relationships between users, resources, and actions, through SpiceDB schemas, a declarative permissions and relationships definition language, which is easy to use and understand.
+
+The stored resources (e.g., servers, channels) are kept up-to-date with the Communities service, which ensures that the permissions and roles are always in sync with the current state of the Communities domain.
+
+AuthZed makes use of sidecar containers deployed alongside any business service that requires authorization checks, to handle authorization checks efficiently, as well as to update the AuthZed database with the latest resources, permissions and roles. +
+Moreover, this helps reduce latency and improve performance for permission checks.
+
+=== Authorization policies
+
+The authorization service MUST provide permission control for the following actions on resources:
+
+- Roles are set of permissions that belong to servers. They can be created, updated, and deleted by users with sufficient permissions.
+- Users can have roles in servers, which grant them permissions to perform actions on resources within those servers.
+- Specific users or roles can be granted permissions to perform actions on resources, such as creating, updating, deleting or viewing channels, or sending messages in channels.
+- Beep platform administrators have global permissions across all servers and channels, for maintenance and legal compliance purposes.
+
+The following UML "Use Case" diagram describes the use cases of Beep and the interactions between them and the actors involved. Actors represent users with specific authorizations.
+
+.UML Use Case diagram of Beep.
+image::appendices/beep-uml-use-case-diagram-light.svg[Fig. 12. UML Use Case diagram of Beep.,link=https://beep.theotchlx.me/beep-tad/1/_images/appendices/beep-uml-use-case-diagram-light.svg,window=_blank]
+
+A role represents a custom actor with specific sets of permissions, such as:
+
+- Read access to a specific server.
+- Management of a server's channels, including creating, updating, and deleting channels.
+- Management of a server's members, including adding and removing members, and updating member roles.
+- Management of a server's settings, including updating the server's name, description, icon, and deleting the server.
+- Viewing a specific channel in a server.
+- Sending messages in a specific channel in a server.
+
+The granularity of permissions allows for fine-tuned access control to the channel level, ensuring that users can only perform actions and view channels they are authorized to, while also allowing for flexibility in defining roles and permissions based on the needs of each community.
+
+=== Dependencies
+
+The authorization service relies on AuthZed's database, which is built on the SpiceDB engine, which is a database built for managing fine-grained permissions and relationships. It uses a graph-based model to represent relationships between users, resources, and actions. +
+AuthZed's database is optimized for high-performance authorization checks.

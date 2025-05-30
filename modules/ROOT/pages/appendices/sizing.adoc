@@ -1,5 +1,7 @@
-= APPENDIX II: System sizing requirements
+= System Sizing Requirements
 :navtitle: System sizing
+
+== APPENDIX II: System sizing requirements
 
 This appendix chapter specifies the system sizing requirements as estimates of average loads and limitations. These estimates are operational targets that MUST be met for Beep to be considered fully operational.
 

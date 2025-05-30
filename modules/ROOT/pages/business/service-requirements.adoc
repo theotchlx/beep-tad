@@ -3,75 +3,96 @@
 
 This chapter defines the technical architecture requirements specific to xref:glossary.adoc#definitions-of-terms[_business services_]. These requirements MUST be met by every business service implementation.
 
-== Deployment
+Use this chapter as a reference for the general requirements that apply to all business services. Specific requirements for each business service are defined in the chapter dedicated to their business domain.
 
-Business services MUST be deployed in a Kubernetes cluster as containers inside pods.
+== Communication protocols and data formats
 
-== Communication
+Interfaces implemented between business services MUST only use gRPC as the communication protocol, with protobuf as the data format.
 
-=== Layout
+gRPC is a language-agnostic remote procedure call (RPC) framework that allows for inter-service communication via streams or single calls. It is built on top of HTTP/2, which provides features such as multiplexing, flow control, and header compression, as such gRPC is fast and efficient, which makes it suitable for our distributed and synchronous context.
 
-Business services MUST only communicate with each other synchronously.
+Protobuf allows for efficient serialization and deserialization of binary data for network transfer. +
+Protobuf makes use of `.proto` files to define the structure of the data being transferred, which allows for clear and consistent data definitions across services. This format has features such as field numbering that allow for easy forward and backward compatibility, as well as type safety.
 
-Pattern: server-side service discovery with linkerd svc mesh doing the hard work of load balancing services. Kubernetes, when a pod starts, it's automatically registered, as part of the internal DNS system.
+This protocol and format together allow for efficient communication between services, with low overhead and high performance thanks to binary serialization, and efficient data format representation.
 
-=== Protocols
+The below sequence diagram illustrates the communication between two business services via gRPC:
 
-Interfaces implemented by business services MUST only use any of the following protocols in the application layer of the OSI model:
-
-- gRPC
-- WebSocket
-//TODO: Also HTTP is only for frontend and gateway, which aren't business services? Is this also the case for WebSocket?
-
-=== Data formats
-
-All data transferred via the interfaces MUST only be transferred in either of the following data formats:
-
-- Avro in binary format.
-- Protocol Buffers in binary format.
-
-== State management
-
-=== Databases
-
-Business services MAY have a database dependency. If so, it MUST only use any of the following database management systems:
-
-- PostgreSQL
-- MongoDB
-- Valkey
-- MinIO
-
-This database is a dependency of the X service.
-
-== Programming languages
-
-Business services MUST only be implemented using any of the following programming languages:
-
-- Erlang (including Gleam and Elixir)
-- Go
-- Rust
+.UML Sequence diagram between two Beep business services.
+image::business/beep-grpc-sequence-diagram-friend.svg[Fig. 5. UML Sequence diagram between two Beep business services.,link=https://beep.theotchlx.me/beep-tad/1/_images/business/beep-grpc-sequence-diagram-friend.svg,window=_blank]
 
 == Observability
 
-=== System health
+=== Service health
 
-Each service MUST implement the 3 k8s default probes
-MUST implement a healthcheck probe
+Each service MUST implement the 3 default Kubernetes probes:
+
+- liveness probe, to check if the service is alive and responsive.
+- readiness probe, to check if the service is ready to handle requests.
+- startup probe, to check if the service has started correctly.
+
+These probes MUST be implemented using the HTTP protocol, and MUST return a 200 OK status code when the service is healthy.
+- The liveness probe MUST be called `/healthz/liveness`.
+- The readiness probe MUST be called `/healthz/readiness`.
+- The startup probe MUST be called `/healthz/startup`.
 
 === Logging
 
-Business services MUST implement a health endpoint
+Business services MUST write logs to standard output.
 
-==== Logging endpoint
-
-==== Logging interface
-
-stdout
+Each node's Kubelet handles log collection from standard output for each container. Grafana Alloy collects these logs, these logs are then aggregated and sent to Grafana Loki using the Grafana Alloy collector. These logs are then indexed and stored in Loki, which can be queried and visualized in Grafana dashboards, where alerts can also be configured.
 
 ==== Logs format
 
-Logs MUST follow the below format:
+Logs MUST follow the format defined below:
 
+```JSON
+{
+    "timestamp": "2023-10-01T12:00:00Z",
+    "level": "INFO",
+    "service": "service-name",
+    "message": "Description of the log event",
+    "context": {
+        "requestId": "unique-request-request",
+        "userId": "user-id",
+        "transactionId": "transaction-id"
+    },
+    "metadata": {
+        "host": "ip-address",
+        "protocol": "http",
+        "namespace": "kubernetes-namespace",
+        "region": "deployment-region"
+    },
+    "error": {
+        "code": "error-code",
+        "details": "error-details"
+    }
+}
 ```
 
-```
+This format is generic and extensible, allowing for additional fields to be added as needed. +
+Not all fields are required for every log entry, but consistent field structure MUST be followed for consistent logging across services.
+
+In the above example, it includes:
+
+- A timestamp in ISO 8601 format for easy sorting and filtering.
+- A log level to indicate the severity of the log event.
+- A service name to identify which service the log is coming from.
+- A message field for the description content of the log event.
+- A context object to include additional information about the request, such as a unique request ID, user ID, transaction ID...
+- A metadata object to provide information about the environment, such as the IP, hostname, protocol, pod, namespace, node information, region...
+
+Log levels MUST follow the standard logging levels:
+
+- DEBUG
+- INFO
+- WARN
+- ERROR
+
+=== Traces
+
+Business services MUST propagate trace IDs for requests. This will allow the Jaeger component of the Linkerd service mesh to collect and visualize traces for requests across services. This is essential for debugging, performance monitoring, and understanding the flow of requests through the system.
+
+== Dependencies
+
+Business services MUST make available a list of their dependencies for security audits, vulnerability and dependency management.

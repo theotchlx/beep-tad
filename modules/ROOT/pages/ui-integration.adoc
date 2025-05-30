@@ -1,0 +1,19 @@
+= User interfaces
+
+This chapter defines the technical architecture requirements specific to the web and mobile user interfaces (UI).
+
+The gateway service provides versioned APIs, as well as a back-for-front (BFF) for the web and mobile user interfaces. It handles the communication between the user interfaces and the business services, as well as the authentication and authorization of users.
+
+== Web UI
+
+The web user interface is a single-page application (SPA) currently built with React, which provides a responsive and interactive user experience. It communicates with the gateway service to access the business services and display the data to the user.
+
+The web UI is designed to be accessible and user-friendly, following the latest web standards and best practices. It is also designed to be performant, with lazy loading and code splitting to reduce the initial load time.
+
+For that purpose, it has its own back-for-front (BFF) API accessible from the gateway service, which will query specific endpoints dedicated to web and browser-based applications
+
+== Mobile UI
+
+Native mobile applications have different requirements and needs as compared to web applications, such as offline support, push notifications support, Digital Rights Management (DRM) for media content, and access to device features. They also have different user interface patterns and design guidelines.
+
+For that purpose, the mobile user interface is built with React Native, which allows for building cross-platform mobile applications using the same codebase. It provides a native-like user experience and access to device features, while still being able to share code with the web UI.

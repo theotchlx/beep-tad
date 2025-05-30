@@ -1,0 +1,47 @@
+= Data backups and retention
+
+This chapter defines backup frequency and backup retention policies of data stored on disk in Beep. These requirements are essential for ensuring that Beep can recover from data loss or corruption, maintain data integrity, and comply with legal requirements.
+
+All backups MUST be stored in a secure location away from the primary data storage.
+
+== Data availability and integrity
+
+The following requirements aim to ensure that Beep's data is available and can be restored in case of a failure or data loss.
+
+Database backups exclude container image registry backups, as container images can be rebuilt from versioned source code in case of data loss, and are not considered critical data in the context of business continuity.
+
+=== Disk redundancy
+
+All disks used for storing data in Beep MUST be configured with redundancy to ensure that data is not lost in case of a disk failure. This can be achieved using RAID (Redundant Array of Independent Disks) configurations.
+
+Disks MUST be configured in a software RAID1 array. This means that data is mirrored across two or more disks, providing redundancy in case one disk fails. This configuration ensures full data recovery in case of disk failures while also allowing for maximum performance in read operations.
+
+Tools to monitor and predict disk failure SHOULD be configured on the infrastructure to ensure that the disks are healthy and functioning properly. This can be achieved using tools such as Smartmontools, which can monitor disk health and send alerts in case of potential disk failures.
+
+Disk health checks MUST be performed weekly using the configured tools, to ensure that the disks are functioning properly and that there are no issues that could lead to data loss.
+
+=== Cluster database backups
+
+The Etcd cluster, which is the key-value store for Kubernetes, MUST be backed up twice a week to ensure that the state of the cluster can be restored in case of failure or data loss.
+
+Cluster data backups should be stored in a secure location, such as an encrypted object storage service, or encrypted disk storage using encryption mechanisms such as LUKS (Linux Unified Key Setup) or dm-crypt. This is to ensure that the backups are protected against unauthorized access and tampering, and to comply with data protection regulations, as well as to ensure data confidentiality and integrity.
+
+The retention period for Etcd backups is of two weeks, meaning that backups MUST be kept for at least two weeks.
+
+=== Business service database backups
+
+Keycloak's database, which stores user information, MUST be backed twice a week to ensure availability and integrity of user data. User data is xref:glossary.adoc#definitions-of-terms[_critical data_].
+
+Keycloak data backups MUST be stored in a secure location, such as an encrypted object storage service, or encrypted disk storage using encryption mechanisms such as LUKS (Linux Unified Key Setup) or dm-crypt. This is to ensure that the backups are protected against unauthorized access and tampering, and to comply with data protection regulations, as well as to ensure data confidentiality and integrity.
+
+The retention period for Keycloak backups is three weeks, meaning that backups MUST be kept for at least three weeks.
+
+All other business services MUST have their databases backed up weekly.
+
+The retention period for business services backups is two weeks, meaning that backups MUST be kept for at least two weeks.
+
+=== Telemetry data backups
+
+Databases storing logs, metrics and traces MUST be backed up weekly to ensure that telemetry data is available for analysis, troubleshooting, and incident response.
+
+The retention period for telemetry data backups is one week, meaning that backups MUST be kept for at least one week.

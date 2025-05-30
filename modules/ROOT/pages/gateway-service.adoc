@@ -1,0 +1,15 @@
+= Gateway service
+
+This chapter defines the technical architecture requirements specific to the Gateway service.
+
+The gateway service is a publicly exposed, stateless service that acts as the entry point for all external traffic to the Beep platform. It is responsible for forwarding requests to the appropriate business services, aggregating responses, and providing a single point of access for clients.
+
+The gateway service is designed to be lightweight, efficiently scalable, and MUST be highly performant in serving large numbers of concurrent requests.
+
+Just like any other service, the gateway service makes use of versioned endpoints for its API. This allows for backward compatibility and smooth transitions between different versions of the API, as well as the ability to deprecate old versions gracefully. +
+It may also provide route aggregation capabilites, that is, calling multiple services and aggregating their responses into a single response for the client. +
+The gateway service may also inject metadata into requests, such as request IDs for tracing, and tokens for authentication and authorization purposes.
+
+The gateway service provides a Backend For Frontend (BFF) for both web and mobile user interfaces (UI), with different endpoints for each, as both user interfaces have different requirements and needs.
+
+The gateway service MUST live in the DMZ, on its dedicated machine, as it is the entry point for all external traffic. It is the first service that clients interact with when accessing the Beep platform, and exists between two firewalls, one for the internal network and one for the external network.

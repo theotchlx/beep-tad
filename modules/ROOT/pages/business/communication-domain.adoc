@@ -1,0 +1,45 @@
+= Communication domain
+
+This chapter defines the technical architecture requirements specific to the Communication domain and its services.
+
+== Messaging service
+
+The messaging service is responsible for managing messages lifecycle, including sending, receiving, and storing messages. It also provides features for searching messages, as well as handling push notifications to devices.
+
+There are no relations contstraints on messages, each message is simply linked to a user, and a channel, by their IDs. Messages can be sent to a channel, or to a user directly (private messages, that is a channel between friends).
+
+The messaging service also provides features for notifying users about new messages, and mentions in messages.
+
+The below UI mockup illustrates the messaging service's user interface, showing a list of messages in a channel, with the ability to send new messages and search for messages.
+
+.UI mockup of message search.
+image::business/search-feature-mockup.svg[Fig. 13. UI mockup of message search.,link=https://beep.theotchlx.me/beep-tad/1/_images/business/search-feature-mockup.svg,window=_blank]
+
+=== Dependencies
+
+The messaging service depends on a MongoDB database for both storing messages and implementing search features on messages.
+
+MongoDB is used for its flexibility in handling unstructured data, which is ideal for messages as they can vary in format and content (such as attachments or pinning status). It also provides efficient indexing and querying capabilities for search operations, while still being able to handle large volumes of data writes and queries, which makes it more suitable than Elasticsearch in this regard.
+
+The following proof of concept illustrates message search using Elasticsearch as both a database for messages, and a search engine:
+
+<https://github.com/theotchlx/beep-poc>
+
+== Files service
+
+The files service provides authenticated CDN and file storage, with a public (unauthenticated) part if the file is public. It is responsible for managing file uploads, downloads, and storage.
+
+=== Dependencies
+
+The files service depends on an Elasticsearch database for indexing and searching files, as well as for storing file metadata. It uses Elasticsearch's capabilities to efficiently search and retrieve files based on various criteria, such as file names, types, and sizes.
+
+It also relies on Garage from Deuxfleurs, a distributed S3-compatible file storage system that provides a scalable and reliable way to store and retrieve files. Garage is designed to work with large volumes of data and provides features such as replication, redundancy, and high availability. +
+Garage is a Rust-based implementation of an S3-compatible object storage system, with a cleaner implementation as compared to MinIO.
+
+== Calls service
+
+The calls service implements real-time video/audio WebRTC streaming. It is responsible for managing WebRTC connections, handling signaling, and providing features for real-time communication between users.
+
+The calls service implements the WebRTC protocol for real-time communication, which allows for low-latency audio and video streaming between users. It also provides features for managing call sessions, such as joining and leaving calls, muting and unmuting audio, and enabling or disabling video.
+
+For this purpose, the calls service is implemented in Erlang-based languages, such as Elixir or Gleam, which are designed for real-time telecommunications and provide clean abstractions for features such as concurrency, fault tolerance, and distributed systems support, as well as hot module reloading, in the Erlang VM (BEAM).

@@ -1,0 +1,235 @@
+= Software infrastructure
+
+This chapter defines the software infrastructure layout of the system. This includes operating systems, container orchestration systems and network layout. xref:glossary.adoc#definitions-of-terms[_Business services_] are deployed on top of this software infrastructure.
+
+== Software infrastructure layout
+
+The folowing diagram illustrates the software infrastructure architecture of the system:
+
+.Target architecture diagram.
+image::business/beep-target-infrastructure.svg[Fig. 2. Target architecture diagram.,link=https://beep.theotchlx.me/beep-tad/1/_images/business/beep-target-infrastructure.svg,window=_blank]
+
+=== Operating system
+
+The software infrastructure of the system is based on Talos Linux, providing infrastructure immutability, and security through a minimal attack surface.
+
+Talos Linux provides only the necessary components to run a Talos cluster as well as a Kubernetes cluster, and no other common Linux userland software, from binaries such as `bash` to graphical user interfaces. This ensures that the system is more secure and resilient, as there are fewer components that can be compromised or misconfigured.
+
+=== Container orchestration system
+
+Talos Kubernetes is used as the container orchestration system for the system. The orchestrator is installed with the Talos cluster.
+
+==== Cluster state management
+
+Harbor will be used to manage the container images used by the Talos Kubernetes cluster. Harbor is a cloud-native registry that provides a secure and reliable way to store and manage container images locally in the cluster, for fast fetching and deployment. Harbor provides additional features such as vulnerability scanning, access control, and image signing.
+
+Etcd will be used to manage the state of the Talos Kubernetes cluster. Etcd is a distributed key-value store that provides a reliable way to store and manage the configuration and state of the Kubernetes cluster.
+
+The Etcd cluster MUST be deployed as a highly available (HA) cluster, with at least three nodes to ensure fault tolerance and data redundancy.
+
+To ensure high availability through fault tolerance and data redundancy, the Etcd cluster MUST be deployed as a highly available (HA) cluster, running on at least three nodes that are dedicated to running databases. +
+This is accomplished using Kubernetes taints and tolerations, which allow the Etcd cluster to run only on the dedicated nodes.
+
+This ensures that the system can continue to operate even if one or more nodes fail, providing resilience and reliability for the database services running on top of it; +
+While also leveraging the Kubernetes' network configuration to ensure that the Etcd cluster stays efficiently connected to the rest of the cluster and under the same service mesh; +
+While still keeping cluster state management separate from business services that could pose potential resource exhaustion or node failures. Isolation cluster state and applications also improves data security, reducing the risk of data breaches or unauthorized access.
+
+==== Application state management
+
+For the same reasons, and in the same way, application database clusters MUST be deployed in high-availability on at least three dedicated database nodes, separate from running applications.
+
+== Network layout
+
+Kubernetes nodes are physical machines. As seen in the previous chapter, the physical network layout is configured with two 10Gbps Ethernet interfaces on each machine, which allows for high-speed communication between nodes. Nine nodes make up the Talos Kubernetes cluster, with three dedicated to running databases, and five dedicated to running business services and the container registry local to the cluster, and one lies in a Demilitarized Zone (DMZ), between two firewalls, exposed to the Internet.
+
+The following network traffic matrices specify the network address of each node, allowed ports and protocol services traffic (and to which zone), by network zone.
+
+In the Demilitarized Zone:
+
+[cols="1,1,3,2"]
+|===
+|Node |IP Address |Allowed ports |Destination zone
+
+| DMZ Node N°01
+| 172.16.0.11
+| 80 (HTTP), 443 (HTTPS), 53 (DNS), 123 (NTP)
+| Internet (via firewall), Cluster zone (via firewall)
+|===
+
+In the Cluster Zone:
+
+[cols="1,1,4,2"]
+|===
+|Node |IP Address |Allowed ports |Destination zone
+
+| App Node N°02
+| 172.16.0.12
+| 53 (DNS), 443 (Secure gRPC or HTTTPS connections), 9090 (Prometheus for monitoring)
+| Cluster zone, DMZ (via firewall)
+
+| App Node N°03
+| 172.16.0.13
+| 53 (DNS), 443 (Secure gRPC or HTTTPS connections), 9090 (Prometheus for monitoring)
+| Cluster zone, DMZ (via firewall)
+
+| App Node N°04
+| 172.16.0.14
+| 53 (DNS), 443 (Secure gRPC or HTTTPS connections), 9090 (Prometheus for monitoring)
+| Cluster zone, DMZ (via firewall)
+
+| App Node N°05
+| 172.16.0.15
+| 53 (DNS), 443 (Secure gRPC or HTTTPS connections), 9090 (Prometheus for monitoring)
+| Cluster zone, DMZ (via firewall)
+
+| App Node N°06
+| 172.16.0.16
+| 53 (DNS), 443 (Secure gRPC or HTTTPS connections), 9090 (Prometheus for monitoring)
+| Cluster zone, DMZ (via firewall)
+
+| DB Node N°07
+| 172.16.0.17
+| 53 (DNS), 443 (HTTTPS connections), 9090 (Prometheus for monitoring)
+| Cluster zone
+
+| DB Node N°08
+| 172.16.0.18
+| 53 (DNS), 443 (HTTTPS connections), 9090 (Prometheus for monitoring)
+| Cluster zone
+
+| DB Node N°09
+| 172.16.0.19
+| 53 (DNS), 443 (HTTTPS connections), 9090 (Prometheus for monitoring)
+| Cluster zone
+|===
+
+No other traffic is allowed between zones. This is an application of the principle of least privilege, ensuring that only the necessary traffic is allowed between zones, minimizing the attack surface and reducing the risk of unauthorized access.
+
+Nodes are given IP addresses in the private range `172.16.0.0/16` as it is not routable from the Internet, which ensures that they are not directly accessible from outside the Polytech Montpellier network.
+
+The Polytech DNS servers are available at `162.38.112.1` and `162.38.112.15`
+
+NOTE: Network audits should be performed to ensure that the principle of least privilege is applied to the network, and that no undefined or unnecessary traffic is allowed between zones. This can be performed using network monitoring tools, and building up network connections from only necessary traffic.
+
+=== Service mesh
+
+The Linkerd service mesh MUST be deployed on the Talos Kubernetes cluster to provide networking, security, fault tolerance and observability features.
+
+More specifically, Linkerd handles secure service-to-service communication using mTLS (client - server TLS certificates and secure network communication), load balancing, fault tolerance, rate limiting, and observability features such as metrics, logs, and traces.
+
+Linkerd is composed of a control plane and data plane. The control plane is responsible for managing the configuration and state of the service mesh, while the data plane is responsible for handling the actual network traffic between services.
+The Linkerd data plane is composed of lightweight sidecar proxies that are injected into each service's pod when they are scheduled on a node. These sidecar proxies intercept all incoming and outgoing traffic to and from the service, allowing Linkerd to provide features such as mTLS, load balancing, and observability.
+
+Nodes network tables are configured by the Kubernetes CNI plugin, for that purpose we will use Linkerd's own CNI plugin.
+
+=== Ingress controller
+
+Traefik MUST be deployed as the ingress controller for the Kubernetes cluster. It will handle incoming traffic from the internet and route it to the appropriate business services based on the request URL or headers.
+
+Traefik is a reverse proxy and load balancer that can be used to route traffic to different services based on the request URL or headers. It can also handle SSL termination, caching, and rate limiting. In addition to providing many features out of the box, Traefik is easy to configure and manage.
+
+Traefik is configured to work with Linkerd, allowing it to route traffic to services within the service mesh while maintaining the security and observability features provided by Linkerd.
+
+=== Kubernetes namespaces layout
+
+Kubernetes namespaces provide network isolation of services, as well as better organization of access control and resources with quotas.
+
+Business services MUST be deployed inside the Kubernetes namespace specific to their business domain.
+
+Each business domain, comprised of its business services and their dependencies (such as databases) live in their own namespace. +
+Consequently, network policies and resource quotas are enforced at the business domain level.
+
+The following namespaces are defined for each business domain:
+
+- User namespace: Contains the user management service, the Keycloak authentication and identification service, and its PostgreSQL database.
+
+- Community namespace: Contains the community management service, the AuthZed authorization service, and their database dependencies.
+
+- Communication namespace: Contains the messaging service, the file sharing service, the calls service and their dependencies.
+
+=== Network communications confidentiality, integrity and availability
+
+The following proof of concept illustrates the network communications confidentiality, integrity and availability requirements of the system, between two services communication over gRPC with Linkerd:
+
+<https://github.com/theotchlx/helloworld-grpc-rs>
+
+==== Internal communications
+
+Linkerd MUST be configured to provide and enforce mTLS between business services automatically. This ensures that all communication between services is encrypted, untampered, and of attested origin, preventing unauthorized access and ensuring data integrity. This mutual TLS (mTLS) mechanism utilizes certificates defined for both services of the network exchange, and is provided by the service mesh itself, without requiring any additional configuration from the business services.
+
+Linkerd MUST also be configured to enforce network policies that restrict access to services based on their business domain and namespace. This ensures that services can only communicate with other services within the same business domain, minimizing attack surface and preventing unauthorized access to sensitive data.
+
+==== External communications
+
+All external communications to the system MUST be made through the Traefik ingress controller, which will handle incoming traffic and route it to the appropriate business services based on the request URL or headers.
+
+All external requests to the system MUST be made over TLS to ensure secure communication between clients and the system. To achieve this, Traefik MUST be configured with a valid SSL/TLS certificate issued by a trusted Certificate Authority (CA) such as Let's Encrypt.
+
+Publicly exposed services MUST be deployed in a DMZ (Demilitarized Zone) to provide an additional layer of security. The DMZ is a separate network segment that is isolated from the internal network, allowing for better control over incoming traffic and reducing the risk of unauthorized access to internal services. This is where the Gateway service lives, as it entry point for all external traffic.
+
+==== Fault tolerance
+
+Linkerd provides fault tolerance through its implementation of circuit breakers, retries, and timeouts automatically. This means that if a service is unavailable or slow to respond, Linkerd will automatically retry the request, apply timeouts, and break the circuit to prevent cascading failures in the system. This ensures that the system remains resilient and can handle failures gracefully.
+
+Linkerd MUST be configured to apply these fault tolerance mechanisms automatically, without requiring any additional configuration from the business services. +
+In addition, Linkerd MUST also be configured to provide rate limiting and throttling to prevent abuse, as well as mitigate denial-of-service (DoS) attacks and software bugs. This can be achieved by configuring Linkerd's rate limiting policies based on the business domain and service requirements.
+
+== Observability stack layout
+
+=== Service health
+
+Linkerd provides service health checks through its control plane, which monitors the health of each service in the mesh through their implemented Kubernetes probes. +
+Each service implements the three default Kubernetes probes: liveness, readiness, and startup at defined endpoints. See xref:business/service-requirements.adoc#service-health[business services requirements] for more details.
+
+=== Service logs
+
+Logs generated by business services are written to standard output. The process of aggregating these logs and making them available in Grafana is the following:
+
+1. **Kubelet**:
+    - Each node in the Kubernetes cluster runs a Kubelet, which is responsible for collecting logs from the containers running on that node.
+    - Kubelet reads logs written to standard output and standard error streams of the containers.
+
+2. **Grafana Alloy**:
+    - The Grafana Alloy collector is deployed as a DaemonSet in the Kubernetes cluster.
+    - It collects logs from the Kubelet and forwards them to Grafana Loki for storage and querying.
+
+3. **Grafana Loki**:
+    - Loki is a log aggregation system optimized for storing and querying logs.
+    - Logs collected by the Alloy collector are sent to Loki, where they are indexed and stored.
+
+4. **Grafana**:
+    - Grafana is used to visualize logs stored in Loki.
+    - Dashboards can be created to query and display logs, enabling monitoring and troubleshooting of business services.
+    - Grafana also supports alerting based on log queries, allowing notifications to be sent when specific conditions are met.
+
+The flow of logs is as follows:
+
+- Business services containers write logs to standard output.
+- Kubelet collects these logs from the containers.
+- The Grafana Alloy collector forwards the logs to Loki.
+- Loki stores and indexes the logs.
+- Grafana queries Loki to display logs in dashboards.
+
+=== Traces system
+
+Linkerd provides tracing capabilities through its integration with Jaeger and Grafana Tempo. The setup for traces is as follows:
+
+1. **Linkerd Jaeger**:
+    - Linkerd's Jaeger integration is used for collecting and visualizing traces within the service mesh.
+    - It automatically instruments gRPC calls between services, capturing trace data such as request latency, errors, and service dependencies.
+
+2. **Grafana Tempo**:
+    - Grafana Tempo is used for storing and querying traces.
+    - It provides a scalable and cost-effective solution for trace storage, allowing for efficient querying and visualization of trace data.
+
+Just like logs, traces can then be visualized in Grafana dashboards, to monitor the performance of services, identify bottlenecks, troubleshoot issues and gain insight in the system during normal operation as well as during attacks.
+
+=== Telemetry data retention
+
+Telemetry data, including logs, traces, and metrics, MUST be retained for a period of at least one week. This retention period allows for effective monitoring, troubleshooting, and incident response.
+
+Following this period, telemetry data MAY be transformed into aggregated reports or summaries, which can be used for long-term analysis and decision-making. These reports can include key performance indicators (KPIs), trends, and insights derived from the telemetry data. +
+These reports MAY be stored for longer periods, depending on the business requirements and compliance needs.
+
+Logs MAY be compressed and archived following the initial retention period, and saved in S3-compatible storage for long-term storage and retrieval. +
+This allows for efficient storage management while still retaining the ability to access logs if needed in the future.

@@ -1,5 +1,5 @@
 name: beep-tad
-title: Beep Technical Architecture Document
+title: Technical Architecture Document
 version: 1
 nav:
 - modules/ROOT/nav.adoc

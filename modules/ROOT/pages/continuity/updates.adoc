@@ -1,0 +1,38 @@
+= Software updates, deprecation and continuity
+:navtitle: Updates and deprecation
+
+This chapter defines software updates procedures and continuity requirements for the Beep project.
+
+== Software updates
+
+Thanks to each service producing Software Bills of Materials (SBOMs), we can track software dependencies, their versions, security status and deprecation status.
+
+Software updates are performed on a regular basis, at least once a month, to ensure that the software is up-to-date and secure.
+
+Any update MUST take place with minimal impact on service availability, and MUST be performed in a way that ensures the continuity of the service.
+
+This includes:
+
+- Testing the update in a staging environment before applying it to production.
+- Applying the update in a rolling manner, if possible, to minimize downtime.
+- Monitoring the service after the update to ensure that the system is functioning correctly.
+
+=== Security updates
+
+Security software updates are applied as soon as possible, and at most within 30 days of the security issue disclosure, depending on the severity of the issue.
+
+Security updates are prioritized based on the severity of the issue, and are applied as soon as possible to ensure that the system stays secure.
+
+Security updates are applied in a way that ensures the continuity of the service, and are subject to the same procedures as software updates.
+
+=== Software deprecation
+
+Software deprecation is handled through the use of versioned APIs and services. When a service or API is deprecated, it is marked as such in the documentation, and a grace period is provided for clients to migrate to the new version.
+During this grace period, both the old and new versions of the service or API are available, and clients are encouraged to migrate to the new version as soon as possible.
+Once the grace period is over, the old version is removed.
+
+The objective is to ensure that deprecated dependencies are replaced with their latest versions, or with alternative solutions, before they reach their end-of-life (EOL) date.
+
+When a software dependency is entirely deprecated, an alternative solution has to be found in time. This is a dependency migration.
+
+Software dependency migrations MUST be performed in a way that ensures the continuity of the service, and are subject to the same procedures as software updates.

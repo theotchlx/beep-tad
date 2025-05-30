@@ -4,30 +4,25 @@
 * Appendix
 ** xref:appendices/scenarios.adoc[]
 ** xref:appendices/sizing.adoc[]
-** xref:appendices/references.adoc[]
 
-* xref:physical-infrastructure.adoc[]
+* Infrastructure
+** xref:infrastructure/physical-infrastructure.adoc[]
+** xref:infrastructure/software-infrastructure.adoc[]
 
-* xref:software-infrastructure.adoc[]
-
-* Business services
-** xref:business/service-requirements.adoc[]
+* Business domains and services
 ** xref:business/service-segmentation.adoc[]
-** xref:business/authentication.adoc[]
-** xref:business/authorization.adoc[]
-** xref:business/calls.adoc[]
-** xref:business/chats.adoc[]
-** xref:business/files.adoc[]
-** xref:business/notifications.adoc[]
-** xref:business/search.adoc[]
-** xref:business/servers.adoc[]
-** xref:business/status.adoc[]
-** xref:business/users.adoc[]
+** xref:business/service-requirements.adoc[]
+** xref:business/users-domain.adoc[]
+** xref:business/communities-domain.adoc[]
+** xref:business/communication-domain.adoc[]
 
-* Additional services
-** xref:additional/frontend.adoc[]
-** xref:additional/gateway.adoc[]
-** xref:additional/observability.adoc[]
-** xref:additional/registry.adoc[]
+* xref:gateway-service.adoc[]
 
-* xref:security.adoc[]
+* xref:ui-integration.adoc[]
+
+* Business continuity plans & objectives
+** xref:continuity/backups.adoc[]
+** xref:continuity/updates.adoc[]
+** xref:continuity/disaster-recovery.adoc[]
+
+* xref:legal-requirements.adoc[]

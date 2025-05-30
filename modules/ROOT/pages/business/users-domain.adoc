@@ -1,0 +1,67 @@
+= Users domain
+
+This chapter defines the technical architecture requirements specific to the Users domain and its services.
+
+== Authentication service
+
+The authentication service will be Keycloak.
+
+It will handle user authentication and identification across all business domains.
+
+Keycloak provides OAuth2 and OpenID Connect (OIDC) authentication, as well as LDAP integration. It also provides user account association and Single Sign-On (SSO) capabilities.
+
+As such, the authentication service is responsible for the following:
+
+- OAuth2 and OpenID Connect (OIDC) authentication and identification
+- Single Sign-On (SSO) with Polytech (via LDAP) and Google accounts (via OIDC)
+- User account association between Beep and Google accounts
+
+The below sequence diagrams illustrate different user actions around authentication in Beep:
+
+A user creates a Beep account via the user service (the "vanilla" way)
+
+.UML Sequence diagram for vanilla Beep user registration.
+image::business/beep-grpc-sequence-diagram-vanilla-reg.svg[Fig. 6. UML Sequence diagram for vanilla Beep user registration.,link=https://beep.theotchlx.me/beep-tad/1/_images/business/beep-grpc-sequence-diagram-vanilla-reg.svg,window=_blank]
+
+A user creates a Beep account via Polytech account (LDAP)
+
+.UML Sequence diagram for Polytech LDAP Beep user registration.
+image::business/beep-grpc-sequence-diagram-polytech-reg.svg[Fig. 7. UML Sequence diagram for Polytech LDAP Beep user registration.,link=https://beep.theotchlx.me/beep-tad/1/_images/business/beep-grpc-sequence-diagram-polytech-reg.svg,window=_blank]
+
+A user creates a Beep account via Google account (OIDC)
+
+.UML Sequence diagram for Google OIDC Beep user registration.
+image::business/beep-grpc-sequence-diagram-google-reg.svg[Fig. 8. UML Sequence diagram for Google OIDC Beep user registration.,link=https://beep.theotchlx.me/beep-tad/1/_images/business/beep-grpc-sequence-diagram-google-reg.svg,window=_blank]
+
+A user logs in to Beep via the user service (the "vanilla" way)
+
+.UML Sequence diagram for vanilla Beep user login.
+image::business/beep-grpc-sequence-diagram-vanilla-log.svg[Fig. 9. UML Sequence diagram for vanilla Beep user login.,link=https://beep.theotchlx.me/beep-tad/1/_images/business/beep-grpc-sequence-diagram-vanilla-log.svg,window=_blank]
+
+A user logs in to Beep via the Polytech account (LDAP)
+
+.UML Sequence diagram for Polytech LDAP Beep user login.
+image::business/beep-grpc-sequence-diagram-polytech-log.svg[Fig. 10. UML Sequence diagram for Polytech LDAP Beep user login.,link=https://beep.theotchlx.me/beep-tad/1/_images/business/beep-grpc-sequence-diagram-polytech-log.svg,window=_blank]
+
+A user associates their Google account and their Beep account.
+
+.UML Sequence diagram for Google account and Beep account association.
+image::business/beep-grpc-sequence-diagram-google-association.svg[Fig. 11. UML Sequence diagram for Google account and Beep account association.,link=https://beep.theotchlx.me/beep-tad/1/_images/business/beep-grpc-sequence-diagram-google-association.svg,window=_blank]
+
+The following proof of concept illustrates authentication with Keycloak:
+
+<https://github.com/theotchlx/beep-poc>
+
+=== Dependencies
+
+The authentication service depends on a PostgreSQL database for storing user data and information, as well as settings.
+
+== Users service
+
+The users service is responsible for handling user information, native registration, and user relationships (such as friends and friend requests).
+
+The users service provides features for sending, receiving and managing (accepting, rejecting, cancelling) friend requests, as well as retrieving specific user information that cannot be stored in Keycloak (such as profile pictures).
+
+=== Dependencies
+
+The users service relies on the authentication service (Keycloak) as its database and authentication and identity provider.

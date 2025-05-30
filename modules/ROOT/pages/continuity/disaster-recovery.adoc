@@ -1,0 +1,63 @@
+= Disaster recovery
+
+This chapter specifies procedures in place for business continuity in case of incident.
+
+== Potential incidents
+
+Incidents that may affect the availability of Beep services and data are listed below. These incidents may impact the confidentiality, availability or integrity of the system, its data, and the overall functionality of Beep services.
+
+Incidents are grouped in two categories: accidents and attacks. Accidents are unintentional events that may cause harm to the system, while attacks are intentional actions taken by malicious actors to compromise the system.
+
+Potential accidents that may occur include:
+
+- Data corruption or loss
+- Hardware failure
+- Software failure
+- Network failure
+- Natural disasters (e.g., fire, flood, earthquake)
+- Power outages
+- Human error (e.g., accidental deletion of data, misconfiguration)
+- Third-party service outages (e.g., cloud service provider, external API)
+
+Potential attacks that may occur include:
+
+- Data breach
+- Cyber attacks (e.g., DDoS, ransomware)
+- Third-party service outages (e.g., cloud service provider, external API)
+
+The probability of any incident occurring must be assessed, their impact on the system and its data must be evaluated, the risk of them happening must be minimized, and their impacts must be mitigated. This is achieved through a risk assessment process that identifies potential incidents, evaluates their likelihood and impact, and defines mitigation strategies to reduce the risk of incidents occurring.
+
+The risk assessment process should be performed regularly, at least once a year, and whenever significant changes are made to the system or its architecture. The risk assessment should include a review of the potential incidents listed above, as well as any other incidents that may be specific to the system or its environment.
+
+Continuity procedures should be defined for each potential incident, including the steps to take in case of an incident, the roles and responsibilities of the team members involved, and the communication plan to inform stakeholders about the incident and its resolution.
+
+== Incident prevention
+
+The software infrastructure provides dashboards and alerting mechanisms to monitor the system and detect potential incidents before they occur.
+
+Dashboards MUST be monitored regularly by the team, and alerts MUST be configured to notify the team in case of potential incidents. +
+Alert configurations are defined based on the risk assessment process of each software and hardware components of the system. +
+This allows the team to take proactive measures to prevent incidents from occurring, as well as to respond quickly to incidents when they occur.
+
+Regular incident response drills MUST be conducted to ensure that the team is prepared to handle incidents effectively. These drills should simulate potential incidents and test the team's response procedures, communication plan, and recovery processes. +
+The drills should be conducted at least once a year, or more frequently if significant changes are made to the system or its architecture.
+
+== Automatic infrastructure recovery
+
+Software infrastructure MUST be defined declaratively using code, or infrastructure as code (IaC) declarative files and tools, such as Terraform, Pulumi, or Ansible. This allows for quick and efficient recovery of the software infrastructure in case of an incident.
+
+A GitOps Pull workflow MUST be used to manage the software infrastructure, which allows for version control, easy rollback in case of an incident, as well as automatic reconciliation of the software infrastructure with the desired state defined in the declarative files. This means that all changes to the software infrastructure MUST be made through pull requests, which are reviewed, tested and approved by the team as well as automatic mechanisms before being applied.
+
+== Critical data
+
+In case of data unvailability, xref:glossary.adoc#definitions-of-terms[_critical_ data_], as well as messages MUST be restored as soon as possible, and no later than 30 minutes after the incident.
+
+Automatic mechanisms are in place to restore critical data, such as database replication and backups. These mechanisms ensure that critical data is always available and can be restored quickly in case of an incident.
+
+In case these automatic mechanisms fail, manual intervention is required to restore critical data. This may involve restoring data from backups or other sources, and may take longer than the automatic mechanisms. In this case, critical data MUST be restored as soon as possible, and no later than 2 hours after the incident.
+
+In case of data corruption or missing data, the integrity of critical data MUST be restored as soon as possible from a backup, 30 minutes for automatic mechanisms, and no later than 2 hours after the incident in case of failure of automatic mechanisms.
+
+== Sensitive data
+
+In case of data breach, the confidentiality of xref:glossary.adoc#definitions-of-terms[_sensitive data_] MUST be ensured as soon as the breach is detected, and no later than three days after the incident, depending on the severity of the breach.
